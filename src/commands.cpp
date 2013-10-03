@@ -44,13 +44,10 @@
 #include "weapons.h"
 #include "raids.h"
 #include "chat.h"
-#include "quests.h"
-#include "mounts.h"
 #include "globalevent.h"
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 #include "outputmessage.h"
 #include "connection.h"
-#include "admin.h"
 #include "status.h"
 #include "protocollogin.h"
 #endif
@@ -498,12 +495,6 @@ void Commands::reloadInfo(Player* player, const std::string& cmd, const std::str
 		g_weapons->reload();
 		g_weapons->loadDefaults();
 		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, "Reloaded weapons.");
-	} else if (tmpParam == "quest" || tmpParam == "quests") {
-		Quests::getInstance()->reload();
-		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, "Reloaded quests.");
-	} else if (tmpParam == "mount" || tmpParam == "mounts") {
-		Mounts::getInstance()->reload();
-		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, "Reloaded mounts.");
 	} else if (tmpParam == "globalevents" || tmpParam == "globalevent") {
 		g_globalEvents->reload();
 		player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, "Reloaded globalevents.");
@@ -1045,7 +1036,6 @@ void Commands::serverDiag(Player* player, const std::string& cmd, const std::str
 	text << "--------------------\n";
 	text << "ProtocolGame: " << ProtocolGame::protocolGameCount << "\n";
 	text << "ProtocolLogin: " << ProtocolLogin::protocolLoginCount << "\n";
-	text << "ProtocolAdmin: " << ProtocolAdmin::protocolAdminCount << "\n";
 	text << "ProtocolStatus: " << ProtocolStatus::protocolStatusCount << "\n\n";
 
 	text << "\nConnections:\n";

@@ -201,7 +201,6 @@ class ItemType
 		std::string pluralName;
 		std::string description;
 		std::string runeSpellName;
-		//std::string marketName;
 		std::string vocationString;
 
 		Abilities* abilities;

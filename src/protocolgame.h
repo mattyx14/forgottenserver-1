@@ -39,7 +39,6 @@ class House;
 class Container;
 class Tile;
 class Connection;
-class Quest;
 
 typedef std::map<uint32_t, Player*> UsersMap;
 typedef std::map<uint32_t, Player*> InvitedMap;
@@ -143,9 +142,6 @@ class ProtocolGame : public Protocol
 		void parsePlayerSale(NetworkMessage& msg);
 		void parseCloseShop(NetworkMessage& msg);
 
-		void parseQuestLog(NetworkMessage& msg);
-		void parseQuestLine(NetworkMessage& msg);
-
 		void parseInviteToParty(NetworkMessage& msg);
 		void parseJoinParty(NetworkMessage& msg);
 		void parseRevokePartyInvite(NetworkMessage& msg);
@@ -153,14 +149,7 @@ class ProtocolGame : public Protocol
 		void parseLeaveParty(NetworkMessage& msg);
 		void parseEnableSharedPartyExperience(NetworkMessage& msg);
 
-		void parseToggleMount(NetworkMessage& msg);
-
 		void parseRuleViolationReport(NetworkMessage& msg);
-
-		void parseModalWindowAnswer(NetworkMessage& msg);
-
-		void parseBrowseField(NetworkMessage& msg);
-		void parseSeekInContainer(NetworkMessage& msg);
 
 		//trade methods
 		void parseRequestTrade(NetworkMessage& msg);
@@ -170,13 +159,6 @@ class ProtocolGame : public Protocol
 
 		//
 		void parseGetObjectInfo(NetworkMessage& msg);
-
-		//market methods
-		void parseMarketLeave();
-		void parseMarketBrowse(NetworkMessage& msg);
-		void parseMarketCreateOffer(NetworkMessage& msg);
-		void parseMarketCancelOffer(NetworkMessage& msg);
-		void parseMarketAcceptOffer(NetworkMessage& msg);
 
 		//VIP methods
 		void parseAddVip(NetworkMessage& msg);
@@ -216,9 +198,6 @@ class ProtocolGame : public Protocol
 		void sendCreatureTurn(const Creature* creature, uint32_t stackpos);
 		void sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, Position* pos = nullptr);
 
-		void sendQuestLog();
-		void sendQuestLine(const Quest* quest);
-
 		void sendCancelWalk();
 		void sendChangeSpeed(const Creature* creature, uint32_t speed);
 		void sendCancelTarget();
@@ -241,14 +220,6 @@ class ProtocolGame : public Protocol
 		void sendShop(Npc* npc, const ShopInfoList& itemList);
 		void sendCloseShop();
 		void sendSaleItemList(const std::list<ShopInfo>& shop);
-		void sendMarketEnter(uint32_t depotId);
-		void sendMarketLeave();
-		void sendMarketBrowseItem(uint16_t itemId, const MarketOfferList& buyOffers, const MarketOfferList& sellOffers);
-		void sendMarketAcceptOffer(const MarketOfferEx& offer);
-		void sendMarketBrowseOwnOffers(const MarketOfferList& buyOffers, const MarketOfferList& sellOffers);
-		void sendMarketCancelOffer(const MarketOfferEx& offer);
-		void sendMarketBrowseOwnHistory(const HistoryMarketOfferList& buyOffers, const HistoryMarketOfferList& sellOffers);
-		void sendMarketDetail(uint16_t itemId);
 		void sendTradeItemRequest(const Player* player, const Item* item, bool ack);
 		void sendCloseTrade();
 
@@ -296,12 +267,9 @@ class ProtocolGame : public Protocol
 		void sendInventoryItem(slots_t slot, const Item* item);
 
 		//messages
-		void sendDamageMessage(MessageClasses mclass, const std::string& message, const Position& pos,
-		                       uint32_t primaryDamage = 0, TextColor_t primaryColor = TEXTCOLOR_NONE,
-		                       uint32_t secondaryDamage = 0, TextColor_t secondaryColor = TEXTCOLOR_NONE);
+		void sendDamageMessage(MessageClasses mclass, const std::string& message, const Position& pos, uint32_t primaryDamage = 0, TextColor_t primaryColor = TEXTCOLOR_NONE, uint32_t secondaryDamage = 0, TextColor_t secondaryColor = TEXTCOLOR_NONE);
 		void sendHealMessage(MessageClasses mclass, const std::string& message, const Position& pos, uint32_t heal, TextColor_t color);
 		void sendExperienceMessage(MessageClasses mclass, const std::string& message, const Position& pos, uint32_t exp, TextColor_t color);
-		void sendModalWindow(const ModalWindow& modalWindow);
 
 		//Help functions
 
@@ -313,8 +281,7 @@ class ProtocolGame : public Protocol
 		                         int32_t width, int32_t height, int32_t offset, int32_t& skip);
 
 		// translate a map area to clientreadable format
-		void GetMapDescription(int32_t x, int32_t y, int32_t z,
-		                       int32_t width, int32_t height, NetworkMessage& msg);
+		void GetMapDescription(int32_t x, int32_t y, int32_t z, int32_t width, int32_t height, NetworkMessage& msg);
 
 		void AddTextMessage(NetworkMessage& msg, MessageClasses mclass, const std::string& message);
 		void AddTextMessageEx(NetworkMessage& msg, MessageClasses mclass, const std::string& message, const Position& pos, uint32_t value, TextColor_t color);

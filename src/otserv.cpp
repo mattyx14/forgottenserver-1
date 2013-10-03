@@ -37,7 +37,6 @@
 #include "game.h"
 
 #include "iologindata.h"
-#include "iomarket.h"
 
 #ifndef _WIN32
 #include <csignal> // for sigemptyset()
@@ -45,7 +44,6 @@
 
 #include "monsters.h"
 #include "commands.h"
-#include "outfit.h"
 #include "vocation.h"
 #include "scriptmanager.h"
 #include "configmanager.h"
@@ -55,12 +53,9 @@
 #include "rsa.h"
 
 #include "protocolgame.h"
-#include "protocolold.h"
 #include "protocollogin.h"
 #include "status.h"
-#include "admin.h"
 #include "globalevent.h"
-#include "mounts.h"
 #include "house.h"
 
 #include "databasemanager.h"
@@ -70,7 +65,6 @@ Scheduler g_scheduler;
 
 IPList serverIPs;
 
-extern AdminProtocolConfig* g_adminConfig;
 Ban g_bans;
 Game g_game;
 Commands g_commands;
@@ -273,20 +267,6 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 		return;
 	}
 
-	std::cout << ">> Loading outfits" << std::endl;
-	Outfits* outfits = Outfits::getInstance();
-	if (!outfits->loadFromXml()) {
-		startupErrorMessage("Unable to load outfits!");
-		return;
-	}
-
-	g_adminConfig = new AdminProtocolConfig();
-	std::cout << ">> Loading admin protocol config" << std::endl;
-	if (!g_adminConfig->loadXMLConfig()) {
-		startupErrorMessage("Unable to load admin protocol config!");
-		return;
-	}
-
 	std::cout << ">> Loading experience stages" << std::endl;
 	if (!g_game.loadExperienceStages()) {
 		startupErrorMessage("Unable to load experience stages!");
@@ -335,12 +315,7 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	services->add<ProtocolLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT));
 
 	// OT protocols
-	services->add<ProtocolAdmin>(g_config.getNumber(ConfigManager::ADMIN_PORT));
 	services->add<ProtocolStatus>(g_config.getNumber(ConfigManager::STATUS_PORT));
-
-	// Legacy protocols
-	services->add<ProtocolOldLogin>(g_config.getNumber(ConfigManager::LOGIN_PORT));
-	services->add<ProtocolOldGame>(g_config.getNumber(ConfigManager::LOGIN_PORT));
 
 	int32_t autoSaveEachMinutes = g_config.getNumber(ConfigManager::AUTO_SAVE_EACH_MINUTES);
 	if (autoSaveEachMinutes > 0) {
@@ -374,11 +349,6 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 	Houses::getInstance().payHouses();
 	IOLoginData::getInstance()->updateHouseOwners();
 	g_npcs.reload();
-
-	if (g_config.getBoolean(ConfigManager::MARKET_ENABLED)) {
-		g_game.checkExpiredMarketOffers();
-		IOMarket::getInstance()->updateStatistics();
-	}
 
 	std::cout << ">> Loaded all modules, server starting up..." << std::endl;
 

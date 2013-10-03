@@ -732,31 +732,6 @@ class LuaScriptInterface
 		static int32_t luaNetworkMessageSkipBytes(lua_State* L);
 		static int32_t luaNetworkMessageSendToPlayer(lua_State* L);
 
-		// ModalWindow
-		static int32_t luaModalWindowCreate(lua_State* L);
-		static int32_t luaModalWindowDelete(lua_State* L);
-
-		static int32_t luaModalWindowGetId(lua_State* L);
-		static int32_t luaModalWindowGetTitle(lua_State* L);
-		static int32_t luaModalWindowGetMessage(lua_State* L);
-
-		static int32_t luaModalWindowGetButtonCount(lua_State* L);
-		static int32_t luaModalWindowGetChoiceCount(lua_State* L);
-
-		static int32_t luaModalWindowAddButton(lua_State* L);
-		static int32_t luaModalWindowAddChoice(lua_State* L);
-
-		static int32_t luaModalWindowGetDefaultEnterButton(lua_State* L);
-		static int32_t luaModalWindowSetDefaultEnterButton(lua_State* L);
-
-		static int32_t luaModalWindowGetDefaultEscapeButton(lua_State* L);
-		static int32_t luaModalWindowSetDefaultEscapeButton(lua_State* L);
-
-		static int32_t luaModalWindowHasPriority(lua_State* L);
-		static int32_t luaModalWindowSetPriority(lua_State* L);
-
-		static int32_t luaModalWindowSendToPlayer(lua_State* L);
-
 		// Item
 		static int32_t luaItemCreate(lua_State* L);
 		
@@ -933,16 +908,8 @@ class LuaScriptInterface
 
 		static int32_t luaPlayerGetSlotItem(lua_State* L);
 
-		static int32_t luaPlayerAddOutfit(lua_State* L);
-		static int32_t luaPlayerAddOutfitAddon(lua_State* L);
-		static int32_t luaPlayerRemoveOutfit(lua_State* L);
-		static int32_t luaPlayerRemoveOutfitAddon(lua_State* L);
-		static int32_t luaPlayerHasOutfit(lua_State* L);
 		static int32_t luaPlayerSendOutfitWindow(lua_State* L);
 		
-		static int32_t luaPlayerAddMount(lua_State* L);
-		static int32_t luaPlayerRemoveMount(lua_State* L);
-		static int32_t luaPlayerHasMount(lua_State* L);
 		
 		static int32_t luaPlayerGetPremiumDays(lua_State* L);
 		static int32_t luaPlayerAddPremiumDays(lua_State* L);

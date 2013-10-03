@@ -373,8 +373,7 @@ class Game
 		  * \param type Type of message
 		  * \param text The text to say
 		  */
-		bool internalCreatureSay(Creature* creature, SpeakClasses type, const std::string& text,
-		                         bool ghostMode, SpectatorVec* listPtr = nullptr, Position* pos = nullptr);
+		bool internalCreatureSay(Creature* creature, SpeakClasses type, const std::string& text, bool ghostMode, SpectatorVec* listPtr = nullptr, Position* pos = nullptr);
 
 		Position getClosestFreeTile(Player* player, Creature* teleportedCreature, const Position& toPos, bool toCreature);
 
@@ -385,7 +384,6 @@ class Game
 		void kickPlayer(uint32_t playerId, bool displayEffect);
 		bool playerReportBug(uint32_t playerId, const std::string& bug);
 		bool playerDebugAssert(uint32_t playerId, const std::string& assertLine, const std::string& date, const std::string& description, const std::string& comment);
-		bool playerAnswerModalWindow(uint32_t playerId, uint32_t modalWindowId, uint8_t button, uint8_t choice);
 		bool playerCancelWalk(uint32_t playerId);
 
 		bool internalStartTrade(Player* player, Player* partner, Item* tradeItem);
@@ -394,12 +392,9 @@ class Game
 		bool broadcastMessage(const std::string& text, MessageClasses type);
 
 		//Implementation of player invoked events
-		bool playerMoveThing(uint32_t playerId, const Position& fromPos, uint16_t spriteId, uint8_t fromStackPos,
-		                     const Position& toPos, uint8_t count);
-		bool playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId,
-		                        const Position& movingCreatureOrigPos, const Position& toPos);
-		bool playerMoveItem(uint32_t playerId, const Position& fromPos,
-		                    uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count);
+		bool playerMoveThing(uint32_t playerId, const Position& fromPos, uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count);
+		bool playerMoveCreature(uint32_t playerId, uint32_t movingCreatureId, const Position& movingCreatureOrigPos, const Position& toPos);
+		bool playerMoveItem(uint32_t playerId, const Position& fromPos, uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count);
 		bool playerMove(uint32_t playerId, Direction direction);
 		bool playerCreatePrivateChannel(uint32_t playerId);
 		void playerChannelInvite(uint32_t playerId, const std::string& name);
@@ -413,23 +408,17 @@ class Game
 		bool playerReceivePingBack(uint32_t playerId);
 		bool playerAutoWalk(uint32_t playerId, const std::list<Direction>& listDir);
 		bool playerStopAutoWalk(uint32_t playerId);
-		bool playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t fromStackPos,
-		                     uint16_t fromSpriteId, const Position& toPos, uint8_t toStackPos, uint16_t toSpriteId, bool isHotkey);
-		bool playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPos,
-		                   uint8_t index, uint16_t spriteId, bool isHotkey);
-		bool playerUseWithCreature(uint32_t playerId, const Position& fromPos,
-		                           uint8_t fromStackPos, uint32_t creatureId, uint16_t spriteId, bool isHotkey);
+		bool playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t fromStackPos, uint16_t fromSpriteId, const Position& toPos, uint8_t toStackPos, uint16_t toSpriteId, bool isHotkey);
+		bool playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPos, uint8_t index, uint16_t spriteId, bool isHotkey);
+		bool playerUseWithCreature(uint32_t playerId, const Position& fromPos, uint8_t fromStackPos, uint32_t creatureId, uint16_t spriteId, bool isHotkey);
 		bool playerCloseContainer(uint32_t playerId, uint8_t cid);
 		bool playerMoveUpContainer(uint32_t playerId, uint8_t cid);
 		bool playerUpdateContainer(uint32_t playerId, uint8_t cid);
 		bool playerUpdateTile(uint32_t playerId, const Position& pos);
 		bool playerRotateItem(uint32_t playerId, const Position& pos, uint8_t stackPos, const uint16_t spriteId);
 		bool playerWriteItem(uint32_t playerId, uint32_t windowTextId, const std::string& text);
-		bool playerBrowseField(uint32_t playerId, const Position& pos);
-		bool playerSeekInContainer(uint32_t playerId, uint8_t containerId, uint16_t index);
 		bool playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t windowTextId, const std::string& text);
-		bool playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t stackPos,
-		                        uint32_t tradePlayerId, uint16_t spriteId);
+		bool playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t stackPos, uint32_t tradePlayerId, uint16_t spriteId);
 		bool playerAcceptTrade(uint32_t playerId);
 		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int index);
 		bool playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,
@@ -450,10 +439,7 @@ class Game
 		bool playerRequestEditVip(uint32_t playerId, uint32_t guid, const std::string& description, uint32_t icon, bool notify);
 		bool playerTurn(uint32_t playerId, Direction dir);
 		bool playerRequestOutfit(uint32_t playerId);
-		bool playerShowQuestLog(uint32_t playerId);
-		bool playerShowQuestLine(uint32_t playerId, uint16_t questId);
-		bool playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
-		               const std::string& receiver, const std::string& text);
+		bool playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type, const std::string& receiver, const std::string& text);
 		bool playerChangeOutfit(uint32_t playerId, Outfit_t outfit);
 		bool playerInviteToParty(uint32_t playerId, uint32_t invitedId);
 		bool playerJoinParty(uint32_t playerId, uint32_t leaderId);
@@ -461,15 +447,6 @@ class Game
 		bool playerPassPartyLeadership(uint32_t playerId, uint32_t newLeaderId);
 		bool playerLeaveParty(uint32_t playerId);
 		bool playerEnableSharedPartyExperience(uint32_t playerId, bool sharedExpActive);
-		bool playerToggleMount(uint32_t playerId, bool mount);
-		bool playerLeaveMarket(uint32_t playerId);
-		bool playerBrowseMarket(uint32_t playerId, uint16_t spriteId);
-		bool playerBrowseMarketOwnOffers(uint32_t playerId);
-		bool playerBrowseMarketOwnHistory(uint32_t playerId);
-		bool playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spriteId, uint16_t amount, uint32_t price, bool anonymous);
-		bool playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter);
-		bool playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter, uint16_t amount);
-		void checkExpiredMarketOffers();
 
 		void updatePremium(Account& account);
 
@@ -478,19 +455,14 @@ class Game
 		void ReleaseCreature(Creature* creature);
 		void ReleaseItem(Item* item);
 
-		bool canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight = true,
-		                      int32_t rangex = Map::maxClientViewportX, int32_t rangey = Map::maxClientViewportY);
+		bool canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight = true, int32_t rangex = Map::maxClientViewportX, int32_t rangey = Map::maxClientViewportY);
 		bool isSightClear(const Position& fromPos, const Position& toPos, bool sameFloor);
 
-		bool getPathTo(const Creature* creature, const Position& destPos,
-		               std::list<Direction>& listDir, int32_t maxSearchDist /*= -1*/);
+		bool getPathTo(const Creature* creature, const Position& destPos, std::list<Direction>& listDir, int32_t maxSearchDist /*= -1*/);
 
-		bool getPathToEx(const Creature* creature, const Position& targetPos, std::list<Direction>& dirList,
-		                 const FindPathParams& fpp);
+		bool getPathToEx(const Creature* creature, const Position& targetPos, std::list<Direction>& dirList, const FindPathParams& fpp);
 
-		bool getPathToEx(const Creature* creature, const Position& targetPos, std::list<Direction>& dirList,
-		                 uint32_t minTargetDist, uint32_t maxTargetDist, bool fullPathSearch = true,
-		                 bool clearSight = true, int32_t maxSearchDist = -1);
+		bool getPathToEx(const Creature* creature, const Position& targetPos, std::list<Direction>& dirList, uint32_t minTargetDist, uint32_t maxTargetDist, bool fullPathSearch = true, bool clearSight = true, int32_t maxSearchDist = -1);
 
 		void changeSpeed(Creature* creature, int32_t varSpeedDelta);
 		void internalCreatureChangeOutfit(Creature* creature, const Outfit_t& oufit);
@@ -520,8 +492,7 @@ class Game
 		void checkCreatures();
 		void checkLight();
 
-		bool combatBlockHit(CombatType_t combatType, Creature* attacker, Creature* target,
-		                    int32_t& healthChange, bool checkDefense, bool checkArmor);
+		bool combatBlockHit(CombatType_t combatType, Creature* attacker, Creature* target, int32_t& healthChange, bool checkDefense, bool checkArmor);
 
 		bool combatChangeHealth(CombatType_t combatType, Creature* attacker, Creature* target, int32_t healthChange);
 		bool combatChangeMana(Creature* attacker, Creature* target, int32_t manaChange);
@@ -573,8 +544,6 @@ class Game
 		int32_t getMotdNum() const { return motdNum; }
 		void incrementMotdNum() { motdNum++; }
 
-		void sendOfflineTrainingDialog(Player* player);
-
 		const std::map<uint32_t, Player*>& getPlayers() const { return players; }
 		const std::map<uint32_t, Npc*>& getNpcs() const { return npcs; }
 		const std::map<uint32_t, Monster*>& getMonsters() const { return monsters; }
@@ -590,9 +559,6 @@ class Game
 
 		Guild* getGuild(uint32_t id) const;
 		void addGuild(Guild* guild);
-		void decreaseBrowseFieldRef(const Position& pos);
-
-		std::unordered_map<Tile*, Container*> browseFields;
 
 		Group* getGroup(uint32_t id);
 
@@ -669,8 +635,6 @@ class Game
 
 		std::unordered_map<std::string, Player*> mappedPlayerNames;
 		WildcardTreeNode wildcardTree;
-
-		ModalWindow offlineTrainingWindow;
 
 		Groups groups;
 

@@ -323,7 +323,6 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos,
 
 		if (bed->trySleep(player)) {
 			player->setBedItem(bed);
-			g_game.sendOfflineTrainingDialog(player);
 		}
 
 		return RET_NOERROR;
@@ -503,8 +502,6 @@ bool Action::loadFunction(const std::string& functionName)
 		function = increaseItemId;
 	} else if (tmpFunctionName == "decreaseitemid") {
 		function = decreaseItemId;
-	} else if (tmpFunctionName == "market") {
-		function = enterMarket;
 	} else {
 		std::cout << "[Warning - Action::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
 		return false;
@@ -525,21 +522,6 @@ bool Action::decreaseItemId(Player* player, Item* item, const PositionEx& posFro
 {
 	Item* newItem = g_game.transformItem(item, item->getID() - 1);
 	g_game.startDecay(newItem);
-	return true;
-}
-
-bool Action::enterMarket(Player* player, Item* item, const PositionEx& posFrom, const PositionEx& posTo, bool extendedUse, uint32_t creatureId)
-{
-	if (!g_config.getBoolean(ConfigManager::MARKET_ENABLED)) {
-		player->sendTextMessage(MSG_INFO_DESCR, "The market is disabled.");
-		return false;
-	}
-
-	if (player->getLastDepotId() == -1) {
-		return false;
-	}
-
-	player->sendMarketEnter(player->getLastDepotId());
 	return true;
 }
 

@@ -69,8 +69,6 @@ void MonsterType::reset()
 	outfit.lookFeet = 0;
 	outfit.lookType = 0;
 	outfit.lookTypeEx = 0;
-	outfit.lookAddons = 0;
-	outfit.lookMount = 0;
 	lookcorpse = 0;
 
 	conditionImmunities = 0;
@@ -884,18 +882,10 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monster_n
 			if ((attr = node.attribute("feet"))) {
 				mType->outfit.lookFeet = pugi::cast<uint16_t>(attr.value());
 			}
-
-			if ((attr = node.attribute("addons"))) {
-				mType->outfit.lookAddons = pugi::cast<uint16_t>(attr.value());
-			}
 		} else if ((attr = node.attribute("typeex"))) {
 			mType->outfit.lookTypeEx = pugi::cast<uint16_t>(attr.value());
 		} else {
 			SHOW_XML_WARNING("Missing look type/typeex");
-		}
-
-		if ((attr = node.attribute("mount"))) {
-			mType->outfit.lookMount = pugi::cast<uint16_t>(attr.value());
 		}
 
 		if ((attr = node.attribute("corpse"))) {

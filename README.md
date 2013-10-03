@@ -1,7 +1,8 @@
-forgottenserver [![Build Status](https://travis-ci.org/otland/forgottenserver.png?branch=master)](https://travis-ci.org/otland/forgottenserver)
+forgottenserver [![Build Status](https://travis-ci.org/otland/forgottenserver.png?branch=master)](https://travis-ci.org/evulmastah/forgottenserver)
 ===============
 
-The Forgotten Server is a server application written in C++ for the MMORPG Tibia. It is is based on the OpenTibia Server project.
+Based on https://github.com/otland/forgottenserver
+This project will support protocols 7.4, 7.6, 7.7x.
 
 ### Getting Started
 

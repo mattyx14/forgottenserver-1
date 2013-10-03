@@ -27,10 +27,9 @@
 #include "tools.h"
 #include "server.h"
 #include "protocolgame.h"
-#include "protocolold.h"
-#include "admin.h"
 #include "status.h"
 #include "configmanager.h"
+#include "logger.h"
 
 #include <boost/bind.hpp>
 

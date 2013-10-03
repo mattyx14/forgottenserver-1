@@ -359,7 +359,6 @@ bool IOLoginData::loadPlayer(Player* player, DBResult* result)
 	player->defaultOutfit.lookBody = result->getDataInt("lookbody");
 	player->defaultOutfit.lookLegs = result->getDataInt("looklegs");
 	player->defaultOutfit.lookFeet = result->getDataInt("lookfeet");
-	player->defaultOutfit.lookAddons = result->getDataInt("lookaddons");
 	player->currentOutfit = player->defaultOutfit;
 
 	if (g_game.getWorldType() != WORLD_TYPE_PVP_ENFORCED) {
@@ -372,8 +371,6 @@ bool IOLoginData::loadPlayer(Player* player, DBResult* result)
 
 			if (skull == SKULL_RED) {
 				player->skull = SKULL_RED;
-			} else if (skull == SKULL_BLACK) {
-				player->skull = SKULL_BLACK;
 			}
 		}
 	}
@@ -714,7 +711,7 @@ bool IOLoginData::savePlayer(Player* player)
 	query << "`lookhead` = " << (int32_t)player->defaultOutfit.lookHead << ',';
 	query << "`looklegs` = " << (int32_t)player->defaultOutfit.lookLegs << ',';
 	query << "`looktype` = " << (int32_t)player->defaultOutfit.lookType << ',';
-	query << "`lookaddons` = " << (int32_t)player->defaultOutfit.lookAddons << ',';
+	query << "`lookaddons` =  0,";
 	query << "`maglevel` = " << player->magLevel << ',';
 	query << "`mana` = " << player->mana << ',';
 	query << "`manamax` = " << player->manaMax << ',';
@@ -752,8 +749,6 @@ bool IOLoginData::savePlayer(Player* player)
 
 		if (player->skull == SKULL_RED) {
 			skull = SKULL_RED;
-		} else if (player->skull == SKULL_BLACK) {
-			skull = SKULL_BLACK;
 		}
 
 		query << "`skull` = " << skull << ',';
@@ -890,7 +885,6 @@ bool IOLoginData::savePlayer(Player* player)
 	query.str("");
 
 	stmt.setQuery("INSERT INTO `player_storage` (`player_id`, `key`, `value`) VALUES ");
-	player->genReservedStorageRange();
 
 	for (const auto& it : player->storageMap) {
 		query << player->getGUID() << ',' << it.first << ',' << it.second;

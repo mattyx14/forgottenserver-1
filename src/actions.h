@@ -114,7 +114,6 @@ class Action : public Event
 
 		static ActionFunction increaseItemId;
 		static ActionFunction decreaseItemId;
-		static ActionFunction enterMarket;
 
 		bool allowFarUse;
 		bool checkLineOfSight;

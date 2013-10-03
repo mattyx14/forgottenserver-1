@@ -42,7 +42,6 @@
 #include "vocation.h"
 #include "teleport.h"
 #include "ban.h"
-#include "mounts.h"
 #include "databasemanager.h"
 #include "beds.h"
 
@@ -219,7 +218,7 @@ uint32_t ScriptEnvironment::addThing(Thing* thing)
 				isOnTile = true;
 			} else if (parent) {
 				const Container* parentContainer = parent->getContainer();
-				if (parentContainer && parentContainer->getID() == ITEM_BROWSEFIELD) {
+				if (parentContainer && parentContainer->getTile()) {
 					isOnTile = true;
 				}
 			}
@@ -956,9 +955,6 @@ Position LuaScriptInterface::getPosition(lua_State* L, int32_t arg)
 Outfit_t LuaScriptInterface::getOutfit(lua_State* L, int32_t arg)
 {
 	Outfit_t outfit;
-	outfit.lookMount = getField<uint16_t>(L, arg, "lookMount");
-	outfit.lookAddons = getField<uint8_t>(L, arg, "lookAddons");
-
 	outfit.lookFeet = getField<uint8_t>(L, arg, "lookFeet");
 	outfit.lookLegs = getField<uint8_t>(L, arg, "lookLegs");
 	outfit.lookBody = getField<uint8_t>(L, arg, "lookBody");
@@ -967,7 +963,7 @@ Outfit_t LuaScriptInterface::getOutfit(lua_State* L, int32_t arg)
 	outfit.lookTypeEx = getField<uint16_t>(L, arg, "lookTypeEx");
 	outfit.lookType = getField<uint16_t>(L, arg, "lookType");
 
-	lua_pop(L, 8);
+	lua_pop(L, 6);
 	return outfit;
 }
 
@@ -1110,9 +1106,6 @@ bool LuaScriptInterface::isUserdata(lua_State* L, int32_t arg)
 Outfit_t LuaScriptInterface::popOutfit(lua_State* L)
 {
 	Outfit_t outfit;
-	outfit.lookMount = popField<uint16_t>(L, "lookMount");
-	outfit.lookAddons = popField<uint8_t>(L, "lookAddons");
-
 	outfit.lookFeet = popField<uint8_t>(L, "lookFeet");
 	outfit.lookLegs = popField<uint8_t>(L, "lookLegs");
 	outfit.lookBody = popField<uint8_t>(L, "lookBody");
@@ -1195,12 +1188,6 @@ void LuaScriptInterface::pushOutfit(lua_State* L, const Outfit_t& outfit)
 
 	pushNumber(L, outfit.lookFeet);
 	lua_setfield(L, -2, "lookFeet");
-
-	pushNumber(L, outfit.lookAddons);
-	lua_setfield(L, -2, "lookAddons");
-
-	pushNumber(L, outfit.lookMount);
-	lua_setfield(L, -2, "lookMount");
 }
 
 //
@@ -1757,31 +1744,6 @@ void LuaScriptInterface::registerFunctions()
 	registerClassMethod("NetworkMessage", "skipBytes", LuaScriptInterface::luaNetworkMessageSkipBytes);
 	registerClassMethod("NetworkMessage", "sendToPlayer", LuaScriptInterface::luaNetworkMessageSendToPlayer);
 
-	// ModalWindow
-	registerClass("ModalWindow", "", LuaScriptInterface::luaModalWindowCreate);
-	registerMetaMethod("ModalWindow", "__gc", LuaScriptInterface::luaModalWindowDelete);
-
-	registerClassMethod("ModalWindow", "getId", LuaScriptInterface::luaModalWindowGetId);
-	registerClassMethod("ModalWindow", "getTitle", LuaScriptInterface::luaModalWindowGetTitle);
-	registerClassMethod("ModalWindow", "getMessage", LuaScriptInterface::luaModalWindowGetMessage);
-
-	registerClassMethod("ModalWindow", "getButtonCount", LuaScriptInterface::luaModalWindowGetButtonCount);
-	registerClassMethod("ModalWindow", "getChoiceCount", LuaScriptInterface::luaModalWindowGetChoiceCount);
-
-	registerClassMethod("ModalWindow", "addButton", LuaScriptInterface::luaModalWindowAddButton);
-	registerClassMethod("ModalWindow", "addChoice", LuaScriptInterface::luaModalWindowAddChoice);
-
-	registerClassMethod("ModalWindow", "getDefaultEnterButton", LuaScriptInterface::luaModalWindowGetDefaultEnterButton);
-	registerClassMethod("ModalWindow", "setDefaultEnterButton", LuaScriptInterface::luaModalWindowSetDefaultEnterButton);
-
-	registerClassMethod("ModalWindow", "getDefaultEscapeButton", LuaScriptInterface::luaModalWindowGetDefaultEscapeButton);
-	registerClassMethod("ModalWindow", "setDefaultEscapeButton", LuaScriptInterface::luaModalWindowSetDefaultEscapeButton);
-
-	registerClassMethod("ModalWindow", "hasPriority", LuaScriptInterface::luaModalWindowHasPriority);
-	registerClassMethod("ModalWindow", "setPriority", LuaScriptInterface::luaModalWindowSetPriority);
-
-	registerClassMethod("ModalWindow", "sendToPlayer", LuaScriptInterface::luaModalWindowSendToPlayer);
-
 	// Item
 	registerClass("Item", "", LuaScriptInterface::luaItemCreate);
 	
@@ -1958,16 +1920,7 @@ void LuaScriptInterface::registerFunctions()
 
 	registerClassMethod("Player", "getSlotItem", LuaScriptInterface::luaPlayerGetSlotItem);
 	
-	registerClassMethod("Player", "addOutfit", LuaScriptInterface::luaPlayerAddOutfit);
-	registerClassMethod("Player", "addOutfitAddon", LuaScriptInterface::luaPlayerAddOutfitAddon);
-	registerClassMethod("Player", "removeOutfit", LuaScriptInterface::luaPlayerRemoveOutfit);
-	registerClassMethod("Player", "removeOutfitAddon", LuaScriptInterface::luaPlayerRemoveOutfitAddon);
-	registerClassMethod("Player", "hasOutfit", LuaScriptInterface::luaPlayerHasOutfit);
 	registerClassMethod("Player", "sendOutfitWindow", LuaScriptInterface::luaPlayerSendOutfitWindow);
-
-	registerClassMethod("Player", "addMount", LuaScriptInterface::luaPlayerAddMount);
-	registerClassMethod("Player", "removeMount", LuaScriptInterface::luaPlayerRemoveMount);
-	registerClassMethod("Player", "hasMount", LuaScriptInterface::luaPlayerHasMount);
 	
 	registerClassMethod("Player", "getPremiumDays", LuaScriptInterface::luaPlayerGetPremiumDays);
 	registerClassMethod("Player", "addPremiumDays", LuaScriptInterface::luaPlayerAddPremiumDays);
@@ -3877,18 +3830,8 @@ int32_t LuaScriptInterface::luaAddDamageCondition(lua_State* L)
 
 int32_t LuaScriptInterface::luaAddOutfitCondition(lua_State* L)
 {
-	//addOutfitCondition(condition, lookTypeEx, lookType, lookHead, lookBody, lookLegs, lookFeet[, lookAddons, lookMount])
+	//addOutfitCondition(condition, lookTypeEx, lookType, lookHead, lookBody, lookLegs, lookFeet)
 	Outfit_t outfit;
-
-	int32_t parameters = lua_gettop(L);
-	if (parameters > 8) {
-		outfit.lookMount = popNumber(L);
-	}
-
-	if (parameters > 7) {
-		outfit.lookAddons = popNumber(L);
-	}
-
 	outfit.lookFeet = popNumber(L);
 	outfit.lookLegs = popNumber(L);
 	outfit.lookBody = popNumber(L);
@@ -4723,7 +4666,6 @@ int32_t LuaScriptInterface::luaGetCreatureOutfit(lua_State* L)
 		setField(L, "lookBody", outfit.lookBody);
 		setField(L, "lookLegs", outfit.lookLegs);
 		setField(L, "lookFeet", outfit.lookFeet);
-		setField(L, "lookAddons", outfit.lookAddons);
 	} else {
 		reportErrorFunc(getErrorDesc(LUA_ERROR_CREATURE_NOT_FOUND));
 		pushBoolean(L, false);
@@ -6804,219 +6746,6 @@ int32_t LuaScriptInterface::luaNetworkMessageSendToPlayer(lua_State* L)
 		pushBoolean(L, true);
 	} else {
 		reportErrorFunc(getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
-		pushNil(L);
-	}
-	return 1;
-}
-
-// ModalWindow
-int32_t LuaScriptInterface::luaModalWindowCreate(lua_State* L)
-{
-	// ModalWindow(id, title, message)
-	// ModalWindow.new(id, title, message)
-	const std::string& message = getString(L, 4);
-	const std::string& title = getString(L, 3);
-	uint32_t id = getNumber<uint32_t>(L, 2);
-
-	pushUserdata<ModalWindow>(L, new ModalWindow(id, title, message));
-	setMetatable(L, -1, "ModalWindow");
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowDelete(lua_State* L)
-{
-	ModalWindow** windowPtr = getRawUserdata<ModalWindow>(L, 1);
-	if (windowPtr && *windowPtr) {
-		delete *windowPtr;
-		*windowPtr = nullptr;
-	}
-	return 0;
-}
-
-int32_t LuaScriptInterface::luaModalWindowGetId(lua_State* L)
-{
-	// modalWindow:getId()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		pushNumber(L, window->id);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowGetTitle(lua_State* L)
-{
-	// modalWindow:getTitle()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		pushString(L, window->title);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowGetMessage(lua_State* L)
-{
-	// modalWindow:getMessage()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		pushString(L, window->message);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowGetButtonCount(lua_State* L)
-{
-	// modalWindow:getButtonCount()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		pushNumber(L, window->buttons.size());
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowGetChoiceCount(lua_State* L)
-{
-	// modalWindow:getChoiceCount()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		pushNumber(L, window->choices.size());
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowAddButton(lua_State* L)
-{
-	// modalWindow:addButton(id, text)
-	const std::string& text = getString(L, 3);
-	uint8_t id = getNumber<uint8_t>(L, 2);
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->buttons.emplace_back(text, id);
-		pushBoolean(L, true);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowAddChoice(lua_State* L)
-{
-	// modalWindow:addChoice(id, text)
-	const std::string& text = getString(L, 3);
-	uint8_t id = getNumber<uint8_t>(L, 2);
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->choices.emplace_back(text, id);
-		pushBoolean(L, true);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowGetDefaultEnterButton(lua_State* L)
-{
-	// modalWindow:getDefaultEnterButton()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		pushNumber(L, window->defaultEnterButton);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowSetDefaultEnterButton(lua_State* L)
-{
-	// modalWindow:setDefaultEnterButton(buttonId)
-	uint8_t buttonId = getNumber<uint8_t>(L, 2);
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->defaultEnterButton = buttonId;
-		pushBoolean(L, true);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowGetDefaultEscapeButton(lua_State* L)
-{
-	// modalWindow:getDefaultEscapeButton()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		pushNumber(L, window->defaultEscapeButton);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowSetDefaultEscapeButton(lua_State* L)
-{
-	// modalWindow:setDefaultEscapeButton(buttonId)
-	uint8_t buttonId = getNumber<uint8_t>(L, 2);
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->defaultEscapeButton = buttonId;
-		pushBoolean(L, true);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowHasPriority(lua_State* L)
-{
-	// modalWindow:hasPriority()
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		pushBoolean(L, window->priority);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowSetPriority(lua_State* L)
-{
-	// modalWindow:setPriority(priority)
-	bool priority = getBoolean(L, 2);
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		window->priority = priority;
-		pushBoolean(L, true);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaModalWindowSendToPlayer(lua_State* L)
-{
-	// modalWindow:sendToPlayer(player)
-	Player* player = getPlayer(L, 2);
-	if (!player) {
-		pushNil(L);
-		return 1;
-	}
-
-	ModalWindow* window = getUserdata<ModalWindow>(L, 1);
-	if (window) {
-		if (!player->hasModalWindowOpen(window->id)) {
-			player->sendModalWindow(*window);
-		}
-		pushBoolean(L, true);
-	} else {
 		pushNil(L);
 	}
 	return 1;
@@ -9276,81 +9005,6 @@ int32_t LuaScriptInterface::luaPlayerGetSlotItem(lua_State* L)
 	return 1;
 }
 
-int32_t LuaScriptInterface::luaPlayerAddOutfit(lua_State* L)
-{
-	// player:addOutfit(lookType)
-	uint16_t lookType = getNumber<uint16_t>(L, 2);
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		player->addOutfit(lookType, 0);
-		pushBoolean(L, true);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaPlayerAddOutfitAddon(lua_State* L)
-{
-	// player:addOutfitAddon(lookType, addon)
-	uint8_t addon = getNumber<uint8_t>(L, 3);
-	uint16_t lookType = getNumber<uint16_t>(L, 2);
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		player->addOutfit(lookType, addon);
-		pushBoolean(L, true);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaPlayerRemoveOutfit(lua_State* L)
-{
-	// player:removeOutfit(lookType)
-	uint16_t lookType = getNumber<uint16_t>(L, 2);
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		pushBoolean(L, player->removeOutfit(lookType));
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaPlayerRemoveOutfitAddon(lua_State* L)
-{
-	// player:removeOutfitAddon(lookType, addon)
-	uint8_t addon = getNumber<uint8_t>(L, 3);
-	uint16_t lookType = getNumber<uint16_t>(L, 2);
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		pushBoolean(L, player->removeOutfitAddon(lookType, addon));
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaPlayerHasOutfit(lua_State* L)
-{
-	// player:hasOutfit(lookType[, addon = 0])
-	uint8_t addon;
-	if (getStackTop(L) >= 3) {
-		addon = getNumber<uint8_t>(L, 3);
-	} else {
-		addon = 0;
-	}
-	uint16_t lookType = getNumber<uint16_t>(L, 2);
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		pushBoolean(L, player->canWear(lookType, addon));
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
 int32_t LuaScriptInterface::luaPlayerSendOutfitWindow(lua_State* L)
 {
 	// player:sendOutfitWindow()
@@ -9358,50 +9012,6 @@ int32_t LuaScriptInterface::luaPlayerSendOutfitWindow(lua_State* L)
 	if (player) {
 		player->sendOutfitWindow();
 		pushBoolean(L, true);
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaPlayerAddMount(lua_State* L)
-{
-	// player:addMount(mountId)
-	uint8_t mountId = getNumber<uint8_t>(L, 2);
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		pushBoolean(L, player->tameMount(mountId));
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaPlayerRemoveMount(lua_State* L)
-{
-	// player:removeMount(mountId)
-	uint8_t mountId = getNumber<uint8_t>(L, 2);
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		pushBoolean(L, player->untameMount(mountId));
-	} else {
-		pushNil(L);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaPlayerHasMount(lua_State* L)
-{
-	// player:hasMount(mountId)
-	uint8_t mountId = getNumber<uint8_t>(L, 2);
-	Player* player = getUserdata<Player>(L, 1);
-	if (player) {
-		Mount* mount = Mounts::getInstance()->getMountByID(mountId);
-		if (mount) {
-			pushBoolean(L, mount->isTamed(player));
-		} else {
-			pushNil(L);
-		}
 	} else {
 		pushNil(L);
 	}
@@ -10967,18 +10577,11 @@ int32_t LuaScriptInterface::luaConditionAddDamage(lua_State* L)
 int32_t LuaScriptInterface::luaConditionAddOutfit(lua_State* L)
 {
 	// condition:addOutfit(condition, outfit)
-	// condition:addOutfit(condition, lookTypeEx, lookType, lookHead, lookBody, lookLegs, lookFeet[, lookAddons[, lookMount]])
+	// condition:addOutfit(condition, lookTypeEx, lookType, lookHead, lookBody, lookLegs)
 	Outfit_t outfit;
 	if (isTable(L, 2)) {
 		outfit = getOutfit(L, 2);
 	} else {
-		int32_t parameters = getStackTop(L);
-		if (parameters >= 9) {
-			outfit.lookMount = getNumber<uint16_t>(L, 9);
-		}
-		if (parameters >= 8) {
-			outfit.lookAddons = getNumber<uint8_t>(L, 8);
-		}
 		outfit.lookFeet = getNumber<uint8_t>(L, 7);
 		outfit.lookLegs = getNumber<uint8_t>(L, 6);
 		outfit.lookBody = getNumber<uint8_t>(L, 5);

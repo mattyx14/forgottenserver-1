@@ -333,10 +333,6 @@ bool Combat::isProtected(const Player* attacker, const Player* target)
 		return true;
 	}
 
-	if (attacker->getSkull() == SKULL_BLACK && attacker->getSkullClient(target) == SKULL_NONE) {
-		return true;
-	}
-
 	return false;
 }
 
@@ -563,7 +559,7 @@ bool Combat::CombatHealthFunc(Creature* caster, Creature* target, const CombatPa
 		if (caster) {
 			Player* targetPlayer = target->getPlayer();
 
-			if (targetPlayer && caster->getPlayer() && targetPlayer->getSkull() != SKULL_BLACK) {
+			if (targetPlayer && caster->getPlayer()) {
 				healthChange = healthChange / 2;
 			}
 		}

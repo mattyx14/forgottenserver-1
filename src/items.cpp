@@ -408,20 +408,6 @@ int32_t Items::loadFromOtb(const std::string& file)
 					break;
 				}
 
-				/*
-				case ITEM_ATTR_NAME:
-				{
-					std::string name;
-					if (!stream.GET_STRING(name, datalen)) {
-						delete iType;
-						return ERROR_INVALID_FORMAT;
-					}
-
-					iType->marketName = name;
-					break;
-				}
-				*/
-
 				default: {
 					//skip unknown attributes
 					if (!stream.SKIP_N(datalen)) {
@@ -1020,12 +1006,6 @@ bool Items::parseItemNode(const pugi::xml_node& itemNode, uint32_t id)
 	if ((it.transformToFree != 0 || it.transformToOnUse[PLAYERSEX_FEMALE] != 0 || it.transformToOnUse[PLAYERSEX_MALE] != 0) && it.type != ITEM_TYPE_BED) {
 		std::cout << "[Warning - Items::parseItemNode] Item " << it.id << " is not set as a bed-type" << std::endl;
 	}
-
-	/*
-	if (!it.marketName.empty() && it.marketName != it.name) {
-		std::cout << "ID: " << it.id << ". Market Name: " << it.marketName << ". Item Name: " << it.name << '.' << std::endl;
-	}
-	*/
 
 	return true;
 }

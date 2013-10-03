@@ -23,7 +23,6 @@
 #include "creature.h"
 #include "container.h"
 #include "cylinder.h"
-#include "outfit.h"
 #include "enums.h"
 #include "vocation.h"
 #include "protocolgame.h"
@@ -112,10 +111,9 @@ struct OpenContainer {
 };
 
 struct OutfitEntry {
-	OutfitEntry(uint16_t lookType, uint8_t addons) : lookType(lookType), addons(addons) {}
+	OutfitEntry(uint16_t lookType) : lookType(lookType) {}
 
 	uint16_t lookType;
-	uint8_t addons;
 };
 
 typedef std::map<uint32_t, uint32_t> MuteCountMap;
@@ -163,16 +161,6 @@ class Player : public Creature, public Cylinder
 		virtual CreatureType_t getType() const {
 			return CREATURETYPE_PLAYER;
 		}
-
-		uint8_t getCurrentMount() const;
-		void setCurrentMount(uint8_t mountId);
-		bool isMounted() const {
-			return defaultOutfit.lookMount != 0;
-		}
-		bool toggleMount(bool mount);
-		bool tameMount(uint8_t mountId);
-		bool untameMount(uint8_t mountId);
-		void dismount();
 
 		void sendFYIBox(const std::string& message) {
 			if (client) {
@@ -338,8 +326,6 @@ class Player : public Creature, public Cylinder
 		bool removePartyInvitation(Party* party);
 		void clearPartyInvitations();
 
-		GuildEmblems_t getGuildEmblem(const Player* player) const;
-
 		uint64_t getSpentMana() const {
 			return manaSpent;
 		}
@@ -394,18 +380,10 @@ class Player : public Creature, public Cylinder
 
 		void addStorageValue(const uint32_t key, const int32_t value, const bool isLogin = false);
 		bool getStorageValue(const uint32_t key, int32_t& value) const;
-		void genReservedStorageRange();
 
 		void setGroup(Group* newGroup);
 		Group* getGroup() const {
 			return group;
-		}
-
-		void setInMarket(bool value) {
-			inMarket = value;
-		}
-		bool isInMarket() const {
-			return inMarket;
 		}
 
 		void setLastDepotId(int16_t newId) {
@@ -486,10 +464,6 @@ class Player : public Creature, public Cylinder
 		void setTown(Town* _town) {
 			town = _town;
 		}
-
-		void clearModalWindows();
-		bool hasModalWindowOpen(uint32_t modalWindowId) const;
-		void onModalWindowHandled(uint32_t modalWindowId);
 
 		virtual bool isPushable() const;
 		virtual int32_t getThrowRange() const {
@@ -728,12 +702,6 @@ class Player : public Creature, public Cylinder
 		}
 		void checkSkullTicks(int32_t ticks);
 
-		bool canWear(uint32_t lookType, uint8_t addons) const;
-		void addOutfit(uint16_t lookType, uint8_t addons);
-		bool removeOutfit(uint16_t lookType);
-		bool removeOutfitAddon(uint16_t lookType, uint8_t addons);
-		bool getOutfitAddons(const Outfit& outfit, uint8_t& addons) const;
-
 		bool canLogout();
 
 		//tile
@@ -880,7 +848,6 @@ class Player : public Creature, public Cylinder
 				client->sendExperienceMessage(mclass, message, pos, exp, color);
 			}
 		}
-		void sendModalWindow(const ModalWindow& modalWindow);
 
 		//container
 		void sendAddContainerItem(const Container* container, const Item* item);
@@ -1034,47 +1001,6 @@ class Player : public Creature, public Cylinder
 				client->sendCloseShop();
 			}
 		}
-		void sendMarketEnter(uint32_t depotId) const {
-			if (client) {
-				client->sendMarketEnter(depotId);
-			}
-		}
-		void sendMarketLeave() {
-			inMarket = false;
-			if (client) {
-				client->sendMarketLeave();
-			}
-		}
-		void sendMarketBrowseItem(uint16_t itemId, const MarketOfferList& buyOffers, const MarketOfferList& sellOffers) const {
-			if (client) {
-				client->sendMarketBrowseItem(itemId, buyOffers, sellOffers);
-			}
-		}
-		void sendMarketBrowseOwnOffers(const MarketOfferList& buyOffers, const MarketOfferList& sellOffers) const {
-			if (client) {
-				client->sendMarketBrowseOwnOffers(buyOffers, sellOffers);
-			}
-		}
-		void sendMarketBrowseOwnHistory(const HistoryMarketOfferList& buyOffers, const HistoryMarketOfferList& sellOffers) const {
-			if (client) {
-				client->sendMarketBrowseOwnHistory(buyOffers, sellOffers);
-			}
-		}
-		void sendMarketDetail(uint16_t itemId) const {
-			if (client) {
-				client->sendMarketDetail(itemId);
-			}
-		}
-		void sendMarketAcceptOffer(const MarketOfferEx& offer) const {
-			if (client) {
-				client->sendMarketAcceptOffer(offer);
-			}
-		}
-		void sendMarketCancelOffer(const MarketOfferEx& offer) const {
-			if (client) {
-				client->sendMarketCancelOffer(offer);
-			}
-		}
 		void sendTradeItemRequest(const Player* player, const Item* item, bool ack) const {
 			if (client) {
 				client->sendTradeItemRequest(player, item, ack);
@@ -1124,16 +1050,6 @@ class Player : public Creature, public Cylinder
 		void sendAddMarker(const Position& pos, uint8_t markType, const std::string& desc) {
 			if (client) {
 				client->sendAddMarker(pos, markType, desc);
-			}
-		}
-		void sendQuestLog() {
-			if (client) {
-				client->sendQuestLog();
-			}
-		}
-		void sendQuestLine(const Quest* quest) {
-			if (client) {
-				client->sendQuestLine(quest);
 			}
 		}
 		void sendEnterWorld() {
@@ -1232,7 +1148,6 @@ class Player : public Creature, public Cylinder
 		std::vector<OutfitEntry> outfits;
 
 		std::list<Party*> invitePartyList;
-		std::list<uint32_t> modalWindows;
 		std::list<ShopInfo> shopItemList;
 		std::list<std::string> learnedInstantSpellList;
 		ConditionList storedConditionList;
@@ -1259,9 +1174,7 @@ class Player : public Creature, public Cylinder
 		int64_t lastFailedFollow;
 		int64_t lastMoveItemTime;
 		int64_t skullTicks;
-		int64_t lastQuestlogUpdate;
 		int64_t lastWalkthroughAttempt;
-		int64_t lastToggleMount;
 		int64_t lastPing;
 		int64_t lastPong;
 		int64_t nextAction;
@@ -1337,7 +1250,6 @@ class Player : public Creature, public Cylinder
 
 		bool mayNotMove;
 		bool requestedOutfit;
-		bool inMarket;
 		bool ghostMode;
 		bool pzLocked;
 		bool isConnecting;

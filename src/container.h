@@ -59,7 +59,6 @@ class Container : public Item, public Cylinder
 {
 	public:
 		Container(uint16_t _type);
-		Container(Tile* tile);
 		virtual ~Container();
 		virtual Item* clone() const;
 
