@@ -661,9 +661,6 @@ configKeys = {
 	MAX_PACKETS_PER_SECOND = 36
 }
 
-maleOutfits = {128, 129, 130, 131, 132, 133, 134}
-femaleOutfits = {136, 137, 138, 139, 140, 141, 142}
-
 ropeSpots = {384, 418}
 
 doors = {[1209] = 1211, [1210] = 1211, [1212] = 1214, [1213] = 1214, [1219] = 1220, [1221] = 1222, [1231] = 1233, [1232] = 1233, [1234] = 1236, [1235] = 1236, [1237] = 1238, [1239] = 1240, [1249] = 1251, [1250] = 1251, [1252] = 1254, [1253] = 1254, [1539] = 1540, [1541] = 1542, [3535] = 3537, [3536] = 3537, [3538] = 3539, [3544] = 3546, [3545] = 3546, [3547] = 3548, [4913] = 4915, [4914] = 4915, [4916] = 4918, [4917] = 4918, [5082] = 5083, [5084] = 5085}
@@ -714,23 +711,24 @@ ITEM_WILDGROWTH_PERSISTENT = 2721
 ITEM_WILDGROWTH_SAFE = 11099
 
 function doPlayerGiveItem(cid, itemid, count, charges)
-	local isFluidContainer = isItemFluidContainer(itemid) == TRUE
+	local isFluidContainer = isItemFluidContainer(itemid)
 	if isFluidContainer and charges == nil then
 		charges = 1
 	end
+
 	while count > 0 do
 		local tempcount = 1
-		if(isItemStackable(itemid) == TRUE) then
+		if isItemStackable(itemid) then
 			tempcount = math.min(100, count)
 		end
 
-		local ret = doPlayerAddItem(cid, itemid, tempcount, TRUE, charges)
+		local ret = doPlayerAddItem(cid, itemid, tempcount, true, charges)
 		if ret == false then
 			ret = doCreateItem(itemid, tempcount, getPlayerPosition(cid))
 		end
 
-		if(ret) then
-			if(isFluidContainer) then
+		if ret then
+			if isFluidContainer then
 				count = count - 1
 			elseif isItemRune(itemid) then
 				return LUA_NO_ERROR
@@ -758,27 +756,30 @@ function doCreatureSayWithRadius(cid, text, type, radiusx, radiusy, position)
 end
 
 function doPlayerTakeItem(cid, itemid, count)
-	if(getPlayerItemCount(cid,itemid) >= count) then
-		while count > 0 do
-			local tempcount = 0
-			if(isItemStackable(itemid) == TRUE) then
-				tempcount = math.min (100, count)
-			else
-				tempcount = 1
-			end
-			local ret = doPlayerRemoveItem(cid, itemid, tempcount)
-			if(ret ~= LUA_ERROR) then
-				count = count-tempcount
-			else
-				return LUA_ERROR
-			end
-		end
-		if(count == 0) then
-			return LUA_NO_ERROR
-		end
-	else
+	if getPlayerItemCount(cid,itemid) < count then
 		return LUA_ERROR
 	end
+
+	while count > 0 do
+		local tempcount = 0
+		if isItemStackable(itemid) then
+			tempcount = math.min (100, count)
+		else
+			tempcount = 1
+		end
+
+		local ret = doPlayerRemoveItem(cid, itemid, tempcount)
+		if ret ~= LUA_ERROR then
+			count = count - tempcount
+		else
+			return LUA_ERROR
+		end
+	end
+
+	if count ~= 0 then
+		return LUA_ERROR
+	end
+	return LUA_NO_ERROR
 end
 
 function doPlayerBuyItem(cid, itemid, count, cost, charges)
@@ -789,8 +790,8 @@ function doPlayerBuyItem(cid, itemid, count, cost, charges)
 end
 
 function doPlayerSellItem(cid, itemid, count, cost)
-	if(doPlayerTakeItem(cid, itemid, count) == LUA_NO_ERROR) then
-		if doPlayerAddMoney(cid, cost) ~= TRUE then
+	if doPlayerTakeItem(cid, itemid, count) == LUA_NO_ERROR then
+		if not doPlayerAddMoney(cid, cost) then
 			error('Could not add money to ' .. getPlayerName(cid) .. '(' .. cost .. 'gp)')
 		end
 		return LUA_NO_ERROR
@@ -853,52 +854,47 @@ end
 function getDistanceBetween(firstPosition, secondPosition)
 	local xDif = math.abs(firstPosition.x - secondPosition.x)
 	local yDif = math.abs(firstPosition.y - secondPosition.y)
-
 	local posDif = math.max(xDif, yDif)
-	if(firstPosition.z ~= secondPosition.z) then
-		posDif = posDif + 9 + 6
+	if firstPosition.z ~= secondPosition.z then
+		posDif = posDif + 15
 	end
 	return posDif
 end
 
 function isSorcerer(cid)
-	if(isPlayer(cid) == FALSE) then
+	if not isPlayer(cid) then
 		debugPrint("isSorcerer: Player not found.")
 		return false
 	end
-
-	return (isInArray({1,5}, getPlayerVocation(cid)) == TRUE)
+	return isInArray({1, 5}, getPlayerVocation(cid))
 end
 
 function isDruid(cid)
-	if(isPlayer(cid) == FALSE) then
+	if not isPlayer(cid) then
 		debugPrint("isDruid: Player not found.")
 		return false
 	end
-
-	return (isInArray({2,6}, getPlayerVocation(cid)) == TRUE)
+	return isInArray({2, 6}, getPlayerVocation(cid))
 end
 
 function isPaladin(cid)
-	if(isPlayer(cid) == FALSE) then
+	if not isPlayer(cid) then
 		debugPrint("isPaladin: Player not found.")
 		return false
 	end
-
-	return (isInArray({3,7}, getPlayerVocation(cid)) == TRUE)
+	return isInArray({3, 7}, getPlayerVocation(cid))
 end
 
 function isKnight(cid)
-	if(isPlayer(cid) == FALSE) then
+	if not isPlayer(cid) then
 		debugPrint("isKnight: Player not found.")
 		return false
 	end
-
-	return (isInArray({4,8}, getPlayerVocation(cid)) == TRUE)
+	return isInArray({4, 8}, getPlayerVocation(cid))
 end
 
 function doPlayerBuyItemContainer(cid, containerid, itemid, count, cost, charges)
-	if(doPlayerRemoveMoney(cid, cost) ~= TRUE) then
+	if not doPlayerRemoveMoney(cid, cost) then
 		return LUA_ERROR
 	end
 
@@ -908,152 +904,16 @@ function doPlayerBuyItemContainer(cid, containerid, itemid, count, cost, charges
 			doAddContainerItem(container, itemid, charges)
 		end
 
-		if(doPlayerAddItemEx(cid, container, true) ~= RETURNVALUE_NOERROR) then
+		if doPlayerAddItemEx(cid, container, true) ~= RETURNVALUE_NOERROR then
 			return LUA_ERROR
 		end
 	end
-
 	return LUA_NO_ERROR
-end
-
-function getDirectionTo(pos1, pos2)
-	local dir = NORTH
-	if(pos1.x > pos2.x) then
-		dir = WEST
-		if(pos1.y > pos2.y) then
-			dir = NORTHWEST
-		elseif(pos1.y < pos2.y) then
-			dir = SOUTHWEST
-		end
-	elseif(pos1.x < pos2.x) then
-		dir = EAST
-		if(pos1.y > pos2.y) then
-			dir = NORTHEAST
-		elseif(pos1.y < pos2.y) then
-			dir = SOUTHEAST
-		end
-	else
-		if(pos1.y > pos2.y) then
-			dir = NORTH
-		elseif(pos1.y < pos2.y) then
-			dir = SOUTH
-		end
-	end
-	return dir
-end
-
-function getPlayerLookPos(cid)
-	return getPosByDir(getThingPos(cid), getPlayerLookDir(cid))
-end
-
-function getPosByDir(fromPosition, direction, size)
-	local n = size or 1
-
-	local pos = fromPosition
-	if(direction == NORTH) then
-		pos.y = pos.y - n
-	elseif(direction == SOUTH) then
-		pos.y = pos.y + n
-	elseif(direction == WEST) then
-		pos.x = pos.x - n
-	elseif(direction == EAST) then
-		pos.x = pos.x + n
-	elseif(direction == NORTHWEST) then
-		pos.y = pos.y - n
-		pos.x = pos.x - n
-	elseif(direction == NORTHEAST) then
-		pos.y = pos.y - n
-		pos.x = pos.x + n
-	elseif(direction == SOUTHWEST) then
-		pos.y = pos.y + n
-		pos.x = pos.x - n
-	elseif(direction == SOUTHEAST) then
-		pos.y = pos.y + n
-		pos.x = pos.x + n
-	end
-
-	return pos
-end
-
-function getCreaturesInRange(position, radiusx, radiusy, showMonsters, showPlayers, showSummons)
-	local creaturesList = {}
-	for x = -radiusx, radiusx do
-		for y = -radiusy, radiusy do
-			if not (x == 0 and y == 0) then
-				local creature = getTopCreature({x = position.x + x, y = position.y + y, z = position.z})
-				if (creature.type == 1 and showPlayers) or (creature.type == 2 and showMonsters and (not showSummons or (showSummons and getCreatureMaster(creature.uid) == (creature.uid)))) then
-					table.insert(creaturesList, creature.uid)
-				end
-			end
-		end
-	end
-
-	local creature = getTopCreature(position)
-	if (creature.type == 1 and showPlayers) or (creature.type == 2 and showMonsters and not (showSummons or (showSummons and getCreatureMaster(creature.uid) == (creature.uid)))) then
-		if not(table.find(creaturesList, creature.uid)) then
-			table.insert(creaturesList, creature.uid)
-		end
-	end
-	return creaturesList
-end
-
-function addContainerWithItems(cid, container, item, item_count, count)
-	local Container = doPlayerAddItem(cid, container, 1)
-	for i = 1, count do
-		doAddContainerItem(Container, item, item_count)
-	end
-end
-
-function tableToPos(t)
-	if type(t) == "table" and #t == 3 and tonumber(table.concat(t)) then
-		return {x = tonumber(t[1]), y = tonumber(t[2]), z = tonumber(t[3])}
-	end
-	return FALSE
 end
 
 function getCount(string)
 	local b, e = string:find("%d+")
 	return b and e and tonumber(string:sub(b, e)) or -1
-end
-
- -- Returns player name if player exists in database or empty string
-function playerExists(name)
-	local resultId = db.storeQuery("SELECT `name` FROM `players` WHERE `name` = " .. db.escapeString(name))
-	if resultId == false then
-		return ""
-	end
-
-	local playerName = result.getDataString(resultId, "name")
-	result.free(resultId)
-	return playerName
-end
-
- -- Updates bank account balance of an offline player
-function transferGold(player, amount)
-	db.query("UPDATE `players` SET `balance` = `balance` + " .. amount .. " WHERE `name` = " .. db.escapeString(player))
-	return true
-end
-
-function doCopyItem(item, attributes)
-	local attributes = attributes or false
-
-	local ret = doCreateItemEx(item.itemid, item.type)
-	if(attributes) then
-		if(item.actionid > 0) then
-			doSetItemActionId(ret, item.actionid)
-		end
-	end
-
-	if(isContainer(item.uid) == TRUE) then
-		for i = (getContainerSize(item.uid) - 1), 0, -1 do
-			local tmp = getContainerItem(item.uid, i)
-			if(tmp.itemid > 0) then
-				doAddContainerItemEx(ret, doCopyItem(tmp, true).uid)
-			end
-		end
-	end
-
-	return getThing(ret)
 end
 
 function getTibianTime()
@@ -1065,60 +925,6 @@ function getTibianTime()
 		minutes = '0' .. minutes
 	end
 	return hours .. ':' .. minutes
-end
-
-looktypes = {
-	["citizen"] = {
-		looktypeMale = 128,
-		looktypeFemale = 136
-	},
-	["hunter"] = {
-		looktypeMale = 129,
-		looktypeFemale = 137
-	},
-	["mage"] = {
-		looktypeMale = 130,
-		looktypeFemale = 138
-	},
-	["knight"] = {
-		looktypeMale = 131,
-		looktypeFemale = 139
-	},
-	["nobleman"] = {
-		looktypeMale = 132,
-		looktypeFemale = 140
-	},
-	["summoner"] = {
-		looktypeMale = 133,
-		looktypeFemale = 141
-	},
-	["warrior"] = {
-		looktypeMale = 134,
-		looktypeFemale = 142
-	}
-}
-
-table.find = function(table, value)
-	for i, v in pairs(table) do
-		if v == value then
-			return i
-		end
-	end
-	return nil
-end
-
-function isMonsterInRange(monsterName, fromPos, toPos)
-	for _x = fromPos.x, toPos.x do
-		for _y = fromPos.y, toPos.y do
-			for _z = fromPos.z, toPos.z do
-				creature = getTopCreature({x = _x, y = _y, z = _z})
-				if creature.type == THING_TYPE_MONSTER and getCreatureName(creature.uid):lower() == monsterName:lower() then
-					return true
-				end
-			end
-		end
-	end
-	return false
 end
 
 function doForceSummonCreature(name, pos)
