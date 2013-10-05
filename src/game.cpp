@@ -2065,7 +2065,7 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 
 	if (curType.type == newType.type) {
 		//Both items has the same type so we can safely change id/subtype
-		if (newCount == 0 && (item->isStackable() || item->hasCharges())) {
+		if (newCount == 0 && (item->isStackable() || item->getCharges() != 0)) {
 			if (item->isStackable()) {
 				internalRemoveItem(item);
 				return nullptr;
@@ -3359,12 +3359,14 @@ bool Game::playerLookAt(uint32_t playerId, const Position& pos, uint16_t spriteI
 		if (item) {
 			ss << std::endl << "ItemID: [" << item->getID() << ']';
 
-			if (item->getActionId() > 0) {
-				ss << ", ActionID: [" << item->getActionId() << ']';
+			uint16_t actionId = item->getActionId();
+			if (actionId != 0) {
+				ss << ", ActionID: [" << actionId << ']';
 			}
 
-			if (item->getUniqueId() > 0) {
-				ss << ", UniqueID: [" << item->getUniqueId() << ']';
+			uint16_t uniqueId = item->getUniqueId();
+			if (uniqueId != 0) {
+				ss << ", UniqueID: [" << uniqueId << ']';
 			}
 
 			ss << '.';

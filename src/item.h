@@ -237,7 +237,9 @@ class ItemAttributes
 		}
 
 	protected:
-		bool hasAttribute(itemAttrTypes type) const;
+		inline bool hasAttribute(itemAttrTypes type) const {
+			return (type & m_attributes) != 0;
+		}
 		void removeAttribute(itemAttrTypes type);
 
 		static std::string emptyString;
@@ -733,7 +735,7 @@ class Item : virtual public Thing
 			loadedFromMap = value;
 		}
 		bool isCleanable() const {
-			return(!loadedFromMap && (getUniqueId() == 0 && getActionId() == 0) && isPickupable() && canRemove());
+			return !loadedFromMap && canRemove() && isPickupable() && getUniqueId() == 0 && getActionId() == 0;
 		}
 
 		ItemAttributes* getAttributes() {

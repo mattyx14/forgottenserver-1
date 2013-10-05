@@ -252,9 +252,7 @@ void Item::setID(uint16_t newid)
 		removeAttribute(ATTR_ITEM_DURATION);
 	}
 
-	if (hasAttribute(ATTR_ITEM_CORPSEOWNER)) {
-		removeAttribute(ATTR_ITEM_CORPSEOWNER);
-	}
+	removeAttribute(ATTR_ITEM_CORPSEOWNER);
 
 	if (newDuration > 0 && (!prevIt.stopTime || !hasAttribute(ATTR_ITEM_DURATION))) {
 		setDecaying(DECAYING_FALSE);
@@ -613,15 +611,15 @@ bool Item::serializeAttr(PropWriteStream& propWriteStream) const
 		propWriteStream.ADD_UCHAR(_count);
 	}
 
-	if (hasCharges()) {
-		uint16_t _count = getCharges();
+	uint16_t charges = getCharges();
+	if (charges != 0) {
 		propWriteStream.ADD_UCHAR(ATTR_CHARGES);
-		propWriteStream.ADD_USHORT(_count);
+		propWriteStream.ADD_USHORT(charges);
 	}
 
 	if (!isNotMoveable()) {
 		uint16_t _actionId = getActionId();
-		if (_actionId) {
+		if (_actionId != 0) {
 			propWriteStream.ADD_UCHAR(ATTR_ACTION_ID);
 			propWriteStream.ADD_USHORT(_actionId);
 		}
@@ -784,9 +782,10 @@ double Item::getWeight() const
 	return items[id].weight;
 }
 
-std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
-                                 const Item* item /*= nullptr*/, int32_t subType /*= -1*/, bool addArticle /*= true*/)
+std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const Item* item /*= nullptr*/, int32_t subType /*= -1*/, bool addArticle /*= true*/)
 {
+	const std::string* text = nullptr;
+
 	std::ostringstream s;
 	s << getNameDescription(it, item, subType, addArticle);
 
@@ -1079,48 +1078,55 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 
 		if (!found) {
 			if (it.isKey()) {
-				s << " (Key:" << (item ? (int32_t)item->getActionId() : 0) << ')';
+				s << " (Key:" << (item ? item->getActionId() : 0) << ')';
 			} else if (it.isFluidContainer()) {
 				if (subType > 0) {
 					const std::string& itemName = items[subType].name;
-					s << " of " << (itemName.length() ? itemName : "unknown");
+					s << " of " << (!itemName.empty() ? itemName : "unknown");
 				} else {
 					s << ". It is empty";
 				}
 			} else if (it.isSplash()) {
 				s << " of ";
 
-				if (subType > 0 && items[subType].name.length()) {
+				if (subType > 0 && !items[subType].name.empty()) {
 					s << items[subType].name;
 				} else {
 					s << "unknown";
 				}
-			} else if (it.allowDistRead && it.id != 7369 && it.id != 7370 && it.id != 7371) {
+			} else if (it.allowDistRead) {
 				s << '.' << std::endl;
 
 				if (lookDistance <= 4) {
-					if (item && !item->getText().empty()) {
-						if (item->getWriter().length()) {
-							s << item->getWriter() << " wrote";
-							time_t date = item->getDate();
-
-							if (date > 0) {
-								s << " on " << formatDateShort(date);
+					if (item) {
+						text = &item->getText();
+						if (!text->empty()) {
+							const std::string& writer = item->getWriter();
+							if (!writer.empty()) {
+								s << writer << " wrote";
+								time_t date = item->getDate();
+								if (date > 0) {
+									s << " on " << formatDateShort(date);
+								}
+								s << ": ";
+							} else {
+								s << "You read: ";
 							}
-
-							s << ": ";
+							s << *text;
 						} else {
-							s << "You read: ";
+							s << "Nothing is written on it";
 						}
-						s << item->getText();
 					} else {
 						s << "Nothing is written on it";
 					}
 				} else {
 					s << "You are too far away to read it";
 				}
-			} else if (it.levelDoor && item && item->getActionId() >= (int32_t)it.levelDoor) {
-				s << " for level " << item->getActionId() - it.levelDoor;
+			} else if (it.levelDoor != 0 && item) {
+				uint16_t actionId = item->getActionId();
+				if (actionId >= it.levelDoor) {
+					s << " for level " << (actionId - it.levelDoor);
+				}
 			}
 		}
 	}
@@ -1166,8 +1172,16 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		}
 	}
 
-	if (!it.allowDistRead || item->getText().empty() || (it.id >= 7369 && it.id <= 7371)) {
+	if (!it.allowDistRead) {
 		s << '.';
+	} else {
+		if (!text && item) {
+			text = &item->getText();
+		}
+
+		if (!text || text->empty()) {
+			s << '.';
+		}
 	}
 
 	if (it.wieldInfo != 0) {
@@ -1208,14 +1222,25 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		}
 	}
 
-	if (item && !item->getSpecialDescription().empty()) {
-		s << std::endl << item->getSpecialDescription();
-	} else if (it.description.length() && lookDistance <= 1) {
+	if (item) {
+		const std::string& specialDescription = item->getSpecialDescription();
+		if (!specialDescription.empty()) {
+			s << std::endl << specialDescription;
+		} else if (lookDistance <= 1 && !it.description.empty()) {
+			s << std::endl << it.description;
+		}
+	} else if (lookDistance <= 1 && !it.description.empty()) {
 		s << std::endl << it.description;
 	}
 
-	if (it.allowDistRead && it.id >= 7369 && it.id <= 7371 && !item->getText().empty()) {
-		s << std::endl << item->getText();
+	if (it.allowDistRead) {
+		if (!text && item) {
+			text = &item->getText();
+		}
+
+		if (text && !text->empty()) {
+			s << std::endl << *text;
+		}
 	}
 
 	return s.str();
@@ -1235,7 +1260,7 @@ std::string Item::getNameDescription(const ItemType& it, const Item* item /*= nu
 
 	std::ostringstream s;
 
-	if (it.name.length()) {
+	if (!it.name.empty()) {
 		if (it.stackable && subType > 1) {
 			if (it.showCount) {
 				s << subType << ' ';
@@ -1303,15 +1328,14 @@ bool Item::canDecay()
 		return false;
 	}
 
-	if (getUniqueId() != 0) {
-		return false;
-	}
-
 	const ItemType& it = Item::items[id];
 	if (it.decayTo == -1 || it.decayTime == 0) {
 		return false;
 	}
 
+	if (getUniqueId() != 0) {
+		return false;
+	}
 	return true;
 }
 
@@ -1361,12 +1385,11 @@ void ItemAttributes::setStrAttr(itemAttrTypes type, const std::string& value)
 		return;
 	}
 
-	if (value.length() == 0) {
+	if (value.empty()) {
 		return;
 	}
 
 	Attribute* attr = getAttr(type);
-
 	if (attr) {
 		if (attr->value) {
 			delete (std::string*)attr->value;
@@ -1376,55 +1399,42 @@ void ItemAttributes::setStrAttr(itemAttrTypes type, const std::string& value)
 	}
 }
 
-bool ItemAttributes::hasAttribute(itemAttrTypes type) const
-{
-	if (!validateIntAttrType(type)) {
-		return false;
-	}
-
-	Attribute* attr = getAttrConst(type);
-
-	if (attr) {
-		return true;
-	}
-
-	return false;
-}
-
 void ItemAttributes::removeAttribute(itemAttrTypes type)
 {
 	//check if we have it
-	if ((type & m_attributes) != 0) {
-		//go trough the linked list until find it
-		Attribute* prevAttr = nullptr;
-		Attribute* curAttr = m_firstAttr;
+	if (!hasAttribute(type)) {
+		return;
+	}
 
-		while (curAttr != nullptr) {
-			if (curAttr->type == type) {
-				//found so remove it from the linked list
-				if (prevAttr) {
-					prevAttr->next = curAttr->next;
-				} else {
-					m_firstAttr = curAttr->next;
-				}
+	//go trough the linked list until find it
+	Attribute* prevAttr = nullptr;
+	Attribute* curAttr = m_firstAttr;
 
-				//remove it from flags
-				m_attributes = m_attributes & ~type;
-
-				//delete string if it is string type
-				if (validateStrAttrType(type)) {
-					delete (std::string*)curAttr->value;
-				}
-
-				//finally delete the attribute and return
-				delete curAttr;
-				return;
+	while (curAttr != nullptr) {
+		if (curAttr->type == type) {
+			//found so remove it from the linked list
+			if (prevAttr) {
+				prevAttr->next = curAttr->next;
+			} else {
+				m_firstAttr = curAttr->next;
 			}
 
-			//advance in the linked list
-			prevAttr = curAttr;
-			curAttr = curAttr->next;
+			//remove it from flags
+			m_attributes = m_attributes & ~type;
+
+			//delete string if it is string type
+			if (validateStrAttrType(type)) {
+				delete (std::string*)curAttr->value;
+			}
+
+			//finally delete the attribute and return
+			delete curAttr;
+			return;
 		}
+
+		//advance in the linked list
+		prevAttr = curAttr;
+		curAttr = curAttr->next;
 	}
 }
 
@@ -1517,7 +1527,7 @@ void ItemAttributes::addAttr(Attribute* attr)
 
 ItemAttributes::Attribute* ItemAttributes::getAttrConst(itemAttrTypes type) const
 {
-	if ((type & m_attributes) == 0) {
+	if (!hasAttribute(type)) {
 		return nullptr;
 	}
 
@@ -1537,7 +1547,7 @@ ItemAttributes::Attribute* ItemAttributes::getAttr(itemAttrTypes type)
 {
 	Attribute* curAttr;
 
-	if ((type & m_attributes) == 0) {
+	if (!hasAttribute(type)) {
 		curAttr = new Attribute(type);
 		addAttr(curAttr);
 		return curAttr;
