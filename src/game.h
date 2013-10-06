@@ -405,7 +405,6 @@ class Game
 		bool playerOpenPrivateChannel(uint32_t playerId, std::string& receiver);
 		bool playerCloseNpcChannel(uint32_t playerId);
 		bool playerReceivePing(uint32_t playerId);
-		bool playerReceivePingBack(uint32_t playerId);
 		bool playerAutoWalk(uint32_t playerId, const std::list<Direction>& listDir);
 		bool playerStopAutoWalk(uint32_t playerId);
 		bool playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t fromStackPos, uint16_t fromSpriteId, const Position& toPos, uint8_t toStackPos, uint16_t toSpriteId, bool isHotkey);
@@ -464,7 +463,6 @@ class Game
 		void changeLight(const Creature* creature);
 		void updatePlayerSkull(Player* player);
 		void updatePlayerShield(Player* player);
-		void updateCreatureWalkthrough(const Creature* creature);
 
 		void sendPublicSquare(Player* sender, SquareColor_t color);
 
@@ -492,6 +490,8 @@ class Game
 		//animation help functions
 		void addCreatureHealth(const Creature* target);
 		void addCreatureHealth(const SpectatorVec& list, const Creature* target);
+		void addAnimatedText(const Position& pos, uint8_t textColor, const std::string& text);
+		void addAnimatedText(const SpectatorVec& list, const Position& pos, uint8_t textColor, const std::string& text);
 		void addMagicEffect(const Position& pos, uint8_t effect, bool ghostMode = false);
 		void addMagicEffect(const SpectatorVec& list, const Position& pos, uint8_t effect, bool ghostMode = false);
 		void addDistanceEffect(const Position& fromPos, const Position& toPos, uint8_t effect);

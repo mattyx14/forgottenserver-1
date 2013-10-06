@@ -21,13 +21,32 @@
 #define __OTSERV_DEFINITIONS_H__
 
 #define STATUS_SERVER_NAME "The Forgotten Server"
-#define STATUS_SERVER_PROTOCOL "10.1"
 #define STATUS_SERVER_VERSION "1.0"
 #define STATUS_SERVER_DEVELOPERS "Mark Samman"
 
-#define CLIENT_VERSION_MIN 1010
-#define CLIENT_VERSION_MAX 1010
-#define CLIENT_VERSION_STR "10.1"
+#if defined(__PROTOCOL_77__)
+#define __PROTOCOL_76__
+#define ITEMS_PATH std::string("77")
+#define OTB_VERSION 2
+#define CLIENT_VERSION_MIN 770
+#define CLIENT_VERSION_MAX 772
+#define CLIENT_VERSION_STR "7.7x"
+#define STATUS_SERVER_PROTOCOL "7.7x"
+#elif defined(__PROTOCOL_76__)
+#define ITEMS_PATH std::string("76")
+#define OTB_VERSION 2
+#define CLIENT_VERSION_MIN 760
+#define CLIENT_VERSION_MAX 760
+#define CLIENT_VERSION_STR "7.60"
+#define STATUS_SERVER_PROTOCOL "7.60"
+#else
+#define ITEMS_PATH std::string("74")
+#define OTB_VERSION 1
+#define CLIENT_VERSION_MIN 740
+#define CLIENT_VERSION_MAX 740
+#define CLIENT_VERSION_STR "7.40"
+#define STATUS_SERVER_PROTOCOL "7.40"
+#endif
 
 #ifndef __FUNCTION__
 #define	__FUNCTION__ __func__

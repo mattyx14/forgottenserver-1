@@ -39,8 +39,8 @@ class IOLoginData
 		Account loadAccount(uint32_t accno);
 		bool saveAccount(const Account& acc);
 
-		bool loginserverAuthentication(const std::string& name, const std::string& password, Account& account);
-		uint32_t gameworldAuthentication(const std::string& accountName, const std::string& password, std::string& characterName);
+		bool loginserverAuthentication(uint32_t name, const std::string& password, Account& account);
+		uint32_t gameworldAuthentication(uint32_t accountName, const std::string& password, std::string& characterName);
 
 		AccountType_t getAccountType(uint32_t accountId);
 		void setAccountType(uint32_t accountId, AccountType_t accountType);

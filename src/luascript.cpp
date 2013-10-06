@@ -1328,12 +1328,6 @@ void LuaScriptInterface::registerFunctions()
 	//doPlayerSendTextMessage(cid, MessageClasses, message[, position, value, color])
 	lua_register(m_luaState, "doPlayerSendTextMessage", LuaScriptInterface::luaDoPlayerSendTextMessage);
 
-	//doSendTutorial(cid, tutorialid)
-	lua_register(m_luaState, "doSendTutorial", LuaScriptInterface::luaDoSendTutorial);
-
-	//doAddMapMark(cid, pos, type, <optional> description)
-	lua_register(m_luaState, "doAddMapMark", LuaScriptInterface::luaDoAddMark);
-
 	//doDecayItem(uid)
 	lua_register(m_luaState, "doDecayItem", LuaScriptInterface::luaDoDecayItem);
 
@@ -1609,9 +1603,6 @@ void LuaScriptInterface::registerFunctions()
 
 	//stopEvent(eventid)
 	lua_register(m_luaState, "stopEvent", LuaScriptInterface::luaStopEvent);
-
-	//doPlayerPopupFYI(cid, message)
-	lua_register(m_luaState, "doPlayerPopupFYI", LuaScriptInterface::luaDoPlayerPopupFYI);
 
 	//mayNotMove(cid, value)
 	lua_register(m_luaState, "mayNotMove", LuaScriptInterface::luaMayNotMove);
@@ -2875,18 +2866,7 @@ int32_t LuaScriptInterface::luaDoRelocate(lua_State* L)
 
 int32_t LuaScriptInterface::luaDoPlayerSendTextMessage(lua_State* L)
 {
-	//doPlayerSendTextMessage(cid, MessageClasses, message[, position, value, color])
-	int parameters = lua_gettop(L);
-	PositionEx position;
-	uint32_t value = 0;
-	TextColor_t color = TEXTCOLOR_NONE;
-
-	if (parameters > 5) {
-		color = (TextColor_t)popNumber(L);
-		value = popNumber(L);
-		popPosition(L, position);
-	}
-
+	//doPlayerSendTextMessage(cid, MessageClasses, message)
 	std::string text = popString(L);
 	uint32_t messageClass = popNumber(L);
 	uint32_t cid = popNumber(L);
@@ -2898,12 +2878,7 @@ int32_t LuaScriptInterface::luaDoPlayerSendTextMessage(lua_State* L)
 		return 1;
 	}
 
-	if (parameters > 5) {
-		player->sendTextMessage((MessageClasses)messageClass, text, &position, value, color);
-	} else {
-		player->sendTextMessage((MessageClasses)messageClass, text);
-	}
-
+	player->sendTextMessage((MessageClasses)messageClass, text);
 	pushBoolean(L, true);
 	return 1;
 }
@@ -2936,52 +2911,6 @@ int32_t LuaScriptInterface::luaDoSetCreatureDropLoot(lua_State* L)
 		reportErrorFunc(getErrorDesc(LUA_ERROR_CREATURE_NOT_FOUND));
 		pushBoolean(L, false);
 	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaDoSendTutorial(lua_State* L)
-{
-	//doSendTutorial(cid, tutorialid)
-	uint32_t tutorial = popNumber(L);
-	uint32_t cid = popNumber(L);
-
-	Player* player = g_game.getPlayerByID(cid);
-	if (!player) {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	player->sendTutorial(tutorial);
-	pushBoolean(L, true);
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaDoAddMark(lua_State* L)
-{
-	//doAddMapMark(cid, pos, type, <optional> description)
-	int32_t parameters = lua_gettop(L);
-	std::string description;
-	Position pos;
-	uint32_t stackpos;
-
-	if (parameters > 3) {
-		description = popString(L);
-	}
-
-	uint32_t type = popNumber(L);
-	popPosition(L, pos, stackpos);
-	uint32_t cid = popNumber(L);
-
-	Player* player = g_game.getPlayerByID(cid);
-	if (!player) {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
-		pushBoolean(L, false);
-		return 1;
-	}
-
-	player->sendAddMarker(pos, type, description);
-	pushBoolean(L, true);
 	return 1;
 }
 
@@ -5076,23 +5005,6 @@ int32_t LuaScriptInterface::luaDoSetCreatureLight(lua_State* L)
 	if (creature) {
 		Condition* condition = Condition::createCondition(CONDITIONID_COMBAT, CONDITION_LIGHT, time, level | (color << 8));
 		creature->addCondition(condition);
-		pushBoolean(L, true);
-	} else {
-		reportErrorFunc(getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int32_t LuaScriptInterface::luaDoPlayerPopupFYI(lua_State* L)
-{
-	//doPlayerPopupFYI(cid, message)
-	std::string message = popString(L);
-	uint32_t cid = popNumber(L);
-
-	Player* player = g_game.getPlayerByID(cid);
-	if (player) {
-		player->sendFYIBox(message);
 		pushBoolean(L, true);
 	} else {
 		reportErrorFunc(getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
@@ -8914,27 +8826,12 @@ int32_t LuaScriptInterface::luaPlayerShowTextDialog(lua_State* L)
 
 int32_t LuaScriptInterface::luaPlayerSendTextMessage(lua_State* L)
 {
-	// player:sendTextMessage(type, text[, position, value = 0, color = TEXTCOLOR_NONE])
-	int32_t parameters = getStackTop(L);
-
-	Position position;
-	uint32_t value = 0;
-	TextColor_t color = TEXTCOLOR_NONE;
-	if (parameters >= 6) {
-		color = static_cast<TextColor_t>(getNumber<int64_t>(L, 6));
-		value = getNumber<uint32_t>(L, 5);
-		position = getPosition(L, 4);
-	}
-
+	// player:sendTextMessage(type, text)
 	const std::string& text = getString(L, 3);
 	MessageClasses type = static_cast<MessageClasses>(getNumber<int64_t>(L, 2));
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
-		if (parameters >= 6) {
-			player->sendTextMessage(type, text, &position, value, color);
-		} else {
-			player->sendTextMessage(type, text);
-		}
+		player->sendTextMessage(type, text);
 		pushBoolean(L, true);
 	} else {
 		pushNil(L);

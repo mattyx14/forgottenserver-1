@@ -590,16 +590,7 @@ uint16_t Player::getClientIcons() const
 	}
 
 	if (pzLocked) {
-		icons |= ICON_REDSWORDS;
-	}
-
-	if (_tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
-		icons |= ICON_PIGEON;
-
-		// Don't show ICON_SWORDS if player is in protection zone.
-		if (hasBitSet(ICON_SWORDS, icons)) {
-			icons &= ~ICON_SWORDS;
-		}
+		icons |= ICON_SWORDS;
 	}
 
 	// Tibia client debugs with 10 or more icons
@@ -1013,7 +1004,7 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 	}
 
 	const Tile* playerTile = player->getTile();
-	return playerTile && playerTile->hasFlag(TILESTATE_PROTECTIONZONE);
+	return false;
 }
 
 void Player::onReceiveMail()
@@ -1575,7 +1566,6 @@ void Player::onChangeZone(ZoneType_t zone)
 		}
 	}
 
-	g_game.updateCreatureWalkthrough(this);
 	sendIcons();
 }
 
@@ -1952,12 +1942,32 @@ void Player::drainHealth(Creature* attacker, CombatType_t combatType, int32_t da
 {
 	Creature::drainHealth(attacker, combatType, damage);
 	sendStats();
+
+	char buffer[150];
+
+	if (attacker) {
+		sprintf(buffer, "You lose %d hitpoint%s due to an attack by %s.", damage, (damage != 1 ? "s" : ""), attacker->getNameDescription().c_str());
+	} else {
+		sprintf(buffer, "You lose %d hitpoint%s.", damage, (damage != 1 ? "s" : ""));
+	}
+
+	sendTextMessage(MSG_EVENT_DEFAULT, buffer);
 }
 
 void Player::drainMana(Creature* attacker, int32_t manaLoss)
 {
 	Creature::drainMana(attacker, manaLoss);
 	sendStats();
+
+	char buffer[150];
+
+	if (attacker) {
+		sprintf(buffer, "You lose %d mana blocking an attack by %s.", manaLoss, attacker->getNameDescription().c_str());
+	} else {
+		sprintf(buffer, "You lose %d mana.", manaLoss);
+	}
+
+	sendTextMessage(MSG_EVENT_DEFAULT, buffer);
 }
 
 void Player::addManaSpent(uint64_t amount, bool withMultiplier /*= true*/)
@@ -2046,27 +2056,6 @@ void Player::addExperience(uint64_t exp, bool useMult/* = false*/, bool sendText
 	}
 
 	experience += exp;
-
-	if (sendText) {
-		const Position& targetPos = getPosition();
-
-		std::ostringstream ss;
-		ss << "You gained " << exp << " experience points.";
-		sendExperienceMessage(MSG_EXPERIENCE, ss.str(), targetPos, exp, TEXTCOLOR_WHITE_EXP);
-
-		std::ostringstream ssExp;
-		ssExp << getNameDescription() << " gained " << exp << " experience points.";
-		std::string strExp = ssExp.str();
-
-		SpectatorVec list;
-		g_game.getSpectators(list, targetPos, false, true);
-		for (Creature* spectator : list) {
-			Player* tmpPlayer = spectator->getPlayer();
-			if (tmpPlayer != this) {
-				tmpPlayer->sendExperienceMessage(MSG_EXPERIENCE_OTHERS, strExp, targetPos, exp, TEXTCOLOR_WHITE_EXP);
-			}
-		}
-	}
 
 	uint32_t prevLevel = level;
 	while (experience >= nextLevelExp) {
@@ -2245,38 +2234,9 @@ uint32_t Player::getIP() const
 void Player::death()
 {
 	loginPosition = town->getTemplePosition();
+	sendTextMessage(MSG_EVENT_ADVANCE, "You are dead.");
 
 	if (skillLoss) {
-		uint8_t unfairFightReduction = 100;
-
-		if (_lastHitCreature) {
-			Player* lastHitPlayer = _lastHitCreature->getPlayer();
-			if (!lastHitPlayer) {
-				Creature* lastHitMaster = _lastHitCreature->getMaster();
-				if (lastHitMaster) {
-					lastHitPlayer = lastHitMaster->getPlayer();
-				}
-			}
-
-			if (lastHitPlayer) {
-				uint32_t sumLevels = 0;
-				for (const auto& it : damageMap) {
-					CountBlock_t cb = it.second;
-					if ((OTSYS_TIME() - cb.ticks) <= g_game.getInFightTicks()) {
-						Player* damageDealer = g_game.getPlayerByID(it.first);
-						if (damageDealer) {
-							sumLevels += damageDealer->getLevel();
-						}
-					}
-				}
-
-				if (sumLevels > level) {
-					double reduce = level / (double)sumLevels;
-					unfairFightReduction = std::max<uint8_t>(20, std::floor((reduce * 100) + 0.5));
-				}
-			}
-		}
-
 		//Magic level loss
 		uint64_t sumMana = 0;
 		uint64_t lostMana = 0;
@@ -2288,7 +2248,7 @@ void Player::death()
 
 		sumMana += manaSpent;
 
-		double deathLossPercent = getLostPercent() * (unfairFightReduction / 100.);
+		double deathLossPercent = getLostPercent();
 
 		lostMana = (uint64_t)(sumMana * deathLossPercent);
 
@@ -2393,7 +2353,6 @@ void Player::death()
 
 		sendStats();
 		sendSkills();
-		sendReLoginWindow(unfairFightReduction);
 
 		health = healthMax;
 		mana = manaMax;
@@ -2549,12 +2508,12 @@ void Player::notifyStatusChange(Player* loginPlayer, VipStatus_t status)
 		return;
 	}
 
-	client->sendUpdatedVIPStatus(loginPlayer->getGUID(), status);
-
 	if (status == VIPSTATUS_ONLINE) {
 		client->sendTextMessage(MSG_STATUS_SMALL, (loginPlayer->getName() + " has logged in."));
+		client->sendVIPLogIn(loginPlayer->getGUID());
 	} else if (status == VIPSTATUS_OFFLINE) {
 		client->sendTextMessage(MSG_STATUS_SMALL, (loginPlayer->getName() + " has logged out."));
+		client->sendVIPLogOut(loginPlayer->getGUID());
 	}
 }
 
@@ -3779,21 +3738,16 @@ void Player::onAttackedCreature(Creature* target)
 	}
 
 	Player* targetPlayer = target->getPlayer();
-	if (targetPlayer && !isPartner(targetPlayer) && !isGuildMate(targetPlayer)) {
-		if (!pzLocked && g_game.getWorldType() == WORLD_TYPE_PVP_ENFORCED) {
-			pzLocked = true;
-			sendIcons();
-		}
+	if (targetPlayer && !pzLocked) {
+		pzLocked = true;
+		sendIcons();
+	}
 
+	if (targetPlayer && !isPartner(targetPlayer) && !isGuildMate(targetPlayer)) {
 		if (getSkull() == SKULL_NONE && getSkullClient(targetPlayer) == SKULL_YELLOW) {
 			addAttacked(targetPlayer);
 			targetPlayer->sendCreatureSkull(this);
 		} else if (!targetPlayer->hasAttacked(this)) {
-			if (!pzLocked && g_game.getWorldType() != WORLD_TYPE_PVP_ENFORCED) {
-				pzLocked = true;
-				sendIcons();
-			}
-
 			if (!Combat::isInPvpZone(this, targetPlayer) && !isInWar(targetPlayer)) {
 				addAttacked(targetPlayer);
 
@@ -4095,7 +4049,7 @@ void Player::addUnjustifiedDead(const Player* attacked)
 	if (client) {
 		std::ostringstream ss;
 		ss << "Warning! The murder of " << attacked->getName() << " was not justified.";
-		client->sendTextMessage(MSG_EVENT_ADVANCE, ss.str());
+		client->sendTextMessage(MSG_STATUS_WARNING, ss.str());
 	}
 
 	skullTicks += g_config.getNumber(ConfigManager::FRAG_TIME);
@@ -4144,14 +4098,7 @@ double Player::getLostPercent() const
 		lossPercent -= (int32_t)bitset.count();
 		return std::max<int32_t>(0, lossPercent) / (double)100;
 	} else {
-		double lossPercent;
-
-		if (level >= 25) {
-			double tmpLevel = level + (levelPercent / 100.);
-			lossPercent = (double)((tmpLevel + 50) * 50 * ((tmpLevel * tmpLevel) - (5 * tmpLevel) + 8)) / experience;
-		} else {
-			lossPercent = 10;
-		}
+		double lossPercent = 10;
 
 		if (isPromoted()) {
 			lossPercent *= 0.7;
@@ -4226,7 +4173,6 @@ bool Player::isPremium() const
 void Player::setPremiumDays(int32_t v)
 {
 	premiumDays = v;
-	sendBasicData();
 }
 
 void Player::setGuildLevel(uint8_t newGuildLevel)

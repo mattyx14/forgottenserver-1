@@ -59,6 +59,7 @@ class ConfigManager
 			BIND_ONLY_GLOBAL_ADDRESS = 20,
 			OPTIMIZE_DATABASE = 21,
 			STAMINA_SYSTEM = 22,
+			SHOW_HEALTH_CHANGE = 23,
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
 

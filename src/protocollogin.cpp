@@ -65,25 +65,14 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 	/*uint16_t clientos = */
 	msg.GetU16();
 	uint16_t version = msg.GetU16();
-
-	if (version >= 971) {
-		msg.SkipBytes(17);
-	} else {
-		msg.SkipBytes(12);
-	}
+	msg.SkipBytes(12);
 
 	/*
 	 * Skipped bytes:
-	 * 4 bytes: protocolVersion (only 971+)
 	 * 12 bytes: dat, spr, pic signatures (4 bytes each)
-	 * 1 byte: 0 (only 971+)
 	*/
 
-	if (version <= 760) {
-		disconnectClient(0x0A, "Only clients with protocol " CLIENT_VERSION_STR " allowed!");
-		return false;
-	}
-
+	#ifdef __PROTOCOL_77__
 	if (!RSA_decrypt(msg)) {
 		getConnection()->closeConnection();
 		return false;
@@ -96,8 +85,9 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 	key[3] = msg.GetU32();
 	enableXTEAEncryption();
 	setXTEAKey(key);
+	#endif
 
-	std::string accountName = msg.GetString();
+	uint32_t accountName = msg.GetU32();
 	std::string password = msg.GetString();
 
 	if (version < CLIENT_VERSION_MIN || version > CLIENT_VERSION_MAX) {
@@ -135,14 +125,14 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 		}
 	}
 
-	if (accountName.empty()) {
-		disconnectClient(0x0A, "Invalid account name.");
+	if (!accountName) {
+		disconnectClient(0x0A, "Invalid account id.");
 		return false;
 	}
 
 	Account account;
 	if (!IOLoginData::getInstance()->loginserverAuthentication(accountName, password, account)) {
-		disconnectClient(0x0A, "Account name or password is not correct.");
+		disconnectClient(0x0A, "Account id or password is not correct.");
 		return false;
 	}
 
@@ -177,7 +167,6 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 
 			output->AddU32(serverip);
 			output->AddU16(g_config.getNumber(ConfigManager::GAME_PORT));
-			output->AddByte(0x00);
 		}
 
 		//Add premium days

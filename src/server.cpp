@@ -181,11 +181,9 @@ Protocol* ServicePort::make_protocol(NetworkMessage& msg) const
 {
 	uint8_t protocolID = msg.GetByte();
 	for (Service_ptr service : m_services) {
-		if (protocolID != service->get_protocol_identifier()) {
-			continue;
+		if (protocolID == service->get_protocol_identifier()) {
+			return service->make_protocol(Connection_ptr());
 		}
-
-		return service->make_protocol(Connection_ptr());
 	}
 	return nullptr;
 }

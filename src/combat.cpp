@@ -724,35 +724,14 @@ void Combat::postCombatEffects(Creature* caster, const Position& pos, const Comb
 	}
 }
 
-void Combat::addDistanceEffect(Creature* caster, const Position& fromPos, const Position& toPos,
-                               uint8_t effect)
+void Combat::addDistanceEffect(Creature* caster, const Position& fromPos, const Position& toPos, uint8_t effect)
 {
-	uint8_t distanceEffect = effect;
-
-	if (caster && distanceEffect == NM_SHOOT_WEAPONTYPE) {
-		switch (caster->getWeaponType()) {
-			case WEAPON_AXE:
-				distanceEffect = NM_SHOOT_WHIRLWINDAXE;
-				break;
-			case WEAPON_SWORD:
-				distanceEffect = NM_SHOOT_WHIRLWINDSWORD;
-				break;
-			case WEAPON_CLUB:
-				distanceEffect = NM_SHOOT_WHIRLWINDCLUB;
-				break;
-			default:
-				distanceEffect = NM_ME_NONE;
-				break;
-		}
-	}
-
-	if (distanceEffect != NM_ME_NONE) {
-		g_game.addDistanceEffect(fromPos, toPos, distanceEffect);
+	if (effect != NM_ME_NONE) {
+		g_game.addDistanceEffect(fromPos, toPos, effect);
 	}
 }
 
-void Combat::CombatFunc(Creature* caster, const Position& pos,
-                        const AreaCombat* area, const CombatParams& params, COMBATFUNC func, void* data)
+void Combat::CombatFunc(Creature* caster, const Position& pos, const AreaCombat* area, const CombatParams& params, COMBATFUNC func, void* data)
 {
 	std::list<Tile*> tileList;
 

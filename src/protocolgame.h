@@ -106,7 +106,6 @@ class ProtocolGame : public Protocol
 		void parseCancelMove(NetworkMessage& msg);
 
 		void parseReceivePing(NetworkMessage& msg);
-		void parseReceivePingBack(NetworkMessage& msg);
 		void parseAutoWalk(NetworkMessage& msg);
 		void parseMove(NetworkMessage& msg, Direction dir);
 		void parseTurn(NetworkMessage& msg, Direction dir);
@@ -116,13 +115,11 @@ class ProtocolGame : public Protocol
 		void parseSay(NetworkMessage& msg);
 		void parseLookAt(NetworkMessage& msg);
 		void parseLookInBattleList(NetworkMessage& msg);
-		void parseJoinAggression(NetworkMessage& msg);
 		void parseFightModes(NetworkMessage& msg);
 		void parseAttack(NetworkMessage& msg);
 		void parseFollow(NetworkMessage& msg);
 
 		void parseBugReport(NetworkMessage& msg);
-		void parseThankYou(NetworkMessage& msg);
 		void parseDebugAssert(NetworkMessage& msg);
 
 		void parseThrow(NetworkMessage& msg);
@@ -141,18 +138,12 @@ class ProtocolGame : public Protocol
 		void parseRevokePartyInvite(NetworkMessage& msg);
 		void parsePassPartyLeadership(NetworkMessage& msg);
 		void parseLeaveParty(NetworkMessage& msg);
-		void parseEnableSharedPartyExperience(NetworkMessage& msg);
-
-		void parseRuleViolationReport(NetworkMessage& msg);
 
 		//trade methods
 		void parseRequestTrade(NetworkMessage& msg);
 		void parseLookInTrade(NetworkMessage& msg);
 		void parseAcceptTrade(NetworkMessage& msg);
 		void parseCloseTrade();
-
-		//
-		void parseGetObjectInfo(NetworkMessage& msg);
 
 		//VIP methods
 		void parseAddVip(NetworkMessage& msg);
@@ -169,11 +160,9 @@ class ProtocolGame : public Protocol
 		void parseOpenChannel(NetworkMessage& msg);
 		void parseOpenPrivateChannel(NetworkMessage& msg);
 		void parseCloseChannel(NetworkMessage& msg);
-		void parseCloseNpc(NetworkMessage& msg);
 
 		//Send functions
 		void sendChannelMessage(const std::string& author, const std::string& text, SpeakClasses type, uint16_t channel);
-		void sendChannelEvent(uint16_t channelId, const std::string& playerName, ChannelEvent_t channelEvent);
 		void sendClosePrivate(uint16_t channelId);
 		void sendCreatePrivateChannel(uint16_t channelId, const std::string& channelName);
 		void sendChannelsDialog();
@@ -181,14 +170,13 @@ class ProtocolGame : public Protocol
 		void sendOpenPrivateChannel(const std::string& receiver);
 		void sendToChannel(const Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId);
 		void sendIcons(uint16_t icons);
-		void sendFYIBox(const std::string& message);
 
 		void sendDistanceShoot(const Position& from, const Position& to, uint8_t type);
+		void sendAnimatedText(const Position& pos, uint8_t color, const std::string& text);
 		void sendMagicEffect(const Position& pos, uint8_t type);
 		void sendCreatureHealth(const Creature* creature);
 		void sendSkills();
 		void sendPing();
-		void sendPingBack();
 		void sendCreatureTurn(const Creature* creature, uint32_t stackpos);
 		void sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, Position* pos = nullptr);
 
@@ -198,14 +186,8 @@ class ProtocolGame : public Protocol
 		void sendCreatureVisible(const Creature* creature, bool visible);
 		void sendCreatureOutfit(const Creature* creature, const Outfit_t& outfit);
 		void sendStats();
-		void sendBasicData();
-		void sendTextMessage(MessageClasses mclass, const std::string& message, Position* pos = nullptr, uint32_t exp = 0, TextColor_t color = TEXTCOLOR_NONE);
-		void sendReLoginWindow(uint8_t unfairFightReduction);
+		void sendTextMessage(MessageClasses mclass, const std::string& message);
 
-		void sendTutorial(uint8_t tutorialId);
-		void sendAddMarker(const Position& pos, uint8_t markType, const std::string& desc);
-
-		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough);
 		void sendCreatureShield(const Creature* creature);
 		void sendCreatureSkull(const Creature* creature);
 
@@ -217,11 +199,9 @@ class ProtocolGame : public Protocol
 		void sendHouseWindow(uint32_t windowTextId, House* house, uint32_t listId, const std::string& text);
 		void sendOutfitWindow();
 
-		void sendUpdatedVIPStatus(uint32_t guid, VipStatus_t newStatus);
+		void sendVIPLogIn(uint32_t guid);
+		void sendVIPLogOut(uint32_t guid);
 		void sendVIP(uint32_t guid, const std::string& name, const std::string& description, uint32_t icon, bool notify, VipStatus_t status);
-
-		void sendPendingStateEntered();
-		void sendEnterWorld();
 
 		void sendCreatureLight(const Creature* creature);
 		void sendWorldLight(const LightInfo& lightInfo);
@@ -251,13 +231,6 @@ class ProtocolGame : public Protocol
 		//inventory
 		void sendInventoryItem(slots_t slot, const Item* item);
 
-		//messages
-		void sendDamageMessage(MessageClasses mclass, const std::string& message, const Position& pos, uint32_t primaryDamage = 0, TextColor_t primaryColor = TEXTCOLOR_NONE, uint32_t secondaryDamage = 0, TextColor_t secondaryColor = TEXTCOLOR_NONE);
-		void sendHealMessage(MessageClasses mclass, const std::string& message, const Position& pos, uint32_t heal, TextColor_t color);
-		void sendExperienceMessage(MessageClasses mclass, const std::string& message, const Position& pos, uint32_t exp, TextColor_t color);
-
-		//Help functions
-
 		// translate a tile to clientreadable format
 		void GetTileDescription(const Tile* tile, NetworkMessage& msg);
 
@@ -268,7 +241,7 @@ class ProtocolGame : public Protocol
 		void GetMapDescription(int32_t x, int32_t y, int32_t z, int32_t width, int32_t height, NetworkMessage& msg);
 
 		void AddTextMessage(NetworkMessage& msg, MessageClasses mclass, const std::string& message);
-		void AddTextMessageEx(NetworkMessage& msg, MessageClasses mclass, const std::string& message, const Position& pos, uint32_t value, TextColor_t color);
+		void AddAnimatedText(NetworkMessage& msg, const Position& pos, uint8_t color, const std::string& text);
 		void AddMagicEffect(NetworkMessage& msg, const Position& pos, uint8_t type);
 		void AddDistanceShoot(NetworkMessage& msg, const Position& from, const Position& to, uint8_t type);
 		void AddCreature(NetworkMessage& msg, const Creature* creature, bool known, uint32_t remove);

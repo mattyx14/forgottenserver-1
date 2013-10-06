@@ -83,10 +83,6 @@ Item* Item::CreateItem(const uint16_t _type, uint16_t _count /*= 0*/)
 			newItem = new Item(_type - 37, _count);
 		} else if (it.id == 2640) {
 			newItem = new Item(6132, _count);
-		} else if (it.id == 6301) {
-			newItem = new Item(6300, _count);
-		} else if (it.id == 18528) {
-			newItem = new Item(18408, _count);
 		} else {
 			newItem = new Item(_type, _count);
 		}
@@ -138,7 +134,15 @@ Item* Item::CreateItem(PropStream& propStream)
 			break;
 	}
 
-	return Item::CreateItem(_id, 0);
+	const ItemType& iType = Item::items[_id];
+	uint8_t _count = 0;
+
+	if (iType.stackable || iType.isSplash() || iType.isFluidContainer()) {
+		if (!propStream.GET_UCHAR(_count)) {
+			return nullptr;
+		}
+	}
+	return Item::CreateItem(_id, _count);
 }
 
 Item::Item(const uint16_t _type, uint16_t _count /*= 0*/)
@@ -798,28 +802,12 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 			s << " (\"" << it.runeSpellName << "\")";
 		}
 
-		if (it.runeLevel > 0 || it.runeMagLevel > 0) {
-			int32_t tmpSubType = subType;
+		if (it.runeMagLevel > 0) {
+			s << " for magic level " << it.runeMagLevel;
+		}
 
-			if (item) {
-				tmpSubType = item->getSubType();
-			}
-
-			s << ". " << (it.stackable && tmpSubType > 1 ? "They" : "It") << " can only be used with";
-
-			if (it.runeLevel > 0) {
-				s << " level " << it.runeLevel;
-			}
-
-			if (it.runeMagLevel > 0) {
-				if (it.runeLevel > 0) {
-					s << " and";
-				}
-
-				s << " magic level " << it.runeMagLevel;
-			}
-
-			s << " or higher";
+		if (!it.runeSpellName.empty()) {
+			s << ". It's an \"" << it.runeSpellName << "\" spell (" << subType << "x)";
 		}
 	} else if (it.weaponType != WEAPON_NONE) {
 		if (it.weaponType == WEAPON_DIST && it.ammoType != AMMO_NONE) {

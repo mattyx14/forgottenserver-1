@@ -1085,7 +1085,7 @@ void Commands::ghost(Player* player, const std::string& cmd, const std::string& 
 
 		IOLoginData::getInstance()->updateOnlineStatus(player->getGUID(), false);
 		player->sendTextMessage(MSG_INFO_DESCR, "You are now invisible.");
-		g_game.addMagicEffect(list, player->getPosition(), NM_ME_YALAHARIGHOST);
+		g_game.addMagicEffect(list, player->getPosition(), NM_ME_TELEPORT);
 	} else {
 		for (const auto& it : g_game.getPlayers()) {
 			if (!it.second->isAccessPlayer()) {
@@ -1097,7 +1097,7 @@ void Commands::ghost(Player* player, const std::string& cmd, const std::string& 
 		player->sendTextMessage(MSG_INFO_DESCR, "You are visible again.");
 		Position pos = player->getPosition();
 		pos.x += 1;
-		g_game.addMagicEffect(list, pos, NM_ME_SMOKE);
+		g_game.addMagicEffect(list, pos, NM_ME_POFF);
 	}
 }
 

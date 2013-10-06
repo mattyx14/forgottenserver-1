@@ -158,12 +158,6 @@ class Player : public Creature, public Cylinder
 		}
 		virtual std::string getDescription(int32_t lookDistance) const;
 
-		void sendFYIBox(const std::string& message) {
-			if (client) {
-				client->sendFYIBox(message);
-			}
-		}
-
 		void setGUID(uint32_t _guid) {
 			guid = _guid;
 		}
@@ -703,11 +697,6 @@ class Player : public Creature, public Cylinder
 				client->sendChannelMessage(author, text, type, channel);
 			}
 		}
-		void sendChannelEvent(uint16_t channelId, const std::string& playerName, ChannelEvent_t channelEvent) {
-			if (client) {
-				client->sendChannelEvent(channelId, playerName, channelEvent);
-			}
-		}
 		void sendCreatureAppear(const Creature* creature, const Position& pos, bool isLogin) {
 			if (client) {
 				client->sendAddCreature(creature, pos, creature->getTile()->getClientIndexOfThing(this, creature), isLogin);
@@ -771,32 +760,9 @@ class Player : public Creature, public Cylinder
 				client->sendCreatureLight(creature);
 			}
 		}
-		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough) {
-			if (client) {
-				client->sendCreatureWalkthrough(creature, walkthrough);
-			}
-		}
 		void sendCreatureShield(const Creature* creature) {
 			if (client) {
 				client->sendCreatureShield(creature);
-			}
-		}
-
-		void sendDamageMessage(MessageClasses mclass, const std::string& message, const Position& pos,
-		                       uint32_t primaryDamage = 0, TextColor_t primaryColor = TEXTCOLOR_NONE,
-		                       uint32_t secondaryDamage = 0, TextColor_t secondaryColor = TEXTCOLOR_NONE) {
-			if (client) {
-				client->sendDamageMessage(mclass, message, pos, primaryDamage, primaryColor, secondaryDamage, secondaryColor);
-			}
-		}
-		void sendHealMessage(MessageClasses mclass, const std::string& message, const Position& pos, uint32_t heal, TextColor_t color) {
-			if (client) {
-				client->sendHealMessage(mclass, message, pos, heal, color);
-			}
-		}
-		void sendExperienceMessage(MessageClasses mclass, const std::string& message, const Position& pos, uint32_t exp, TextColor_t color) {
-			if (client) {
-				client->sendExperienceMessage(mclass, message, pos, exp, color);
 			}
 		}
 
@@ -890,36 +856,26 @@ class Player : public Creature, public Cylinder
 				client->sendIcons(getClientIcons());
 			}
 		}
+		void sendAnimatedText(const Position& pos, unsigned char color, const std::string& text) const {
+			if (client) {
+				client->sendAnimatedText(pos, color, text);
+			}
+		}
 		void sendMagicEffect(const Position& pos, uint8_t type) const {
 			if (client) {
 				client->sendMagicEffect(pos, type);
 			}
 		}
 		void sendPing();
-		void sendPingBack() const {
-			if (client) {
-				client->sendPingBack();
-			}
-		}
 		void sendStats();
-		void sendBasicData() const {
-			if (client) {
-				client->sendBasicData();
-			}
-		}
 		void sendSkills() const {
 			if (client) {
 				client->sendSkills();
 			}
 		}
-		void sendTextMessage(MessageClasses mclass, const std::string& message, Position* pos = nullptr, uint32_t value = 0, TextColor_t color = TEXTCOLOR_NONE) const {
+		void sendTextMessage(MessageClasses mclass, const std::string& message) const {
 			if (client) {
-				client->sendTextMessage(mclass, message, pos, value, color);
-			}
-		}
-		void sendReLoginWindow(uint8_t unfairFightReduction) const {
-			if (client) {
-				client->sendReLoginWindow(unfairFightReduction);
+				client->sendTextMessage(mclass, message);
 			}
 		}
 		void sendTextWindow(Item* item, uint16_t maxlen, bool canWrite) const {
@@ -976,21 +932,6 @@ class Player : public Creature, public Cylinder
 		void sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers) {
 			if (client) {
 				client->sendChannel(channelId, channelName, channelUsers, invitedUsers);
-			}
-		}
-		void sendTutorial(uint8_t tutorialId) {
-			if (client) {
-				client->sendTutorial(tutorialId);
-			}
-		}
-		void sendAddMarker(const Position& pos, uint8_t markType, const std::string& desc) {
-			if (client) {
-				client->sendAddMarker(pos, markType, desc);
-			}
-		}
-		void sendEnterWorld() {
-			if (client) {
-				client->sendEnterWorld();
 			}
 		}
 		void sendNetworkMessage(const NetworkMessage& message) {

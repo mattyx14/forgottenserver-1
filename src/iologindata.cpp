@@ -53,7 +53,7 @@ Account IOLoginData::loadAccount(uint32_t accno)
 	}
 
 	account.id = result->getDataInt("id");
-	account.name = result->getDataString("name");
+	account.name = result->getDataInt("name");
 	account.accountType = (AccountType_t)result->getDataInt("type");
 	account.premiumDays = result->getDataInt("premdays");
 	account.lastDay = result->getDataInt("lastday");
@@ -68,12 +68,12 @@ bool IOLoginData::saveAccount(const Account& acc)
 	return Database::getInstance()->executeQuery(query.str());
 }
 
-bool IOLoginData::loginserverAuthentication(const std::string& name, const std::string& password, Account& account)
+bool IOLoginData::loginserverAuthentication(uint32_t name, const std::string& password, Account& account)
 {
 	Database* db = Database::getInstance();
 
 	std::ostringstream query;
-	query << "SELECT `id`, `name`, `password`, `type`, `premdays`, `lastday` FROM `accounts` WHERE `name` = " << db->escapeString(name);
+	query << "SELECT `id`, `name`, `password`, `type`, `premdays`, `lastday` FROM `accounts` WHERE `name` = " << name;
 
 	DBResult* result = db->storeQuery(query.str());
 	if (!result) {
@@ -86,7 +86,7 @@ bool IOLoginData::loginserverAuthentication(const std::string& name, const std::
 	}
 
 	account.id = result->getDataInt("id");
-	account.name = result->getDataString("name");
+	account.name = result->getDataInt("name");
 	account.accountType = (AccountType_t)result->getDataInt("type");
 	account.premiumDays = result->getDataInt("premdays");
 	account.lastDay = result->getDataInt("lastday");
@@ -108,12 +108,12 @@ bool IOLoginData::loginserverAuthentication(const std::string& name, const std::
 	return true;
 }
 
-uint32_t IOLoginData::gameworldAuthentication(const std::string& accountName, const std::string& password, std::string& characterName)
+uint32_t IOLoginData::gameworldAuthentication(uint32_t accountName, const std::string& password, std::string& characterName)
 {
 	Database* db = Database::getInstance();
 
 	std::ostringstream query;
-	query << "SELECT `id`, `password` FROM `accounts` WHERE `name` = " << db->escapeString(accountName);
+	query << "SELECT `id`, `password` FROM `accounts` WHERE `name` = " << accountName;
 
 	DBResult* result = db->storeQuery(query.str());
 	if (!result) {

@@ -99,6 +99,7 @@ bool ConfigManager::load()
 	m_confBoolean[OLD_CONDITION_ACCURACY] = booleanString(getGlobalString(L, "oldConditionAccuracy", "no"));
 	m_confBoolean[ALLOW_CLONES] = booleanString(getGlobalString(L, "allowClones", "no"));
 	m_confBoolean[STAMINA_SYSTEM] = booleanString(getGlobalString(L, "staminaSystem", "yes"));
+	m_confBoolean[SHOW_HEALTH_CHANGE] = booleanString(getGlobalString(L, "showHealthChange", "no"));
 
 	m_confString[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	m_confString[LOGIN_MSG] = getGlobalString(L, "loginMessage", "Welcome to the Forgotten Server!");

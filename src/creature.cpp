@@ -1197,18 +1197,10 @@ void Creature::onGainExperience(uint64_t gainExp, Creature* target)
 		gainExp = gainExp / 2;
 		getMaster()->onGainExperience(gainExp, target);
 
-		const Position& targetPos = getPosition();
-
 		std::ostringstream ssExp;
-		ssExp << ucfirst(getNameDescription()) << " gained " << gainExp << " experience points.";
-		std::string strExp = ssExp.str();
+		ssExp << gainExp;
 
-		SpectatorVec list;
-		g_game.getSpectators(list, targetPos, false, true);
-
-		for (Creature* spectator : list) {
-			spectator->getPlayer()->sendExperienceMessage(MSG_EXPERIENCE_OTHERS, strExp, targetPos, gainExp, TEXTCOLOR_WHITE_EXP);
-		}
+		g_game.addAnimatedText(getPosition(), TEXTCOLOR_WHITE_EXP, ssExp.str());
 	}
 }
 

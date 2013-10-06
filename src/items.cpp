@@ -165,7 +165,7 @@ void Items::clear()
 bool Items::reload()
 {
 	clear();
-	loadFromOtb("data/items/items.otb");
+	loadFromOtb("data/items/" + ITEMS_PATH + "/items.otb");
 
 	if (!loadFromXml()) {
 		return false;
@@ -228,11 +228,11 @@ int32_t Items::loadFromOtb(const std::string& file)
 
 	if (Items::dwMajorVersion == 0xFFFFFFFF) {
 		std::cout << "[Warning - Items::loadFromOtb] items.otb using generic client version." << std::endl;
-	} else if (Items::dwMajorVersion != 3) {
+	} else if (Items::dwMajorVersion < OTB_VERSION) {
 		std::cout << "Old version detected, a newer version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
-	} else if (Items::dwMinorVersion < CLIENT_VERSION_980) {
-		std::cout << "A newer version of items.otb is required." << std::endl;
+	} else if (Items::dwMajorVersion > OTB_VERSION) {
+		std::cout << "New version detected, an older version of items.otb is required." << std::endl;
 		return ERROR_INVALID_FORMAT;
 	}
 
@@ -434,9 +434,9 @@ int32_t Items::loadFromOtb(const std::string& file)
 bool Items::loadFromXml()
 {
 	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file("data/items/items.xml");
+	pugi::xml_parse_result result = doc.load_file(std::string("data/items/" + ITEMS_PATH + "/items.xml").c_str());
 	if (!result) {
-		std::cout << "[Error - Items::loadFromXml] Failed to load data/items/items.xml: " << result.description() << std::endl;
+		std::cout << "[Error - Items::loadFromXml] Failed to load data/items/" << ITEMS_PATH << "/items.xml: " << result.description() << std::endl;
 		return false;
 	}
 

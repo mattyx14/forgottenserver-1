@@ -322,7 +322,7 @@ bool Condition::isPersistent() const
 
 uint32_t Condition::getIcons() const
 {
-	return isBuff ? ICON_PARTY_BUFF : 0;
+	return 0;
 }
 
 bool Condition::updateCondition(const Condition* addCondition)
@@ -858,21 +858,11 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 			if (isBuff && realHealthGain > 0) {
 				Player* player = creature->getPlayer();
 				if (player) {
-					std::ostringstream ss;
-					ss << ucfirst(player->getNameDescription()) << " was healed for " << realHealthGain << " hitpoint" << (realHealthGain != 1 ? "s." : ".");
-					std::string message = ss.str();
-
-					std::ostringstream tmpSs;
-					tmpSs << "You were healed for " << realHealthGain << " hitpoint" << (realHealthGain != 1 ? "s." : ".");
-					player->sendHealMessage(MSG_HEALED, tmpSs.str(), player->getPosition(), realHealthGain, TEXTCOLOR_MAYABLUE);
-
+					const Position& playerPos = creature->getPosition();
 					SpectatorVec list;
-					g_game.getSpectators(list, player->getPosition(), false, true);
-					for (Creature* spectator : list) {
-						if (spectator != player) {
-							spectator->getPlayer()->sendHealMessage(MSG_HEALED_OTHERS, message, player->getPosition(), realHealthGain, TEXTCOLOR_MAYABLUE);
-						}
-					}
+					char buffer[20];
+					sprintf(buffer, "%d", realHealthGain);
+					g_game.addAnimatedText(list, playerPos, TEXTCOLOR_GREEN, buffer);
 				}
 			}
 		}
@@ -1390,29 +1380,19 @@ uint32_t ConditionDamage::getIcons() const
 			icons |= ICON_ENERGY;
 			break;
 
-		case CONDITION_DROWN:
-			icons |= ICON_DROWNING;
-			break;
+		case CONDITION_DROWN: break;
 
 		case CONDITION_POISON:
 			icons |= ICON_POISON;
 			break;
 
-		case CONDITION_FREEZING:
-			icons |= ICON_FREEZING;
-			break;
+		case CONDITION_FREEZING: break;
 
-		case CONDITION_DAZZLED:
-			icons |= ICON_DAZZLED;
-			break;
+		case CONDITION_DAZZLED: break;
 
-		case CONDITION_CURSED:
-			icons |= ICON_CURSED;
-			break;
+		case CONDITION_CURSED: break;
 
-		case CONDITION_BLEEDING:
-			icons |= ICON_BLEEDING;
-			break;
+		case CONDITION_BLEEDING: break;
 
 		default:
 			break;

@@ -78,10 +78,6 @@ void PrivateChatChannel::invitePlayer(const Player& player, Player& invitePlayer
 		ss.str("");
 		ss << invitePlayer.getName() << " has been invited.";
 		player.sendTextMessage(MSG_INFO_DESCR, ss.str());
-
-		for (const auto& it : users) {
-			it.second->sendChannelEvent(id, invitePlayer.getName(), CHANNELEVENT_INVITE);
-		}
 	}
 }
 
@@ -95,10 +91,6 @@ void PrivateChatChannel::excludePlayer(const Player& player, Player& excludePlay
 		player.sendTextMessage(MSG_INFO_DESCR, ss.str());
 
 		excludePlayer.sendClosePrivate(getId());
-
-		for (const auto& it : users) {
-			it.second->sendChannelEvent(id, excludePlayer.getName(), CHANNELEVENT_EXCLUDE);
-		}
 	}
 }
 
@@ -146,12 +138,6 @@ bool ChatChannel::addUser(Player& player)
 		}
 	}
 
-	if (!publicChannel) {
-		for (const auto& it : users) {
-			it.second->sendChannelEvent(id, player.getName(), CHANNELEVENT_JOIN);
-		}
-	}
-
 	users[player.getID()] = &player;
 	return true;
 }
@@ -164,12 +150,6 @@ bool ChatChannel::removeUser(const Player& player)
 	}
 
 	users.erase(iter);
-
-	if (!publicChannel) {
-		for (const auto& it : users) {
-			it.second->sendChannelEvent(id, player.getName(), CHANNELEVENT_LEAVE);
-		}
-	}
 
 	executeOnLeaveEvent(player);
 	return true;

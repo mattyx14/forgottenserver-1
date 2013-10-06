@@ -595,16 +595,12 @@ class LuaScriptInterface
 		static int32_t luaAddEvent(lua_State* L);
 		static int32_t luaStopEvent(lua_State* L);
 
-		static int32_t luaDoPlayerPopupFYI(lua_State* L);
 		static int32_t luaMayNotMove(lua_State* L);
 
 		static int32_t luaGetOnlinePlayers(lua_State* L);
 		static int32_t luaSaveServer(lua_State* L);
 		static int32_t luaRefreshMap(lua_State* L);
 		static int32_t luaCleanMap(lua_State* L);
-
-		static int32_t luaDoSendTutorial(lua_State* L);
-		static int32_t luaDoAddMark(lua_State* L);
 
 		static int32_t luaIsInWar(lua_State* L);
 		static int32_t luaDoPlayerSetOfflineTrainingSkill(lua_State* L);
