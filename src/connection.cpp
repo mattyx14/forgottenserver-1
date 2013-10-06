@@ -298,26 +298,13 @@ void Connection::parsePacket(const boost::system::error_code& error)
 
 	--m_pendingRead;
 
-	//Check packet checksum
-	uint32_t recvChecksum = m_msg.PeekU32();
-	uint32_t checksum = 0;
-	int32_t len = m_msg.getMessageLength() - m_msg.getReadPos() - 4;
-
-	if (len > 0) {
-		checksum = adlerChecksum((uint8_t*)(m_msg.getBuffer() + m_msg.getReadPos() + 4), len);
-	}
-
-	if (recvChecksum == checksum) {
-		m_msg.GetU32();    // remove the checksum
-	}
-
 	if (!m_receivedFirst) {
 		// First message received
 		m_receivedFirst = true;
 
 		if (!m_protocol) {
 			// Game protocol has already been created at this point
-			m_protocol = m_service_port->make_protocol(recvChecksum == checksum, m_msg);
+			m_protocol = m_service_port->make_protocol(m_msg);
 
 			if (!m_protocol) {
 				closeConnection();
@@ -338,13 +325,10 @@ void Connection::parsePacket(const boost::system::error_code& error)
 	try {
 		++m_pendingRead;
 		m_readTimer.expires_from_now(boost::posix_time::seconds(Connection::read_timeout));
-		m_readTimer.async_wait( boost::bind(&Connection::handleReadTimeout, boost::weak_ptr<Connection>(shared_from_this()),
-		                                    boost::asio::placeholders::error));
+		m_readTimer.async_wait( boost::bind(&Connection::handleReadTimeout, boost::weak_ptr<Connection>(shared_from_this()), boost::asio::placeholders::error));
 
 		// Wait to the next packet
-		boost::asio::async_read(getHandle(),
-		                        boost::asio::buffer(m_msg.getBuffer(), NetworkMessage::header_length),
-		                        boost::bind(&Connection::parseHeader, shared_from_this(), boost::asio::placeholders::error));
+		boost::asio::async_read(getHandle(), boost::asio::buffer(m_msg.getBuffer(), NetworkMessage::header_length), boost::bind(&Connection::parseHeader, shared_from_this(), boost::asio::placeholders::error));
 	} catch (boost::system::system_error& e) {
 		if (m_logError) {
 			LOG_MESSAGE("NETWORK", LOGTYPE_ERROR, 1, e.what());

@@ -51,11 +51,7 @@ class OutputMessage : public NetworkMessage, boost::noncopyable
 			add_header((uint16_t)(m_MsgSize));
 		}
 
-		void addCryptoHeader(bool addChecksum) {
-			if (addChecksum) {
-				add_header((uint32_t)(adlerChecksum((uint8_t*)(m_MsgBuf + m_outputBufferStart), m_MsgSize)));
-			}
-
+		void addCryptoHeader() {
 			add_header((uint16_t)(m_MsgSize));
 		}
 
@@ -115,9 +111,8 @@ class OutputMessage : public NetworkMessage, boost::noncopyable
 			m_frame = 0;
 			//allocate enough size for headers
 			//2 bytes for unencrypted message size
-			//4 bytes for checksum
 			//2 bytes for encrypted message size
-			m_outputBufferStart = 8;
+			m_outputBufferStart = 4;
 
 			//setState have to be the last one
 			setState(OutputMessage::STATE_FREE);

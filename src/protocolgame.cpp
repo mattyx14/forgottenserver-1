@@ -388,32 +388,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 
 void ProtocolGame::onConnect()
 {
-	OutputMessage_ptr output = OutputMessagePool::getInstance()->getOutputMessage(this, false);
-	if (output) {
-		static std::random_device rd;
-		static std::ranlux24 generator(rd());
-		static std::uniform_int_distribution<uint8_t> randNumber(0x00, 0xFF);
-
-		// Skip checksum
-		output->SkipBytes(sizeof(uint32_t));
-
-		// Packet length & type
-		output->AddU16(0x0006);
-		output->AddByte(0x1F);
-
-		// Add timestamp & random number
-		m_challengeTimestamp = static_cast<uint32_t>(time(nullptr));
-		output->AddU32(m_challengeTimestamp);
-
-		m_challengeRandom = randNumber(generator);
-		output->AddByte(m_challengeRandom);
-
-		// Go back and write checksum
-		output->SkipBytes(-12);
-		output->AddU32(adlerChecksum(reinterpret_cast<uint8_t*>(output->getOutputBuffer() + sizeof(uint32_t)), 0x08));
-
-		OutputMessagePool::getInstance()->send(output);
-	}
+	//
 }
 
 void ProtocolGame::disconnectClient(uint8_t error, const char* message)

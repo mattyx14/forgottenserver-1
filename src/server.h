@@ -45,7 +45,6 @@ class ServiceBase : boost::noncopyable
 		virtual ~ServiceBase() {} // Redundant, but stifles compiler warnings
 
 		virtual bool is_single_socket() const = 0;
-		virtual bool is_checksummed() const = 0;
 		virtual uint8_t get_protocol_identifier() const = 0;
 		virtual const char* get_protocol_name() const = 0;
 
@@ -58,9 +57,6 @@ class Service : public ServiceBase
 	public:
 		bool is_single_socket() const {
 			return ProtocolType::server_sends_first;
-		}
-		bool is_checksummed() const {
-			return ProtocolType::use_checksum;
 		}
 		uint8_t get_protocol_identifier() const {
 			return ProtocolType::protocol_identifier;
@@ -87,7 +83,7 @@ class ServicePort : boost::noncopyable, public boost::enable_shared_from_this<Se
 		std::string get_protocol_names() const;
 
 		bool add_service(Service_ptr);
-		Protocol* make_protocol(bool checksummed, NetworkMessage& msg) const;
+		Protocol* make_protocol(NetworkMessage& msg) const;
 
 		void onStopServer();
 		void onAccept(boost::asio::ip::tcp::socket* socket, const boost::system::error_code& error);

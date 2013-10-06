@@ -36,7 +36,7 @@ void Protocol::onSendMessage(OutputMessage_ptr msg)
 
 		if (m_encryptionEnabled) {
 			XTEA_encrypt(*msg);
-			msg->addCryptoHeader(m_checksumEnabled);
+			msg->addCryptoHeader();
 		}
 	}
 
@@ -70,8 +70,7 @@ void Protocol::releaseProtocol()
 {
 	if (m_refCount > 0) {
 		//Reschedule it and try again.
-		g_scheduler.addEvent(createSchedulerTask(SCHEDULER_MINTICKS,
-		                     boost::bind(&Protocol::releaseProtocol, this)));
+		g_scheduler.addEvent(createSchedulerTask(SCHEDULER_MINTICKS, boost::bind(&Protocol::releaseProtocol, this)));
 	} else {
 		deleteProtocolTask();
 	}
@@ -99,7 +98,7 @@ void Protocol::XTEA_encrypt(OutputMessage& msg)
 	//add bytes until reach 8 multiple
 	int32_t paddingBytes = msg.getMessageLength() % 8;
 	if (paddingBytes != 0) {
-		msg.AddPaddingBytes(8 - paddingBytes);
+		msg.AddPaddingBytes(4 - paddingBytes);
 	}
 
 	uint32_t* buffer = (uint32_t*)msg.getOutputBuffer();
@@ -122,13 +121,13 @@ void Protocol::XTEA_encrypt(OutputMessage& msg)
 
 bool Protocol::XTEA_decrypt(NetworkMessage& msg)
 {
-	if ((msg.getMessageLength() - 6) % 8 != 0) {
+	if ((msg.getMessageLength() - 2) % 8 != 0) {
 		return false;
 	}
 
 	const uint32_t delta = 0x61C88647;
 
-	const int32_t messageLength = (msg.getMessageLength() - 6) / 4;
+	const int32_t messageLength = (msg.getMessageLength() - 2) / 4;
 
 	//
 	uint32_t k[4];
@@ -157,7 +156,7 @@ bool Protocol::XTEA_decrypt(NetworkMessage& msg)
 	//
 
 	int tmp = msg.GetU16();
-	if (tmp > msg.getMessageLength() - 8) {
+	if (tmp > msg.getMessageLength() - 4) {
 		return false;
 	}
 

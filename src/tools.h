@@ -80,8 +80,6 @@ std::string getCombatName(CombatType_t combatType);
 std::string getSkillName(uint16_t skillid);
 skills_t getSkillId(const std::string& param);
 
-uint32_t adlerChecksum(uint8_t* data, size_t len);
-
 std::string ucfirst(std::string str);
 std::string ucwords(std::string str);
 bool booleanString(const std::string& str);

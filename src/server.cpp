@@ -177,7 +177,7 @@ void ServicePort::onAccept(boost::asio::ip::tcp::socket* socket, const boost::sy
 	}
 }
 
-Protocol* ServicePort::make_protocol(bool checksummed, NetworkMessage& msg) const
+Protocol* ServicePort::make_protocol(NetworkMessage& msg) const
 {
 	uint8_t protocolID = msg.GetByte();
 	for (Service_ptr service : m_services) {
@@ -185,9 +185,7 @@ Protocol* ServicePort::make_protocol(bool checksummed, NetworkMessage& msg) cons
 			continue;
 		}
 
-		if ((checksummed && service->is_checksummed()) || !service->is_checksummed()) {
-			return service->make_protocol(Connection_ptr());
-		}
+		return service->make_protocol(Connection_ptr());
 	}
 	return nullptr;
 }
