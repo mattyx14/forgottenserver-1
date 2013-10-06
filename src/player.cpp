@@ -106,10 +106,6 @@ Player::Player(ProtocolGame* p) :
 	editHouse = nullptr;
 	editListId = 0;
 
-	shopOwner = nullptr;
-	purchaseCallback = -1;
-	saleCallback = -1;
-
 	pzLocked = false;
 	bloodHitCount = 0;
 	shieldBlockCount = 0;
@@ -1627,8 +1623,6 @@ void Player::onCreatureDisappear(const Creature* creature, uint32_t stackpos, bo
 			g_game.internalCloseTrade(this);
 		}
 
-		closeShopWindow();
-
 		clearPartyInvitations();
 
 		if (party) {
@@ -1659,36 +1653,6 @@ void Player::onCreatureDisappear(const Creature* creature, uint32_t stackpos, bo
 	}
 }
 
-void Player::openShopWindow(Npc* npc, const std::list<ShopInfo>& shop)
-{
-	shopItemList = shop;
-	sendShop(npc);
-	sendSaleItemList();
-}
-
-bool Player::closeShopWindow(bool sendCloseShopWindow /*= true*/)
-{
-	//unreference callbacks
-	int32_t onBuy;
-	int32_t onSell;
-
-	Npc* npc = getShopOwner(onBuy, onSell);
-	if (!npc) {
-		shopItemList.clear();
-		return false;
-	}
-
-	setShopOwner(nullptr, -1, -1);
-	npc->onPlayerEndTrade(this, onBuy, onSell);
-
-	if (sendCloseShopWindow) {
-		sendCloseShop();
-	}
-
-	shopItemList.clear();
-	return true;
-}
-
 void Player::onWalk(Direction& dir)
 {
 	Creature::onWalk(dir);
@@ -1696,8 +1660,7 @@ void Player::onWalk(Direction& dir)
 	setNextAction(OTSYS_TIME() + getStepDuration(dir));
 }
 
-void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const Position& newPos,
-                            const Tile* oldTile, const Position& oldPos, bool teleport)
+void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const Position& newPos, const Tile* oldTile, const Position& oldPos, bool teleport)
 {
 	Creature::onCreatureMove(creature, newTile, newPos, oldTile, oldPos, teleport);
 
@@ -3412,10 +3375,6 @@ void Player::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_
 		if (const Container* container = item->getContainer()) {
 			onSendContainer(container);
 		}
-
-		if (shopOwner && requireListUpdate) {
-			updateSaleShopList(item->getID());
-		}
 	} else if (const Creature* creature = thing->getCreature()) {
 		if (creature == this) {
 			//check containers
@@ -3489,44 +3448,7 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 				autoCloseContainers(container);
 			}
 		}
-
-		if (shopOwner && requireListUpdate) {
-			updateSaleShopList(item->getID());
-		}
 	}
-}
-
-void Player::updateSaleShopList(uint32_t itemId)
-{
-	auto it = std::find_if(shopItemList.begin(), shopItemList.end(), [itemId] (const ShopInfo& shopInfo) { return shopInfo.itemId == itemId; });
-	if (it == shopItemList.end()) {
-		return;
-	}
-
-	if (client) {
-		client->sendSaleItemList(shopItemList);
-	}
-}
-
-bool Player::hasShopItemForSale(uint32_t itemId, uint8_t subType)
-{
-	const ItemType& itemType = Item::items[itemId];
-	for (const ShopInfo& shopInfo : shopItemList) {
-		if (shopInfo.itemId != itemId) {
-			continue;
-		}
-
-		if (shopInfo.buyPrice == 0) {
-			continue;
-		}
-
-		if (itemType.isFluidContainer() && shopInfo.subType != subType) {
-			continue;
-		}
-
-		return true;
-	}
-	return false;
 }
 
 void Player::__internalAddThing(Thing* thing)
@@ -4604,36 +4526,6 @@ void Player::useStamina()
 
 		sendStats();
 	}
-}
-
-uint16_t Player::getHelpers() const
-{
-	uint16_t helpers;
-
-	if (guild && party) {
-		std::unordered_set<Player*> helperSet;
-
-		const PlayerList& guildMembers = guild->getMembersOnline();
-		helperSet.insert(guildMembers.begin(), guildMembers.end());
-
-		const PlayerVector& partyMembers = party->getMembers();
-		helperSet.insert(partyMembers.begin(), partyMembers.end());
-
-		const PlayerVector& partyInvitees = party->getInvitees();
-		helperSet.insert(partyInvitees.begin(), partyInvitees.end());
-
-		helperSet.insert(party->getLeader());
-
-		helpers = helperSet.size();
-	} else if (guild) {
-		helpers = guild->getMembersOnline().size();
-	} else if (party) {
-		helpers = party->getMemberCount() + party->getInvitationCount() + 1;
-	} else {
-		helpers = 0;
-	}
-
-	return helpers;
 }
 
 void Player::sendClosePrivate(uint16_t channelId)

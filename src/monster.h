@@ -79,10 +79,6 @@ class Monster : public Creature
 			return strDescription + '.';
 		}
 
-		virtual CreatureType_t getType() const {
-			return CREATURETYPE_MONSTER;
-		}
-
 		virtual const Position& getMasterPos() const {
 			return masterPos;
 		}

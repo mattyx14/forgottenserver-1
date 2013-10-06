@@ -59,16 +59,11 @@ class NpcScriptInterface : public LuaScriptInterface
 		static int32_t luaGetNpcPos(lua_State* L);
 		static int32_t luaGetNpcName(lua_State* L);
 		static int32_t luaGetNpcParameter(lua_State* L);
-		static int32_t luaOpenShopWindow(lua_State* L);
-		static int32_t luaCloseShopWindow(lua_State* L);
 		static int32_t luaDoSellItem(lua_State* L);
 
 		// metatable
 		static int32_t luaNpcGetParameter(lua_State* L);
-		static int32_t luaNpcSetFocus(lua_State* L);
-
-		static int32_t luaNpcOpenShopWindow(lua_State* L);
-		static int32_t luaNpcCloseShopWindow(lua_State* L);
+		static int32_t luaNpcSetFocus(lua_State* L);;
 
 	private:
 		virtual bool initState();
@@ -87,10 +82,7 @@ class NpcEventsHandler
 		virtual void onCreatureDisappear(const Creature* creature) {}
 		virtual void onCreatureMove(const Creature* creature, const Position& oldPos, const Position& newPos) {}
 		virtual void onCreatureSay(const Creature* creature, SpeakClasses, const std::string& text, Position* pos = nullptr) {}
-		virtual void onPlayerTrade(const Player* player, int32_t callback, uint16_t itemid,
-		                           uint8_t count, uint8_t amount, bool ignore = false, bool inBackpacks = false) {}
 		virtual void onPlayerCloseChannel(const Player* player) {}
-		virtual void onPlayerEndTrade(const Player* player) {}
 		virtual void onThink() {}
 
 		bool isLoaded() const;
@@ -111,10 +103,7 @@ class NpcScript : public NpcEventsHandler
 		virtual void onCreatureDisappear(const Creature* creature);
 		virtual void onCreatureMove(const Creature* creature, const Position& oldPos, const Position& newPos);
 		virtual void onCreatureSay(const Creature* creature, SpeakClasses, const std::string& text, Position* pos = nullptr);
-		virtual void onPlayerTrade(const Player* player, int32_t callback, uint16_t itemid,
-		                           uint8_t count, uint8_t amount, bool ignore, bool inBackpacks);
 		virtual void onPlayerCloseChannel(const Player* player);
-		virtual void onPlayerEndTrade(const Player* player);
 		virtual void onThink();
 
 	private:
@@ -125,14 +114,7 @@ class NpcScript : public NpcEventsHandler
 		int32_t m_onCreatureMove;
 		int32_t m_onCreatureSay;
 		int32_t m_onPlayerCloseChannel;
-		int32_t m_onPlayerEndTrade;
 		int32_t m_onThink;
-};
-
-enum ShopEvent_t {
-	SHOPEVENT_SELL,
-	SHOPEVENT_BUY,
-	SHOPEVENT_CLOSE
 };
 
 class Npc : public Creature
@@ -178,10 +160,6 @@ class Npc : public Creature
 			return name;
 		}
 
-		virtual CreatureType_t getType() const {
-			return CREATURETYPE_NPC;
-		}
-
 		void doSay(const std::string& text);
 		void doSayToPlayer(Player* player, const std::string& text);
 
@@ -206,9 +184,6 @@ class Npc : public Creature
 		}
 
 		void onPlayerCloseChannel(const Player* player);
-		void onPlayerTrade(Player* player, ShopEvent_t type, int32_t callback, uint16_t itemId,
-		                   uint8_t count, uint8_t amount, bool ignore = false, bool inBackpacks = false);
-		void onPlayerEndTrade(Player* player, int32_t buyCallback, int32_t sellCallback);
 
 		void turnToCreature(Creature* creature);
 		void setCreatureFocus(Creature* creature);
@@ -220,9 +195,7 @@ class Npc : public Creature
 
 		virtual void onCreatureAppear(const Creature* creature, bool isLogin);
 		virtual void onCreatureDisappear(const Creature* creature, uint32_t stackpos, bool isLogout);
-		virtual void onCreatureMove(const Creature* creature, const Tile* newTile, const Position& newPos,
-		                            const Tile* oldTile, const Position& oldPos, bool teleport);
-
+		virtual void onCreatureMove(const Creature* creature, const Tile* newTile, const Position& newPos, const Tile* oldTile, const Position& oldPos, bool teleport);
 		virtual void onCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, Position* pos = nullptr);
 		virtual void onThink(uint32_t interval);
 		virtual std::string getDescription(int32_t lookDistance) const;
@@ -244,13 +217,7 @@ class Npc : public Creature
 		void reset();
 		bool loadFromXml(const std::string& name);
 
-		void addShopPlayer(Player* player);
-		void removeShopPlayer(Player* player);
-		void closeAllShopWindows();
-
 		std::map<std::string, std::string> m_parameters;
-
-		std::set<Player*> shopPlayerSet;
 
 		std::string name;
 		std::string m_filename;

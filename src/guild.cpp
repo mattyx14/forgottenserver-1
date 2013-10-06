@@ -35,18 +35,11 @@ Guild::Guild(uint32_t id, const std::string& name)
 void Guild::addMember(Player* player)
 {
 	membersOnline.push_back(player);
-	for (Player* member : membersOnline) {
-		g_game.updatePlayerHelpers(*member);
-	}
 }
 
 void Guild::removeMember(Player* player)
 {
 	membersOnline.remove(player);
-	for (Player* member : membersOnline) {
-		g_game.updatePlayerHelpers(*member);
-	}
-	g_game.updatePlayerHelpers(*player);
 }
 
 GuildRank* Guild::getRankById(uint32_t id)

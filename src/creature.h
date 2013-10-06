@@ -144,8 +144,6 @@ class Creature : virtual public Thing
 		virtual const std::string& getNameDescription() const = 0;
 		virtual std::string getDescription(int32_t lookDistance) const;
 
-		virtual CreatureType_t getType() const = 0;
-
 		virtual void setID() = 0;
 		void setRemoved() {
 			isInternalRemoved = true;

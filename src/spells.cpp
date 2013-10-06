@@ -2021,7 +2021,6 @@ bool RuneSpell::Convince(const RuneSpell* spell, Creature* creature, Item* item,
 	}
 
 	spell->postCastSpell(player, (uint32_t)manaCost, (uint32_t)spell->getSoulCost());
-	g_game.updateCreatureType(convinceCreature);
 	g_game.addMagicEffect(player->getPosition(), NM_ME_MAGIC_BLOOD);
 	return true;
 }

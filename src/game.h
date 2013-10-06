@@ -421,12 +421,6 @@ class Game
 		bool playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t stackPos, uint32_t tradePlayerId, uint16_t spriteId);
 		bool playerAcceptTrade(uint32_t playerId);
 		bool playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, int index);
-		bool playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,
-		                        bool ignoreCap = false, bool inBackpacks = false);
-		bool playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count,
-		                    uint8_t amount, bool ignoreEquipped = false);
-		bool playerCloseShop(uint32_t playerId);
-		bool playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count);
 		bool playerCloseTrade(uint32_t playerId);
 		bool playerSetAttackedCreature(uint32_t playerId, uint32_t creatureId);
 		bool playerFollowCreature(uint32_t playerId, uint32_t creatureId);
@@ -470,8 +464,6 @@ class Game
 		void changeLight(const Creature* creature);
 		void updatePlayerSkull(Player* player);
 		void updatePlayerShield(Player* player);
-		void updatePlayerHelpers(const Player& player);
-		void updateCreatureType(Creature* creature);
 		void updateCreatureWalkthrough(const Creature* creature);
 
 		void sendPublicSquare(Player* sender, SquareColor_t color);

@@ -158,10 +158,6 @@ class Player : public Creature, public Cylinder
 		}
 		virtual std::string getDescription(int32_t lookDistance) const;
 
-		virtual CreatureType_t getType() const {
-			return CREATURETYPE_PLAYER;
-		}
-
 		void sendFYIBox(const std::string& message) {
 			if (client) {
 				client->sendFYIBox(message);
@@ -428,8 +424,6 @@ class Player : public Creature, public Cylinder
 		bool isPremium() const;
 		void setPremiumDays(int32_t v);
 
-		uint16_t getHelpers() const;
-
 		bool setVocation(uint32_t vocId);
 		uint32_t getVocationId() const {
 			return vocation->getId();
@@ -556,25 +550,6 @@ class Player : public Creature, public Cylinder
 			return tradeItem;
 		}
 
-		//shop functions
-		void setShopOwner(Npc* owner, int32_t onBuy, int32_t onSell) {
-			shopOwner = owner;
-			purchaseCallback = onBuy;
-			saleCallback = onSell;
-		}
-
-		Npc* getShopOwner(int32_t& onBuy, int32_t& onSell) {
-			onBuy = purchaseCallback;
-			onSell = saleCallback;
-			return shopOwner;
-		}
-
-		const Npc* getShopOwner(int32_t& onBuy, int32_t& onSell) const {
-			onBuy = purchaseCallback;
-			onSell = saleCallback;
-			return shopOwner;
-		}
-
 		//V.I.P. functions
 		void notifyStatusChange(Player* player, VipStatus_t status);
 		bool removeVIP(uint32_t guid);
@@ -595,10 +570,6 @@ class Player : public Creature, public Cylinder
 		virtual void onWalkComplete();
 
 		void stopWalk();
-		void openShopWindow(Npc* npc, const std::list<ShopInfo>& shop);
-		bool closeShopWindow(bool sendCloseShopWindow = true);
-		void updateSaleShopList(uint32_t itemId);
-		bool hasShopItemForSale(uint32_t itemId, uint8_t subType);
 
 		void setChaseMode(chaseMode_t mode);
 		void setFightMode(fightMode_t mode);
@@ -810,26 +781,6 @@ class Player : public Creature, public Cylinder
 				client->sendCreatureShield(creature);
 			}
 		}
-		void sendCreatureType(uint32_t creatureId, uint8_t creatureType) {
-			if (client) {
-				client->sendCreatureType(creatureId, creatureType);
-			}
-		}
-		void sendCreatureHelpers(uint32_t creatureId, uint16_t helpers) {
-			if (client) {
-				client->sendCreatureHelpers(creatureId, helpers);
-			}
-		}
-		void sendSpellCooldown(uint8_t spellId, uint32_t time) {
-			if (client) {
-				client->sendSpellCooldown(spellId, time);
-			}
-		}
-		void sendSpellGroupCooldown(SpellGroup_t groupId, uint32_t time) {
-			if (client) {
-				client->sendSpellGroupCooldown(groupId, time);
-			}
-		}
 
 		void sendDamageMessage(MessageClasses mclass, const std::string& message, const Position& pos,
 		                       uint32_t primaryDamage = 0, TextColor_t primaryColor = TEXTCOLOR_NONE,
@@ -986,21 +937,6 @@ class Player : public Creature, public Cylinder
 				client->sendToChannel(creature, type, text, channelId);
 			}
 		}
-		void sendShop(Npc* npc) const {
-			if (client) {
-				client->sendShop(npc, shopItemList);
-			}
-		}
-		void sendSaleItemList() const {
-			if (client) {
-				client->sendSaleItemList(shopItemList);
-			}
-		}
-		void sendCloseShop() const {
-			if (client) {
-				client->sendCloseShop();
-			}
-		}
 		void sendTradeItemRequest(const Player* player, const Item* item, bool ack) const {
 			if (client) {
 				client->sendTradeItemRequest(player, item, ack);
@@ -1148,7 +1084,6 @@ class Player : public Creature, public Cylinder
 		std::vector<OutfitEntry> outfits;
 
 		std::list<Party*> invitePartyList;
-		std::list<ShopInfo> shopItemList;
 		std::list<std::string> learnedInstantSpellList;
 		ConditionList storedConditionList;
 		GuildWarList guildWarList;
@@ -1187,7 +1122,6 @@ class Player : public Creature, public Cylinder
 		Item* inventory[SLOT_LAST];
 		Item* writeItem;
 		House* editHouse;
-		Npc* shopOwner;
 		Party* party;
 		Player* tradePartner;
 		ProtocolGame* client;
@@ -1217,8 +1151,6 @@ class Player : public Creature, public Cylinder
 		uint32_t skills[SKILL_LAST + 1][3];
 		int32_t varSkills[SKILL_LAST + 1];
 		int32_t varStats[STAT_LAST + 1];
-		int32_t purchaseCallback;
-		int32_t saleCallback;
 		int32_t MessageBufferCount;
 		int32_t premiumDays;
 		int32_t soul;

@@ -137,11 +137,6 @@ class ProtocolGame : public Protocol
 		void parseTextWindow(NetworkMessage& msg);
 		void parseHouseWindow(NetworkMessage& msg);
 
-		void parseLookInShop(NetworkMessage& msg);
-		void parsePlayerPurchase(NetworkMessage& msg);
-		void parsePlayerSale(NetworkMessage& msg);
-		void parseCloseShop(NetworkMessage& msg);
-
 		void parseInviteToParty(NetworkMessage& msg);
 		void parseJoinParty(NetworkMessage& msg);
 		void parseRevokePartyInvite(NetworkMessage& msg);
@@ -214,12 +209,7 @@ class ProtocolGame : public Protocol
 		void sendCreatureWalkthrough(const Creature* creature, bool walkthrough);
 		void sendCreatureShield(const Creature* creature);
 		void sendCreatureSkull(const Creature* creature);
-		void sendCreatureType(uint32_t creatureId, uint8_t creatureType);
-		void sendCreatureHelpers(uint32_t creatureId, uint16_t helpers);
 
-		void sendShop(Npc* npc, const ShopInfoList& itemList);
-		void sendCloseShop();
-		void sendSaleItemList(const std::list<ShopInfo>& shop);
 		void sendTradeItemRequest(const Player* player, const Item* item, bool ack);
 		void sendCloseTrade();
 
@@ -239,9 +229,6 @@ class ProtocolGame : public Protocol
 
 		void sendCreatureSquare(const Creature* creature, SquareColor_t color);
 
-		void sendSpellCooldown(uint8_t spellId, uint32_t time);
-		void sendSpellGroupCooldown(SpellGroup_t groupId, uint32_t time);
-
 		//tiles
 		void sendMapDescription(const Position& pos);
 
@@ -252,8 +239,7 @@ class ProtocolGame : public Protocol
 
 		void sendAddCreature(const Creature* creature, const Position& pos, uint32_t stackpos, bool isLogin);
 		void sendRemoveCreature(const Creature* creature, const Position& pos, uint32_t stackpos);
-		void sendMoveCreature(const Creature* creature, const Tile* newTile, const Position& newPos, uint32_t newStackPos,
-		                      const Tile* oldTile, const Position& oldPos, uint32_t oldStackPos, bool teleport);
+		void sendMoveCreature(const Creature* creature, const Tile* newTile, const Position& newPos, uint32_t newStackPos, const Tile* oldTile, const Position& oldPos, uint32_t oldStackPos, bool teleport);
 
 		//containers
 		void sendAddContainerItem(uint8_t cid, uint16_t slot, const Item* item);
@@ -277,8 +263,7 @@ class ProtocolGame : public Protocol
 		void GetTileDescription(const Tile* tile, NetworkMessage& msg);
 
 		// translate a floor to clientreadable format
-		void GetFloorDescription(NetworkMessage& msg, int32_t x, int32_t y, int32_t z,
-		                         int32_t width, int32_t height, int32_t offset, int32_t& skip);
+		void GetFloorDescription(NetworkMessage& msg, int32_t x, int32_t y, int32_t z, int32_t width, int32_t height, int32_t offset, int32_t& skip);
 
 		// translate a map area to clientreadable format
 		void GetMapDescription(int32_t x, int32_t y, int32_t z, int32_t width, int32_t height, NetworkMessage& msg);
@@ -289,8 +274,7 @@ class ProtocolGame : public Protocol
 		void AddDistanceShoot(NetworkMessage& msg, const Position& from, const Position& to, uint8_t type);
 		void AddCreature(NetworkMessage& msg, const Creature* creature, bool known, uint32_t remove);
 		void AddPlayerStats(NetworkMessage& msg);
-		void AddCreatureSpeak(NetworkMessage& msg, const Creature* creature, SpeakClasses type,
-		                      const std::string& text, uint16_t channelId, Position* pos = nullptr);
+		void AddCreatureSpeak(NetworkMessage& msg, const Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId, Position* pos = nullptr);
 		void AddCreatureHealth(NetworkMessage& msg, const Creature* creature);
 		void AddCreatureOutfit(NetworkMessage& msg, const Creature* creature, const Outfit_t& outfit);
 		void AddPlayerSkills(NetworkMessage& msg);
@@ -303,10 +287,8 @@ class ProtocolGame : public Protocol
 		void UpdateTileItem(NetworkMessage& msg, const Position& pos, uint32_t stackpos, const Item* item);
 		void RemoveTileItem(NetworkMessage& msg, const Position& pos, uint32_t stackpos);
 
-		void MoveUpCreature(NetworkMessage& msg, const Creature* creature,
-		                    const Position& newPos, const Position& oldPos, uint32_t oldStackPos);
-		void MoveDownCreature(NetworkMessage& msg, const Creature* creature,
-		                      const Position& newPos, const Position& oldPos, uint32_t oldStackPos);
+		void MoveUpCreature(NetworkMessage& msg, const Creature* creature, const Position& newPos, const Position& oldPos, uint32_t oldStackPos);
+		void MoveDownCreature(NetworkMessage& msg, const Creature* creature, const Position& newPos, const Position& oldPos, uint32_t oldStackPos);
 
 		//container
 		void AddContainerItem(NetworkMessage& msg, uint8_t cid, const Item* item);
@@ -315,9 +297,6 @@ class ProtocolGame : public Protocol
 
 		//inventory
 		void SetInventoryItem(NetworkMessage& msg, slots_t slot, const Item* item);
-
-		//shop
-		void AddShopItem(NetworkMessage& msg, const ShopInfo& item);
 
 		friend class Player;
 

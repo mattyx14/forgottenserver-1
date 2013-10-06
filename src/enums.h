@@ -63,14 +63,6 @@ enum ReportType_t {
 	REPORTTYPE_BOT = 2
 };
 
-enum CreatureType_t {
-	CREATURETYPE_PLAYER = 0,
-	CREATURETYPE_MONSTER = 1,
-	CREATURETYPE_NPC = 2,
-	CREATURETYPE_SUMMON_OWN = 3,
-	CREATURETYPE_SUMMON_OTHERS = 4
-};
-
 enum StorageValues_t {
 	STORAGEVALUE_PROMOTION = 30018
 };
@@ -326,33 +318,5 @@ struct LightInfo {
 		color = _color;
 	}
 };
-
-struct ShopInfo {
-	uint32_t itemId;
-	int32_t subType;
-	uint32_t buyPrice;
-	uint32_t sellPrice;
-	std::string realName;
-
-	ShopInfo() {
-		itemId = 0;
-		subType = 1;
-		buyPrice = 0;
-		sellPrice = 0;
-		realName = "";
-	};
-
-	ShopInfo(uint32_t _itemId, int32_t _subType = 0,
-	         uint32_t _buyPrice = 0, uint32_t _sellPrice = 0,
-	         std::string _realName = "") {
-		itemId = _itemId;
-		subType = _subType;
-		buyPrice = _buyPrice;
-		sellPrice = _sellPrice;
-		realName = _realName;
-	};
-};
-
-typedef std::list<ShopInfo> ShopInfoList;
 
 #endif

@@ -4374,7 +4374,6 @@ int32_t LuaScriptInterface::luaDoConvinceCreature(lua_State* L)
 	}
 
 	target->convinceCreature(creature);
-	g_game.updateCreatureType(target);
 	pushBoolean(L, true);
 	return 1;
 }
