@@ -369,8 +369,8 @@ void Creature::updateMapCache()
 	const Position& myPos = getPosition();
 	Position pos(0, 0, myPos.z);
 
-	for (int32_t y = -((mapWalkHeight - 1) / 2); y <= ((mapWalkHeight - 1) / 2); ++y) {
-		for (int32_t x = -((mapWalkWidth - 1) / 2); x <= ((mapWalkWidth - 1) / 2); ++x) {
+	for (int32_t y = -maxWalkCacheHeight; y <= maxWalkCacheHeight; ++y) {
+		for (int32_t x = -maxWalkCacheWidth; x <= maxWalkCacheWidth; ++x) {
 			pos.x = myPos.getX() + x;
 			pos.y = myPos.getY() + y;
 			tile = g_game.getTile(pos.x, pos.y, myPos.z);
@@ -381,20 +381,14 @@ void Creature::updateMapCache()
 
 void Creature::updateTileCache(const Tile* tile, int32_t dx, int32_t dy)
 {
-	if ((std::abs(dx) <= (mapWalkWidth - 1) / 2) &&
-	        (std::abs(dy) <= (mapWalkHeight - 1) / 2)) {
-		int32_t x = (mapWalkWidth - 1) / 2 + dx;
-		int32_t y = (mapWalkHeight - 1) / 2 + dy;
-
-		localMapCache[y][x] = (tile && tile->__queryAdd(0, this, 1,
-		                       FLAG_PATHFINDING | FLAG_IGNOREFIELDDAMAGE) == RET_NOERROR);
+	if (std::abs(dx) <= maxWalkCacheWidth && std::abs(dy) <= maxWalkCacheHeight) {
+		localMapCache[maxWalkCacheHeight + dy][maxWalkCacheWidth + dx] = tile && tile->__queryAdd(0, this, 1, FLAG_PATHFINDING | FLAG_IGNOREFIELDDAMAGE) == RET_NOERROR;
 	}
 }
 
 void Creature::updateTileCache(const Tile* tile, const Position& pos)
 {
 	const Position& myPos = getPosition();
-
 	if (pos.z == myPos.z) {
 		int32_t dx = Position::getOffsetX(pos, myPos);
 		int32_t dy = Position::getOffsetY(pos, myPos);
@@ -409,7 +403,6 @@ int32_t Creature::getWalkCache(const Position& pos) const
 	}
 
 	const Position& myPos = getPosition();
-
 	if (myPos.z != pos.z) {
 		return 0;
 	}
@@ -419,16 +412,14 @@ int32_t Creature::getWalkCache(const Position& pos) const
 	}
 
 	int32_t dx = Position::getOffsetX(pos, myPos);
-	int32_t dy = Position::getOffsetY(pos, myPos);
-
-	if ((std::abs(dx) <= (mapWalkWidth - 1) / 2) &&
-	        (std::abs(dy) <= (mapWalkHeight - 1) / 2)) {
-		int32_t x = (mapWalkWidth - 1) / 2 + dx;
-		int32_t y = (mapWalkHeight - 1) / 2 + dy;
-		if (localMapCache[y][x]) {
-			return 1;
-		} else {
-			return 0;
+	if (std::abs(dx) <= maxWalkCacheWidth) {
+		int32_t dy = Position::getOffsetY(pos, myPos);
+		if (std::abs(dy) <= maxWalkCacheHeight) {
+			if (localMapCache[maxWalkCacheHeight + dy][maxWalkCacheWidth + dx]) {
+				return 1;
+			} else {
+				return 0;
+			}
 		}
 	}
 
@@ -443,8 +434,7 @@ void Creature::onAddTileItem(const Tile* tile, const Position& pos, const Item* 
 	}
 }
 
-void Creature::onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
-                                const ItemType& oldType, const Item* newItem, const ItemType& newType)
+void Creature::onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem, const ItemType& oldType, const Item* newItem, const ItemType& newType)
 {
 	if (!isMapLoaded) {
 		return;
@@ -457,8 +447,7 @@ void Creature::onUpdateTileItem(const Tile* tile, const Position& pos, const Ite
 	}
 }
 
-void Creature::onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType,
-                                const Item* item)
+void Creature::onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType, const Item* item)
 {
 	if (!isMapLoaded) {
 		return;
@@ -579,25 +568,25 @@ void Creature::onCreatureMove(const Creature* creature, const Tile* newTile, con
 
 				if (oldPos.y > newPos.y) { //north
 					//shift y south
-					for (int32_t y = mapWalkHeight - 1 - 1; y >= 0; --y) {
+					for (int32_t y = mapWalkHeight - 2; y >= 0; --y) {
 						memcpy(localMapCache[y + 1], localMapCache[y], sizeof(localMapCache[y]));
 					}
 
 					//update 0
-					for (int32_t x = -((mapWalkWidth - 1) / 2); x <= ((mapWalkWidth - 1) / 2); ++x) {
-						tile = g_game.getTile(myPos.getX() + x, myPos.getY() - ((mapWalkHeight - 1) / 2), myPos.z);
-						updateTileCache(tile, x, -((mapWalkHeight - 1) / 2));
+					for (int32_t x = -maxWalkCacheWidth; x <= maxWalkCacheWidth; ++x) {
+						tile = g_game.getTile(myPos.getX() + x, myPos.getY() - maxWalkCacheHeight, myPos.z);
+						updateTileCache(tile, x, -maxWalkCacheHeight);
 					}
 				} else if (oldPos.y < newPos.y) { // south
 					//shift y north
-					for (int32_t y = 0; y <= mapWalkHeight - 1 - 1; ++y) {
+					for (int32_t y = 0; y <= mapWalkHeight - 2; ++y) {
 						memcpy(localMapCache[y], localMapCache[y + 1], sizeof(localMapCache[y]));
 					}
 
 					//update mapWalkHeight - 1
-					for (int32_t x = -((mapWalkWidth - 1) / 2); x <= ((mapWalkWidth - 1) / 2); ++x) {
-						tile = g_game.getTile(myPos.getX() + x, myPos.getY() + ((mapWalkHeight - 1) / 2), myPos.z);
-						updateTileCache(tile, x, (mapWalkHeight - 1) / 2);
+					for (int32_t x = -maxWalkCacheWidth; x <= maxWalkCacheWidth; ++x) {
+						tile = g_game.getTile(myPos.getX() + x, myPos.getY() + maxWalkCacheHeight, myPos.z);
+						updateTileCache(tile, x, maxWalkCacheHeight);
 					}
 				}
 
@@ -620,9 +609,9 @@ void Creature::onCreatureMove(const Creature* creature, const Tile* newTile, con
 					}
 
 					//update mapWalkWidth - 1
-					for (int32_t y = -((mapWalkHeight - 1) / 2); y <= ((mapWalkHeight - 1) / 2); ++y) {
-						tile = g_game.getTile(myPos.x + ((mapWalkWidth - 1) / 2), myPos.y + y, myPos.z);
-						updateTileCache(tile, (mapWalkWidth - 1) / 2, y);
+					for (int32_t y = -maxWalkCacheHeight; y <= maxWalkCacheHeight; ++y) {
+						tile = g_game.getTile(myPos.x + maxWalkCacheWidth, myPos.y + y, myPos.z);
+						updateTileCache(tile, maxWalkCacheWidth, y);
 					}
 				} else if (oldPos.x > newPos.x) { // west
 					//shift y east
@@ -643,9 +632,9 @@ void Creature::onCreatureMove(const Creature* creature, const Tile* newTile, con
 					}
 
 					//update 0
-					for (int32_t y = -((mapWalkHeight - 1) / 2); y <= ((mapWalkHeight - 1) / 2); ++y) {
-						tile = g_game.getTile(myPos.x - ((mapWalkWidth - 1) / 2), myPos.y + y, myPos.z);
-						updateTileCache(tile, -((mapWalkWidth - 1) / 2), y);
+					for (int32_t y = -maxWalkCacheHeight; y <= maxWalkCacheHeight; ++y) {
+						tile = g_game.getTile(myPos.x - maxWalkCacheWidth, myPos.y + y, myPos.z);
+						updateTileCache(tile, -maxWalkCacheWidth, y);
 					}
 				}
 
@@ -795,9 +784,11 @@ bool Creature::getKillers(Creature** _lastHitCreature, Creature** _mostDamageCre
 
 	int32_t mostDamage = 0;
 
+	uint32_t inFightTicks = g_config.getNumber(ConfigManager::PZ_LOCKED);
+
 	for (const auto& it : damageMap) {
 		CountBlock_t cb = it.second;
-		if ((cb.total > mostDamage && (OTSYS_TIME() - cb.ticks <= g_game.getInFightTicks()))) {
+		if ((cb.total > mostDamage && (OTSYS_TIME() - cb.ticks <= inFightTicks))) {
 			Creature* creature = g_game.getCreatureByID(it.first);
 			if (creature) {
 				mostDamage = cb.total;
@@ -814,7 +805,7 @@ bool Creature::hasBeenAttacked(uint32_t attackerId)
 	if (it == damageMap.end()) {
 		return false;
 	}
-	return (OTSYS_TIME() - it->second.ticks) <= g_game.getInFightTicks();
+	return (OTSYS_TIME() - it->second.ticks) <= g_config.getNumber(ConfigManager::PZ_LOCKED);
 }
 
 Item* Creature::getCorpse()
@@ -1535,17 +1526,14 @@ int32_t Creature::getStepDuration() const
 int64_t Creature::getEventStepTicks(bool onlyDelay) const
 {
 	int64_t ret = getWalkDelay();
-
 	if (ret <= 0) {
 		int32_t stepDuration = getStepDuration();
-
 		if (onlyDelay && stepDuration > 0) {
 			ret = 1;
 		} else {
 			ret = stepDuration * lastStepCost;
 		}
 	}
-
 	return ret;
 }
 

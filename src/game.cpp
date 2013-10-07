@@ -241,7 +241,6 @@ int32_t Game::loadMap(const std::string& filename)
 		map = new Map;
 	}
 
-	inFightTicks = g_config.getNumber(ConfigManager::PZ_LOCKED);
 	Player::maxMessageBuffer = g_config.getNumber(ConfigManager::MAX_MESSAGEBUFFER);
 	Monster::despawnRange = g_config.getNumber(ConfigManager::DEFAULT_DESPAWNRANGE);
 	Monster::despawnRadius = g_config.getNumber(ConfigManager::DEFAULT_DESPAWNRADIUS);
@@ -3503,6 +3502,13 @@ bool Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 	}
 
 	player->hasRequestedOutfit(false);
+	player->defaultOutfit = outfit;
+
+	if (player->hasCondition(CONDITION_OUTFIT)) {
+		return false;
+	}
+
+	internalCreatureChangeOutfit(player, outfit);
 	return true;
 }
 
@@ -3535,9 +3541,10 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type, c
 		return true;
 	}
 
-	if (type != SPEAK_PRIVATE_PN) {
+	/*if (channelId == CHANNEL_NPC && type == SPEAK_PRIVATE) {
 		player->removeMessageBuffer();
-	}
+		return playerSpeakToNpc(player, text);
+	}*/
 
 	switch (type) {
 		case SPEAK_SAY:
@@ -3549,17 +3556,14 @@ bool Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type, c
 		case SPEAK_YELL:
 			return playerYell(player, text);
 
-		case SPEAK_PRIVATE_TO:
-		case SPEAK_PRIVATE_RED_TO:
+		case SPEAK_PRIVATE:
+		case SPEAK_PRIVATE_RED:
 			return playerSpeakTo(player, type, receiver, text);
 
 		case SPEAK_CHANNEL_O:
 		case SPEAK_CHANNEL_Y:
 		case SPEAK_CHANNEL_R1:
 			return g_chat.talkToChannel(*player, type, text, channelId);
-
-		case SPEAK_PRIVATE_PN:
-			return playerSpeakToNpc(player, text);
 
 		case SPEAK_BROADCAST:
 			return playerBroadcastMessage(player, text);
@@ -3609,9 +3613,7 @@ bool Game::playerSaySpell(Player* player, SpeakClasses type, const std::string& 
 bool Game::playerWhisper(Player* player, const std::string& text)
 {
 	SpectatorVec list;
-	getSpectators(list, player->getPosition(), false, false,
-	              Map::maxClientViewportX, Map::maxClientViewportX,
-	              Map::maxClientViewportY, Map::maxClientViewportY);
+	getSpectators(list, player->getPosition(), false, false,Map::maxClientViewportX, Map::maxClientViewportX, Map::maxClientViewportY, Map::maxClientViewportY);
 
 	//send to client
 	for (Creature* spectator : list) {
@@ -3653,8 +3655,7 @@ bool Game::playerYell(Player* player, const std::string& text)
 	return true;
 }
 
-bool Game::playerSpeakTo(Player* player, SpeakClasses type, const std::string& receiver,
-                         const std::string& text)
+bool Game::playerSpeakTo(Player* player, SpeakClasses type, const std::string& receiver, const std::string& text)
 {
 	Player* toPlayer = getPlayerByName(receiver);
 	if (!toPlayer) {
@@ -3662,10 +3663,8 @@ bool Game::playerSpeakTo(Player* player, SpeakClasses type, const std::string& r
 		return false;
 	}
 
-	if (type == SPEAK_PRIVATE_RED_TO && (player->hasFlag(PlayerFlag_CanTalkRedPrivate) || player->getAccountType() >= ACCOUNT_TYPE_GAMEMASTER)) {
-		type = SPEAK_PRIVATE_RED_FROM;
-	} else {
-		type = SPEAK_PRIVATE_FROM;
+	if (type == SPEAK_PRIVATE_RED && (!player->hasFlag(PlayerFlag_CanTalkRedPrivate) || player->getAccountType() < ACCOUNT_TYPE_GAMEMASTER)) {
+		type = SPEAK_PRIVATE;
 	}
 
 	toPlayer->sendCreatureSay(player, type, text);
@@ -3687,7 +3686,7 @@ bool Game::playerSpeakToNpc(Player* player, const std::string& text)
 	getSpectators(list, player->getPosition());
 	for (Creature* spectator : list) {
 		if (spectator->getNpc()) {
-			spectator->onCreatureSay(player, SPEAK_PRIVATE_PN, text);
+			spectator->onCreatureSay(player, SPEAK_PRIVATE, text);
 		}
 	}
 	return true;
@@ -3696,8 +3695,8 @@ bool Game::playerSpeakToNpc(Player* player, const std::string& text)
 bool Game::npcSpeakToPlayer(Npc* npc, Player* player, const std::string& text, bool publicize)
 {
 	if (player != nullptr) {
-		player->sendCreatureSay(npc, SPEAK_PRIVATE_NP, text);
-		player->onCreatureSay(npc, SPEAK_PRIVATE_NP, text);
+		player->sendCreatureSay(npc, SPEAK_PRIVATE, text);
+		player->onCreatureSay(npc, SPEAK_PRIVATE, text);
 	}
 
 	if (publicize) {
@@ -3724,8 +3723,7 @@ bool Game::npcSpeakToPlayer(Npc* npc, Player* player, const std::string& text, b
 }
 
 //--
-bool Game::canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight /*= true*/,
-                            int32_t rangex /*= Map::maxClientViewportX*/, int32_t rangey /*= Map::maxClientViewportY*/)
+bool Game::canThrowObjectTo(const Position& fromPos, const Position& toPos, bool checkLineOfSight /*= true*/, int32_t rangex /*= Map::maxClientViewportX*/, int32_t rangey /*= Map::maxClientViewportY*/)
 {
 	return map->canThrowObjectTo(fromPos, toPos, checkLineOfSight, rangex, rangey);
 }
@@ -3752,8 +3750,7 @@ bool Game::internalCreatureTurn(Creature* creature, Direction dir)
 	return true;
 }
 
-bool Game::internalCreatureSay(Creature* creature, SpeakClasses type, const std::string& text,
-                               bool ghostMode, SpectatorVec* listPtr/* = nullptr*/, Position* pos/* = nullptr*/)
+bool Game::internalCreatureSay(Creature* creature, SpeakClasses type, const std::string& text, bool ghostMode, SpectatorVec* listPtr/* = nullptr*/, Position* pos/* = nullptr*/)
 {
 	if (text.empty()) {
 		return false;
@@ -3772,9 +3769,7 @@ bool Game::internalCreatureSay(Creature* creature, SpeakClasses type, const std:
 		// used (hopefully the compiler will optimize away the construction of
 		// the temporary when it's not used).
 		if (type != SPEAK_YELL && type != SPEAK_MONSTER_YELL) {
-			getSpectators(list, destPos, false, false,
-			              Map::maxClientViewportX, Map::maxClientViewportX,
-			              Map::maxClientViewportY, Map::maxClientViewportY);
+			getSpectators(list, destPos, false, false, Map::maxClientViewportX, Map::maxClientViewportX, Map::maxClientViewportY, Map::maxClientViewportY);
 		} else {
 			getSpectators(list, destPos, true, false, 18, 18, 14, 14);
 		}
@@ -3798,21 +3793,17 @@ bool Game::internalCreatureSay(Creature* creature, SpeakClasses type, const std:
 	return true;
 }
 
-bool Game::getPathTo(const Creature* creature, const Position& destPos,
-                     std::list<Direction>& listDir, int32_t maxSearchDist /*= -1*/)
+bool Game::getPathTo(const Creature* creature, const Position& destPos, std::list<Direction>& listDir, int32_t maxSearchDist /*= -1*/)
 {
 	return map->getPathTo(creature, destPos, listDir, maxSearchDist);
 }
 
-bool Game::getPathToEx(const Creature* creature, const Position& targetPos,
-                       std::list<Direction>& dirList, const FindPathParams& fpp)
+bool Game::getPathToEx(const Creature* creature, const Position& targetPos, std::list<Direction>& dirList, const FindPathParams& fpp)
 {
 	return map->getPathMatching(creature, dirList, FrozenPathingConditionCall(targetPos), fpp);
 }
 
-bool Game::getPathToEx(const Creature* creature, const Position& targetPos, std::list<Direction>& dirList,
-                       uint32_t minTargetDist, uint32_t maxTargetDist, bool fullPathSearch /*= true*/,
-                       bool clearSight /*= true*/, int32_t maxSearchDist /*= -1*/)
+bool Game::getPathToEx(const Creature* creature, const Position& targetPos, std::list<Direction>& dirList, uint32_t minTargetDist, uint32_t maxTargetDist, bool fullPathSearch /*= true*/, bool clearSight /*= true*/, int32_t maxSearchDist /*= -1*/)
 {
 	FindPathParams fpp;
 	fpp.fullPathSearch = fullPathSearch;

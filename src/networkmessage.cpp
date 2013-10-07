@@ -154,9 +154,9 @@ void NetworkMessage::AddItem(const Item* item)
 	AddU16(it.clientId);
 
 	if (it.stackable) {
-		AddByte(std::min<uint16_t>(0xFF, item->getSubType()));
+		AddByte(std::min<uint16_t>(0xFF, item->getItemCount()));
 	} else if (it.isSplash() || it.isFluidContainer()) {
-		uint32_t fluidIndex = item->getSubType() % 8;
+		uint32_t fluidIndex = item->getFluidType() % 8;
 		AddByte(fluidMap[fluidIndex]);
 	}
 

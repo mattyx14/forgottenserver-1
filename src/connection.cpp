@@ -41,24 +41,20 @@ extern ConfigManager g_config;
 uint32_t Connection::connectionCount = 0;
 #endif
 
-Connection_ptr ConnectionManager::createConnection(boost::asio::ip::tcp::socket* socket,
-        boost::asio::io_service& io_service, ServicePort_ptr servicer)
+Connection_ptr ConnectionManager::createConnection(boost::asio::ip::tcp::socket* socket, boost::asio::io_service& io_service, ServicePort_ptr servicer)
 {
 	boost::recursive_mutex::scoped_lock lockClass(m_connectionManagerLock);
+
 	Connection_ptr connection = Connection_ptr(new Connection(socket, io_service, servicer));
-	m_connections.push_back(connection);
+	m_connections.insert(connection);
 	return connection;
 }
 
 void ConnectionManager::releaseConnection(Connection_ptr connection)
 {
 	boost::recursive_mutex::scoped_lock lockClass(m_connectionManagerLock);
-	auto it = std::find(m_connections.begin(), m_connections.end(), connection);
-	if (it != m_connections.end()) {
-		m_connections.erase(it);
-	} else {
-		std::cout << "[Error - ConnectionManager::releaseConnection] Connection not found" << std::endl;
-	}
+
+	m_connections.erase(connection);
 }
 
 void ConnectionManager::closeAll()
@@ -73,7 +69,6 @@ void ConnectionManager::closeAll()
 		} catch (boost::system::system_error&) {
 		}
 	}
-
 	m_connections.clear();
 }
 

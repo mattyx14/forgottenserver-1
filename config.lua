@@ -111,7 +111,7 @@ defaultPriority = "high"
 startupDatabaseOptimization = "no"
 
 -- Storage
-passwordType = "plain"
+passwordType = "sha1"
 
 -- Status server information
 ownerName = "Mark Samman"

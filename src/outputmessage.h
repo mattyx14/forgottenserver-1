@@ -74,14 +74,14 @@ class OutputMessage : public NetworkMessage, boost::noncopyable
 
 		inline void append(const NetworkMessage& msg) {
 			int32_t msgLen = msg.getMessageLength();
-			memcpy(m_MsgBuf + m_ReadPos, msg.getBuffer() + 8, msgLen);
+			memcpy(m_MsgBuf + m_ReadPos, msg.getBuffer() + 4, msgLen);
 			m_MsgSize += msgLen;
 			m_ReadPos += msgLen;
 		}
 
 		inline void append(OutputMessage_ptr msg) {
 			int32_t msgLen = msg->getMessageLength();
-			memcpy(m_MsgBuf + m_ReadPos, msg->getBuffer() + 8, msgLen);
+			memcpy(m_MsgBuf + m_ReadPos, msg->getBuffer() + 4, msgLen);
 			m_MsgSize += msgLen;
 			m_ReadPos += msgLen;
 		}

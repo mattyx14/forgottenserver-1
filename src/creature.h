@@ -91,11 +91,9 @@ class FrozenPathingConditionCall
 		FrozenPathingConditionCall(const Position& _targetPos);
 		~FrozenPathingConditionCall() {}
 
-		bool operator()(const Position& startPos, const Position& testPos,
-		                const FindPathParams& fpp, int32_t& bestMatchDist) const;
+		bool operator()(const Position& startPos, const Position& testPos, const FindPathParams& fpp, int32_t& bestMatchDist) const;
 
-		bool isInRange(const Position& startPos, const Position& testPos,
-		               const FindPathParams& fpp) const;
+		bool isInRange(const Position& startPos, const Position& testPos, const FindPathParams& fpp) const;
 
 	protected:
 		Position targetPos;
@@ -437,10 +435,11 @@ class Creature : virtual public Thing
 		}
 		virtual void setParent(Cylinder* cylinder) {
 			_tile = dynamic_cast<Tile*>(cylinder);
+			_position = _tile->getTilePosition();
 		}
 
-		const Position& getPosition() const {
-			return _tile->getPosition();
+		inline const Position& getPosition() const {
+			return _position;
 		}
 
 		Tile* getTile() {
@@ -482,6 +481,8 @@ class Creature : virtual public Thing
 			int64_t ticks;
 		};
 
+		Position _position;
+
 		typedef std::map<uint32_t, CountBlock_t> CountMap;
 		CountMap damageMap;
 
@@ -521,6 +522,10 @@ class Creature : virtual public Thing
 		static const int32_t mapWalkWidth = Map::maxViewportX * 2 + 1;
 		static const int32_t mapWalkHeight = Map::maxViewportY * 2 + 1;
 		bool localMapCache[mapWalkHeight][mapWalkWidth];
+
+		static const int32_t maxWalkCacheWidth = (mapWalkWidth - 1) / 2;
+		static const int32_t maxWalkCacheHeight = (mapWalkHeight - 1) / 2;
+
 		bool isInternalRemoved;
 		bool isMapLoaded;
 		bool isUpdatingPath;

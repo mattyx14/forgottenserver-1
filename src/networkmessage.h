@@ -50,7 +50,7 @@ class NetworkMessage
 		void Reset() {
 			m_overrun = false;
 			m_MsgSize = 0;
-			m_ReadPos = 8;
+			m_ReadPos = 4;
 		}
 
 	public:
@@ -194,7 +194,7 @@ class NetworkMessage
 		}
 
 		inline bool canRead(int32_t size) {
-			if ((m_ReadPos + size) > (m_MsgSize + 8) || size >= (NETWORKMESSAGE_MAXSIZE - m_ReadPos)) {
+			if ((m_ReadPos + size) > (m_MsgSize + 4) || size >= (NETWORKMESSAGE_MAXSIZE - m_ReadPos)) {
 				m_overrun = true;
 				return false;
 			}

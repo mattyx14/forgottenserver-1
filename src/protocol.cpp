@@ -34,10 +34,12 @@ void Protocol::onSendMessage(OutputMessage_ptr msg)
 	if (!m_rawMessages) {
 		msg->writeMessageLength();
 
+		#ifdef __PROTOCOL_77__
 		if (m_encryptionEnabled) {
 			XTEA_encrypt(*msg);
 			msg->addCryptoHeader();
 		}
+		#endif
 	}
 
 	if (msg == m_outputBuffer) {
@@ -47,9 +49,11 @@ void Protocol::onSendMessage(OutputMessage_ptr msg)
 
 void Protocol::onRecvMessage(NetworkMessage& msg)
 {
+	#ifdef __PROTOCOL_77__
 	if (m_encryptionEnabled && !XTEA_decrypt(msg)) {
 		return;
 	}
+	#endif
 
 	parsePacket(msg);
 }

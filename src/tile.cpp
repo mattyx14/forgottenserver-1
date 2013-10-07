@@ -1283,50 +1283,7 @@ int32_t Tile::__getIndexOfThing(const Thing* thing) const
 
 int32_t Tile::getClientIndexOfThing(const Player* player, const Thing* thing) const
 {
-	int32_t n = 0;
-	if (ground) {
-		if (ground == thing) {
-			return n;
-		}
-		++n;
-	}
-
-	const TileItemVector* items = getItemList();
-	if (items) {
-		if (thing->getItem()) {
-			for (ItemVector::const_iterator it = items->getBeginTopItem(); it != items->getEndTopItem(); ++it) {
-				if (*it == thing) {
-					return n;
-				} else {
-					++n;
-				}
-			}
-		} else {
-			n += items->getTopItemCount();
-		}
-	}
-
-	if (const CreatureVector* creatures = getCreatures()) {
-		for (const Creature* creature : boost::adaptors::reverse(*creatures)) {
-			if (creature == thing) {
-				return n;
-			} else if (player->canSeeCreature(creature)) {
-				++n;
-			}
-		}
-	}
-
-	if (items) {
-		if (thing->getItem()) {
-			for (ItemVector::const_iterator it = items->getBeginDownItem(); it != items->getEndDownItem(); ++it) {
-				if (*it == thing) {
-					return n;
-				}
-				++n;
-			}
-		}
-	}
-	return -1;
+	return __getIndexOfThing(thing);
 }
 
 int32_t Tile::__getFirstIndex() const

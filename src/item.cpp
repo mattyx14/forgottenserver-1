@@ -330,17 +330,17 @@ bool Item::hasSubType() const
 
 uint16_t Item::getSubType() const
 {
-	const ItemType& it = items[getID()];
+	const ItemType& it = items[id];
 
 	if (it.isFluidContainer() || it.isSplash()) {
 		return getFluidType();
 	} else if (it.stackable) {
-		return getItemCount();
+		return count;
 	} else if (it.charges != 0) {
 		return getCharges();
 	}
 
-	return getItemCount();
+	return count;
 }
 
 Player* Item::getHoldingPlayer()
@@ -1329,15 +1329,15 @@ bool Item::canDecay()
 
 int32_t Item::getWorth() const
 {
-	switch (getID()) {
+	switch (id) {
 		case ITEM_COINS_GOLD:
-			return getItemCount();
+			return count;
 
 		case ITEM_COINS_PLATINUM:
-			return getItemCount() * 100;
+			return count * 100;
 
 		case ITEM_COINS_CRYSTAL:
-			return getItemCount() * 10000;
+			return count * 10000;
 
 		default:
 			return 0;
@@ -1522,36 +1522,20 @@ ItemAttributes::Attribute* ItemAttributes::getAttrConst(itemAttrTypes type) cons
 	Attribute* curAttr = m_firstAttr;
 	while (curAttr) {
 		if (curAttr->type == type) {
-			return curAttr;
+			break;
 		}
 		curAttr = curAttr->next;
 	}
-
-	std::cout << "Warning: [ItemAttributes::getAttrConst] (type & m_attributes) != 0 but attribute not found" << std::endl;
-	return nullptr;
+	return curAttr;
 }
 
 ItemAttributes::Attribute* ItemAttributes::getAttr(itemAttrTypes type)
 {
-	Attribute* curAttr;
-
-	if (!hasAttribute(type)) {
+	Attribute* curAttr = getAttrConst(type);
+	if (!curAttr) {
 		curAttr = new Attribute(type);
 		addAttr(curAttr);
-		return curAttr;
-	} else {
-		curAttr = m_firstAttr;
-		while (curAttr) {
-			if (curAttr->type == type) {
-				return curAttr;
-			}
-			curAttr = curAttr->next;
-		}
 	}
-
-	std::cout << "Warning: [ItemAttributes::getAttr] (type & m_attributes) != 0 but attribute not found" << std::endl;
-	curAttr = new Attribute(type);
-	addAttr(curAttr);
 	return curAttr;
 }
 

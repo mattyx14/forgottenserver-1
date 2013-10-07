@@ -342,8 +342,8 @@ void Npc::doSay(const std::string& text)
 void Npc::doSayToPlayer(Player* player, const std::string& text)
 {
 	if (player) {
-		player->sendCreatureSay(this, SPEAK_PRIVATE_NP, text);
-		player->onCreatureSay(this, SPEAK_PRIVATE_NP, text);
+		//player->sendCreatureSay(this, SPEAK_PRIVATE_NP, text);
+		//player->onCreatureSay(this, SPEAK_PRIVATE_NP, text);
 	}
 }
 

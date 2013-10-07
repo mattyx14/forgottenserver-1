@@ -120,13 +120,9 @@ class Game
 		WorldType_t getWorldType() const {
 			return worldType;
 		}
-		int32_t getInFightTicks() const {
-			return inFightTicks;
-		}
 
 		Cylinder* internalGetCylinder(Player* player, const Position& pos);
-		Thing* internalGetThing(Player* player, const Position& pos, int32_t index,
-		                        uint32_t spriteId = 0, stackPosType_t type = STACKPOS_NORMAL);
+		Thing* internalGetThing(Player* player, const Position& pos, int32_t index, uint32_t spriteId = 0, stackPosType_t type = STACKPOS_NORMAL);
 		void internalGetPosition(Item* item, Position& pos, uint8_t& stackpos);
 
 		std::string getTradeErrorDescription(ReturnValue ret, Item* item);
@@ -536,7 +532,7 @@ class Game
 		int32_t getMotdNum() const { return motdNum; }
 		void incrementMotdNum() { motdNum++; }
 
-		const std::map<uint32_t, Player*>& getPlayers() const { return players; }
+		const std::unordered_map<uint32_t, Player*>& getPlayers() const { return players; }
 		const std::map<uint32_t, Npc*>& getNpcs() const { return npcs; }
 		const std::map<uint32_t, Monster*>& getMonsters() const { return monsters; }
 
@@ -562,27 +558,44 @@ class Game
 		bool playerSpeakTo(Player* player, SpeakClasses type, const std::string& receiver, const std::string& text);
 		bool playerSpeakToNpc(Player* player, const std::string& text);
 
-		bool serverSaveMessage[3];
-		int64_t stateTime;
+		void checkDecay();
+		void internalDecayItem(Item *item);
 
+		Map* map;
+
+		std::unordered_map<uint32_t, Creature*> creatures;
+		std::unordered_map<uint32_t, Player*> players;
+		std::unordered_map<std::string, Player*> mappedPlayerNames;
+		std::unordered_map<uint32_t, Guild*> guilds;
+		std::map<uint32_t, uint32_t> stages;
+
+		std::list<Item*> decayItems[EVENT_DECAY_BUCKETS];
+		std::list<Item*> toDecayItems;
+
+		std::vector<Creature*> checkCreatureVectors[EVENT_CREATURECOUNT];
+		std::vector<Creature*> toAddCheckCreatureVector;
 		std::vector<Creature*> ToReleaseCreatures;
 		std::vector<Item*> ToReleaseItems;
+		std::vector<char> commandTags;
+
+		size_t lastBucket;
+		size_t checkCreatureLastIndex;
+
+		WildcardTreeNode wildcardTree;
+
+		int64_t stateTime;
 
 		uint32_t checkLightEvent;
 		uint32_t checkCreatureEvent;
 		uint32_t checkDecayEvent;
 
-		//list of items that are in trading state, mapped to the player
-		std::map<Item*, uint32_t> tradeItems;
-
-		std::map<uint32_t, Player*> players;
-		std::map<uint32_t, Creature*> creatures;
 		std::map<uint32_t, Npc*> npcs;
 		std::map<uint32_t, Monster*> monsters;
 
-		size_t checkCreatureLastIndex;
-		std::vector<Creature*> checkCreatureVectors[EVENT_CREATURECOUNT];
-		std::vector<Creature*> toAddCheckCreatureVector;
+		//list of items that are in trading state, mapped to the player
+		std::map<Item*, uint32_t> tradeItems;
+
+		Groups groups;
 
 		struct GameEvent {
 			int64_t tick;
@@ -590,29 +603,20 @@ class Game
 			void* data;
 		};
 
-		void checkDecay();
-		void internalDecayItem(Item* item);
-
-		std::list<Item*> decayItems[EVENT_DECAY_BUCKETS];
-		std::list<Item*> toDecayItems;
-		size_t lastBucket;
-
 		static const int32_t LIGHT_LEVEL_DAY = 250;
 		static const int32_t LIGHT_LEVEL_NIGHT = 40;
 		static const int32_t SUNSET = 1305;
 		static const int32_t SUNRISE = 430;
-		int32_t lightLevel;
-		LightState_t lightState;
-		int32_t lightHour;
-		int32_t lightHourDelta;
-
-		uint32_t inFightTicks;
 
 		GameState_t gameState;
 		WorldType_t worldType;
 
+		LightState_t lightState;
+		int32_t lightLevel;
+		int32_t lightHour;
+		int32_t lightHourDelta;
+
 		ServiceManager* services;
-		Map* map;
 
 		void updatePlayersRecord();
 		uint32_t playersRecord;
@@ -620,17 +624,9 @@ class Game
 		std::string motdHash;
 		int32_t motdNum;
 
-		std::map<uint32_t, uint32_t> stages;
-		bool stagesEnabled;
 		uint32_t lastStageLevel;
+		bool stagesEnabled;
 		bool useLastStageLevel;
-
-		std::unordered_map<std::string, Player*> mappedPlayerNames;
-		WildcardTreeNode wildcardTree;
-
-		Groups groups;
-
-		std::unordered_map<uint32_t, Guild*> guilds;
-		std::vector<char> commandTags;
+		bool serverSaveMessage[3];
 };
 #endif

@@ -663,7 +663,6 @@ bool Map::getPathTo(const Creature* creature, const Position& destPos,
 
 	while (maxSearchDist != -1 || nodes.countClosedNodes() < 100) {
 		AStarNode* n = nodes.getBestNode();
-
 		if (!n) {
 			listDir.clear();
 			return false; //no path found
@@ -678,8 +677,7 @@ bool Map::getPathTo(const Creature* creature, const Position& destPos,
 				pos.y = n->y + neighbourOrderList[i][1];
 
 				bool outOfRange = false;
-				if (maxSearchDist != -1 && (Position::getDistanceX(endPos, pos) > maxSearchDist ||
-				                            Position::getDistanceY(endPos, pos) > maxSearchDist)) {
+				if (maxSearchDist != -1 && (Position::getDistanceX(endPos, pos) > maxSearchDist || Position::getDistanceY(endPos, pos) > maxSearchDist)) {
 					outOfRange = true;
 				}
 
@@ -979,22 +977,18 @@ AStarNode* AStarNodes::getBestNode()
 		return nullptr;
 	}
 
-	int best_node_f = 100000;
-	uint32_t best_node = 0;
-	bool found = false;
-
+	int32_t best_node_f = std::numeric_limits<int32_t>::max();
+	int32_t best_node = -1;
 	for (uint32_t i = 0; i < curNode; i++) {
 		if (nodes[i].f < best_node_f && openNodes[i] == 1) {
-			found = true;
 			best_node_f = nodes[i].f;
 			best_node = i;
 		}
 	}
 
-	if (found) {
+	if (best_node >= 0) {
 		return &nodes[best_node];
 	}
-
 	return nullptr;
 }
 

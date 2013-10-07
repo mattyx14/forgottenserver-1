@@ -21,6 +21,9 @@
 #define __OTSERV_CONNECTION_H__
 
 #include "definitions.h"
+
+#include <set>
+
 #include <boost/asio.hpp>
 
 #include <boost/utility.hpp>
@@ -52,8 +55,7 @@ class ConnectionManager
 			return &instance;
 		}
 
-		Connection_ptr createConnection(boost::asio::ip::tcp::socket* socket,
-		                                boost::asio::io_service& io_service, ServicePort_ptr servicers);
+		Connection_ptr createConnection(boost::asio::ip::tcp::socket* socket, boost::asio::io_service& io_service, ServicePort_ptr servicers);
 		void releaseConnection(Connection_ptr connection);
 		void closeAll();
 
@@ -61,7 +63,8 @@ class ConnectionManager
 		ConnectionManager() {
 		}
 
-		std::list<Connection_ptr> m_connections;
+		// TODO: Use unordered_set (we need to specify a hash function)
+		std::set<Connection_ptr> m_connections;
 		boost::recursive_mutex m_connectionManagerLock;
 };
 
