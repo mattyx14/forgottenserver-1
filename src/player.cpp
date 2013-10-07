@@ -762,8 +762,6 @@ void Player::addContainer(uint8_t cid, Container* container)
 	auto it = openContainers.find(cid);
 	if (it != openContainers.end()) {
 		OpenContainer& openContainer = it->second;
-		Container* oldContainer = openContainer.container;
-
 		openContainer.container = container;
 		openContainer.index = 0;
 	} else {
@@ -782,7 +780,6 @@ void Player::closeContainer(uint8_t cid)
 	}
 
 	OpenContainer openContainer = it->second;
-	Container* container = openContainer.container;
 	openContainers.erase(it);
 }
 
@@ -1002,8 +999,6 @@ bool Player::canWalkthroughEx(const Creature* creature) const
 	if (!player) {
 		return false;
 	}
-
-	const Tile* playerTile = player->getTile();
 	return false;
 }
 
