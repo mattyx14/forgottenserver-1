@@ -1,4 +1,4 @@
-forgottenserver [![Build Status](https://travis-ci.org/evulmastah/forgottenserver.png?branch=master)](https://travis-ci.org/evulmastah/forgottenserver)
+forgottenserver [![Build Status](https://travis-ci.org/EvulMastah/forgottenserver.png?branch=master)](https://travis-ci.org/EvulMastah/forgottenserver)
 ===============
 
 Based on https://github.com/otland/forgottenserver
