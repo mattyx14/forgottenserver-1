@@ -1303,7 +1303,6 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 		return RET_NOTPOSSIBLE;
 	}
 
-	Tile* fromTile = fromCylinder->getTile();
 	Item* toItem = nullptr;
 
 	Cylinder* subCylinder;
@@ -1463,14 +1462,12 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 	return ret;
 }
 
-ReturnValue Game::internalMoveTradeItem(Cylinder* fromCylinder, Cylinder* toCylinder, int32_t index,
-                                        Item* item, Item* tradeItem, uint32_t count, Item** _moveItem, uint32_t flags /*= 0*/, Creature* actor/* = nullptr*/)
+ReturnValue Game::internalMoveTradeItem(Cylinder* fromCylinder, Cylinder* toCylinder, int32_t index, Item* item, Item* tradeItem, uint32_t count, Item** _moveItem, uint32_t flags /*= 0*/, Creature* actor/* = nullptr*/)
 {
 	if (!toCylinder) {
 		return RET_NOTPOSSIBLE;
 	}
 
-	Tile* fromTile = fromCylinder->getTile();
 	Item* toItem = nullptr;
 
 	Cylinder* subCylinder;
@@ -1745,8 +1742,6 @@ ReturnValue Game::internalRemoveItem(Item* item, int32_t count /*= -1*/, bool te
 		return RET_NOTPOSSIBLE;
 	}
 
-	Tile* fromTile = cylinder->getTile();
-
 	if (count == -1) {
 		count = item->getItemCount();
 	}
@@ -2017,8 +2012,6 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 	if (cylinder == nullptr) {
 		return nullptr;
 	}
-
-	Tile* fromTile = cylinder->getTile();
 
 	int32_t itemIndex = cylinder->__getIndexOfThing(item);
 	if (itemIndex == -1) {
