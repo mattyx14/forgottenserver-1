@@ -1,5 +1,5 @@
-local increasingItemID = {416, 446, 3216, 11062}
-local decreasingItemID = {417, 447, 3217, 11063}
+local increasingItemID = {416, 446, 3216}
+local decreasingItemID = {417, 447, 3217}
 
 function onStepIn(cid, item, position, fromPosition)
 	if isInArray(increasingItemID, item.itemid) then

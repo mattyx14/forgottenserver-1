@@ -40,29 +40,7 @@ local food =
 	[2794] = {3, "Munch."},
 	[2795] = {36, "Munch."},
 	[2796] = {5, "Munch."},
-	[2793] = {9, "Munch."},
-	[5097] = {4, "Yum."},
-	[6125] = {8, "Gulp."},
-	[6278] = {10, "Mmmm."},
-	[6279] = {15, "Mmmm."},
-	[6393] = {12, "Mmmm."},
-	[6394] = {15, "Mmmm."},
-	[6501] = {20, "Mmmm."},
-	[6541] = {6, "Gulp."},
-	[6542] = {6, "Gulp."},
-	[6543] = {6, "Gulp."},
-	[6544] = {6, "Gulp."},
-	[6545] = {6, "Gulp."},
-	[6569] = {1, "Mmmm."},
-	[6574] = {4, "Mmmm."},
-	[7158] = {15, "Munch."},
-	[7159] = {13, "Munch."},
-	[7372] = {7, "Yum."},
-	[7373] = {7, "Yum."},
-	[7374] = {7, "Yum."},
-	[7375] = {7, "Yum."},
-	[7376] = {7, "Yum."},
-	[7377] = {7, "Yum."}
+	[2793] = {9, "Munch."}
 }
 function onUse(cid, item, frompos, item2, topos)
 	if(food[item.itemid] ~= nil) then
@@ -70,7 +48,6 @@ function onUse(cid, item, frompos, item2, topos)
 			doPlayerSendCancel(cid, "You are full.")
 		else
 			doPlayerFeed(cid, food[item.itemid][1] * 4)
-			doCreatureSay(cid, food[item.itemid][2], TALKTYPE_ORANGE_1)
 			doRemoveItem(item.uid, 1)
 		end
 		return TRUE

@@ -3,5 +3,5 @@ function onAddItem(moveitem, tileitem, position)
 		doTransformItem(moveitem.uid, 2689)
 		doSendMagicEffect(position, CONST_ME_HITBYFIRE)
 	end
-	return TRUE
+	return true
 end
