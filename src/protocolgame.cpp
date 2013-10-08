@@ -1733,8 +1733,8 @@ void ProtocolGame::sendTextWindow(uint32_t windowTextId, Item* item, uint16_t ma
 		msg.AddString(text);
 	}
 
-	const std::string& writer = item->getWriter();
 	#ifdef __PROTOCOL_76__
+	const std::string& writer = item->getWriter();
 	if (writer.size()) {
 		msg.AddString(writer);
 	} else {

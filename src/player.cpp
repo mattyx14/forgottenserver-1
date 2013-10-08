@@ -3305,12 +3305,6 @@ void Player::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_
 	}
 
 	if (link == LINK_OWNER || link == LINK_TOPPARENT) {
-		const Item* i = (oldParent ? oldParent->getItem() : nullptr);
-
-		// Check if we owned the old container too, so we don't need to do anything,
-		// as the list was updated in postRemoveNotification
-		assert(i ? i->getContainer() != nullptr : true);
-
 		updateInventoryWeight();
 		updateItemsLight();
 		sendStats();
@@ -3347,12 +3341,6 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 	}
 
 	if (link == LINK_OWNER || link == LINK_TOPPARENT) {
-		const Item* i = (newParent ? newParent->getItem() : nullptr);
-
-		// Check if we owned the old container too, so we don't need to do anything,
-		// as the list was updated in postRemoveNotification
-		assert(i ? i->getContainer() != nullptr : true);
-
 		updateInventoryWeight();
 		updateItemsLight();
 		sendStats();
