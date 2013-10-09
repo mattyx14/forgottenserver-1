@@ -6621,6 +6621,12 @@
 		<attribute key="duration" value="30" />
 		<attribute key="corpseType" value="blood" />
 	</item>
+	<item id="3134" article="a" name="dead human">
+		<attribute key="weight" value="60000" />
+		<attribute key="decayTo" value="0" />
+		<attribute key="duration" value="600" />
+		<attribute key="corpseType" value="blood" />
+	</item>
 
 	<item id="30001" name="water" />
 	<item id="30002" name="blood" />
