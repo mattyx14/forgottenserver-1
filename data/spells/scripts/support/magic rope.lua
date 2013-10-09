@@ -1,19 +1,21 @@
-function onCastSpell(cid, var)
-	local pos = getPlayerPosition(cid)
-	pos.stackpos = STACKPOS_GROUND
-	local thing = getThingfromPos(pos)
-	if not isInArray(ropeSpots, thing.itemid) then
-		pos.stackpos = STACKPOS_FIRST_ITEM_ABOVE_GROUNDTILE
-		thing = getThingfromPos(pos)
-		if not isInArray(ropeSpots, thing.itemid) then
-			doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
-			doSendMagicEffect(pos, CONST_ME_POFF)
-			return false
-		end
-	end
+local SPOTS = {384, 418, 8278, 8592}
 
-	local destination = {x = pos.x, y = pos.y + 1, z = pos.z - 1}
-	doTeleportThing(cid, destination, false)
-	doSendMagicEffect(destination, CONST_ME_TELEPORT)
-	return true
+function onCastSpell(cid, var)
+	local position = getThingPosition(cid)
+	position.stackpos = 0
+
+	local ground = getThingFromPos(position)
+	if(isInArray(SPOTS, ground.itemid)) then
+		local newPosition = position
+		newPosition.y = newPosition.y + 1
+		newPosition.z = newPosition.z - 1
+
+		doTeleportThing(cid, newPosition, false)
+		doSendMagicEffect(position, CONST_ME_TELEPORT)
+		return true
+	else
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+		doSendMagicEffect(position, CONST_ME_POFF)
+		return false
+	end
 end

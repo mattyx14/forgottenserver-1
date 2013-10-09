@@ -1,8 +1,7 @@
 local combat = createCombatObject()
 setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_HITBYFIRE)
 setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_FIRE)
-setCombatParam(combat, COMBAT_PARAM_CREATEITEM, ITEM_FIREFIELD_PVP_FULL)
+setCombatParam(combat, COMBAT_PARAM_CREATEITEM, 1487)
 
 local area = createCombatArea(AREA_WALLFIELD, AREADIAGONAL_WALLFIELD)
 setCombatArea(combat, area)
