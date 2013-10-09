@@ -412,15 +412,12 @@ CombatTypeNames combatTypeNames[] = {
 	{"physical",	COMBAT_PHYSICALDAMAGE},
 	{"energy",		COMBAT_ENERGYDAMAGE},
 	{"earth",		COMBAT_EARTHDAMAGE},
+	{"poison",		COMBAT_EARTHDAMAGE},
 	{"fire",		COMBAT_FIREDAMAGE},
 	{"undefined",	COMBAT_UNDEFINEDDAMAGE},
 	{"lifedrain",	COMBAT_LIFEDRAIN},
 	{"manadrain",	COMBAT_MANADRAIN},
-	{"healing",		COMBAT_HEALING},
-	{"drown",		COMBAT_DROWNDAMAGE},
-	{"ice",			COMBAT_ICEDAMAGE},
-	{"holy",		COMBAT_HOLYDAMAGE},
-	{"death",		COMBAT_DEATHDAMAGE}
+	{"healing",		COMBAT_HEALING}
 };
 
 AmmoTypeNames ammoTypeNames[] = {
@@ -648,14 +645,6 @@ uint32_t combatTypeToIndex(CombatType_t combatType)
 			return 7;
 		case COMBAT_HEALING:
 			return 8;
-		case COMBAT_DROWNDAMAGE:
-			return 9;
-		case COMBAT_ICEDAMAGE:
-			return 10;
-		case COMBAT_HOLYDAMAGE:
-			return 11;
-		case COMBAT_DEATHDAMAGE:
-			return 12;
 		default:
 			return 0;
 	}

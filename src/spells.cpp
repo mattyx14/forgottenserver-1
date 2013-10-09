@@ -375,11 +375,11 @@ bool CombatSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 
 Spell::Spell()
 {
-	spellId = 0;
 	level = 0;
 	magLevel = 0;
 	mana = 0;
 	manaPercent = 0;
+	levelPercent = 0;
 	soul = 0;
 	range = -1;
 	cooldown = 1000;
@@ -392,10 +392,6 @@ Spell::Spell()
 	enabled = true;
 	isAggressive = true;
 	learnable = false;
-	group = SPELLGROUP_NONE;
-	groupCooldown = 1000;
-	secondaryGroup = SPELLGROUP_NONE;
-	secondaryGroupCooldown = 0;
 }
 
 bool Spell::configureSpell(const pugi::xml_node& node)
@@ -414,7 +410,6 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		"poison",
 		"fire",
 		"energy",
-		"drown",
 		"lifedrain",
 		"manadrain",
 		"healing",
@@ -427,11 +422,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		"energyfield",
 		"firecondition",
 		"poisoncondition",
-		"energycondition",
-		"drowncondition",
-		"freezecondition",
-		"cursecondition",
-		"dazzlecondition"
+		"energycondition"
 	};
 
 	//static size_t size = sizeof(reservedList) / sizeof(const char*);
@@ -444,57 +435,11 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 	}
 
 	pugi::xml_attribute attr;
-	if ((attr = node.attribute("spellid"))) {
-		spellId = pugi::cast<uint16_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("group"))) {
-		std::string tmpStr = asLowerCaseString(attr.as_string());
-		if (tmpStr == "none" || tmpStr == "0") {
-			group = SPELLGROUP_NONE;
-		} else if (tmpStr == "attack" || tmpStr == "1") {
-			group = SPELLGROUP_ATTACK;
-		} else if (tmpStr == "healing" || tmpStr == "2") {
-			group = SPELLGROUP_HEALING;
-		} else if (tmpStr == "support" || tmpStr == "3") {
-			group = SPELLGROUP_SUPPORT;
-		} else if (tmpStr == "special" || tmpStr == "4") {
-			group = SPELLGROUP_SPECIAL;
-		} else {
-			std::cout << "[Warning - Spell::configureSpell] Unknown group: " << attr.as_string() << std::endl;
-		}
-	}
-
-	if ((attr = node.attribute("groupcooldown"))) {
-		groupCooldown = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("secondarygroup"))) {
-		std::string tmpStr = asLowerCaseString(attr.as_string());
-		if (tmpStr == "none" || tmpStr == "0") {
-			secondaryGroup = SPELLGROUP_NONE;
-		} else if (tmpStr == "attack" || tmpStr == "1") {
-			secondaryGroup = SPELLGROUP_ATTACK;
-		} else if (tmpStr == "healing" || tmpStr == "2") {
-			secondaryGroup = SPELLGROUP_HEALING;
-		} else if (tmpStr == "support" || tmpStr == "3") {
-			secondaryGroup = SPELLGROUP_SUPPORT;
-		} else if (tmpStr == "special" || tmpStr == "4") {
-			secondaryGroup = SPELLGROUP_SPECIAL;
-		} else {
-			std::cout << "[Warning - Spell::configureSpell] Unknown secondarygroup: " << attr.as_string() << std::endl;
-		}
-	}
-
-	if ((attr = node.attribute("secondarygroupcooldown"))) {
-		secondaryGroupCooldown = pugi::cast<uint32_t>(attr.value());
-	}
-
-	if ((attr = node.attribute("lvl"))) {
+	if ((attr = node.attribute("lvl")) || (attr = node.attribute("level"))) {
 		level = pugi::cast<int32_t>(attr.value());
 	}
 
-	if ((attr = node.attribute("maglv"))) {
+	if ((attr = node.attribute("maglv")) || (attr = node.attribute("magiclevel"))) {
 		magLevel = pugi::cast<int32_t>(attr.value());
 	}
 
@@ -506,9 +451,15 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		manaPercent = pugi::cast<int32_t>(attr.value());
 	}
 
+	if ((attr = node.attribute("levelpercent"))) {
+		levelPercent = pugi::cast<int32_t>(attr.value());
+	}
+
+	#ifdef __PROTOCOL_76__
 	if ((attr = node.attribute("soul"))) {
 		soul = pugi::cast<int32_t>(attr.value());
 	}
+	#endif
 
 	if ((attr = node.attribute("range"))) {
 		range = pugi::cast<int32_t>(attr.value());
@@ -565,10 +516,6 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		isAggressive = booleanString(attr.as_string());
 	}
 
-	if (group == SPELLGROUP_NONE) {
-		group = (isAggressive ? SPELLGROUP_ATTACK : SPELLGROUP_HEALING);
-	}
-
 	for (pugi::xml_node vocationNode = node.first_child(); vocationNode; vocationNode = vocationNode.next_sibling()) {
 		if (!(attr = vocationNode.attribute("name"))) {
 			continue;
@@ -607,7 +554,7 @@ bool Spell::playerSpellCheck(Player* player, bool ignoreExhaust/* = false*/) con
 		return false;
 	}
 
-	if (player->hasCondition(CONDITION_SPELLGROUPCOOLDOWN, group) || player->hasCondition(CONDITION_SPELLCOOLDOWN, spellId)) {
+	if (player->hasCondition(CONDITION_EXHAUST_COMBAT) || player->hasCondition(CONDITION_EXHAUST_HEAL)) {
 		player->sendCancelMessage(RET_YOUAREEXHAUSTED);
 
 		if (isInstant()) {
@@ -803,17 +750,7 @@ void Spell::postCastSpell(Player* player, bool finishedCast /*= true*/, bool pay
 	if (finishedCast) {
 		if (!player->hasFlag(PlayerFlag_HasNoExhaustion)) {
 			if (cooldown > 0) {
-				Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLCOOLDOWN, cooldown, 0, false, spellId);
-				player->addCondition(condition);
-			}
-
-			if (groupCooldown > 0) {
-				Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLGROUPCOOLDOWN, groupCooldown, 0, false, group);
-				player->addCondition(condition);
-			}
-
-			if (secondaryGroupCooldown > 0) {
-				Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLGROUPCOOLDOWN, secondaryGroupCooldown, 0, false, secondaryGroup);
+				Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, (isAggressive ? CONDITION_EXHAUST_COMBAT : CONDITION_EXHAUST_HEAL), cooldown);
 				player->addCondition(condition);
 			}
 		}
@@ -855,6 +792,10 @@ int32_t Spell::getManaCost(const Player* player) const
 	if (manaPercent != 0) {
 		int32_t maxMana = player->getMaxMana();
 		int32_t manaCost = (maxMana * manaPercent) / 100;
+		return manaCost;
+	}
+	else if(levelPercent != 0) {;
+		int32_t manaCost = (player->getLevel() * levelPercent) / 100;
 		return manaCost;
 	}
 
@@ -1028,17 +969,7 @@ bool InstantSpell::playerCastInstant(Player* player, std::string& param)
 			if (!target || target->getHealth() <= 0) {
 				if (!casterTargetOrDirection) {
 					if (cooldown > 0) {
-						Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLCOOLDOWN, cooldown, 0, false, spellId);
-						player->addCondition(condition);
-					}
-
-					if (groupCooldown > 0) {
-						Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLGROUPCOOLDOWN, groupCooldown, 0, false, group);
-						player->addCondition(condition);
-					}
-
-					if (secondaryGroupCooldown > 0) {
-						Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLGROUPCOOLDOWN, secondaryGroupCooldown, 0, false, secondaryGroup);
+						Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, (isAggressive ? CONDITION_EXHAUST_COMBAT : CONDITION_EXHAUST_HEAL), cooldown);
 						player->addCondition(condition);
 					}
 
@@ -1093,17 +1024,7 @@ bool InstantSpell::playerCastInstant(Player* player, std::string& param)
 
 			if (ret != RET_NOERROR) {
 				if (cooldown > 0) {
-					Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLCOOLDOWN, cooldown, 0, false, spellId);
-					player->addCondition(condition);
-				}
-
-				if (groupCooldown > 0) {
-					Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLGROUPCOOLDOWN, groupCooldown, 0, false, group);
-					player->addCondition(condition);
-				}
-
-				if (secondaryGroupCooldown > 0) {
-					Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_SPELLGROUPCOOLDOWN, secondaryGroupCooldown, 0, false, secondaryGroup);
+					Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, (isAggressive ? CONDITION_EXHAUST_COMBAT : CONDITION_EXHAUST_HEAL), cooldown);
 					player->addCondition(condition);
 				}
 
@@ -1941,8 +1862,7 @@ bool RuneSpell::loadFunction(const std::string& functionName)
 	return true;
 }
 
-bool RuneSpell::Illusion(const RuneSpell* spell, Creature* creature, Item* item,
-                         const Position& posFrom, const Position& posTo)
+bool RuneSpell::Illusion(const RuneSpell* spell, Creature* creature, Item* item, const Position& posFrom, const Position& posTo)
 {
 	Player* player = creature->getPlayer();
 	if (!player) {

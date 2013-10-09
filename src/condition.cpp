@@ -186,10 +186,6 @@ Condition* Condition::createCondition(ConditionId_t _id, ConditionType_t _type, 
 		case CONDITION_POISON:
 		case CONDITION_FIRE:
 		case CONDITION_ENERGY:
-		case CONDITION_DROWN:
-		case CONDITION_FREEZING:
-		case CONDITION_DAZZLED:
-		case CONDITION_CURSED:
 		case CONDITION_BLEEDING:
 			return new ConditionDamage(_id, _type, _buff, _subId);
 
@@ -217,12 +213,6 @@ Condition* Condition::createCondition(ConditionId_t _id, ConditionType_t _type, 
 
 		case CONDITION_ATTRIBUTES:
 			return new ConditionAttributes(_id, _type, _ticks, _buff, _subId);
-
-		case CONDITION_SPELLCOOLDOWN:
-			return new ConditionSpellCooldown(_id, _type, _ticks, _buff, _subId);
-
-		case CONDITION_SPELLGROUPCOOLDOWN:
-			return new ConditionSpellGroupCooldown(_id, _type, _ticks, _buff, _subId);
 
 		case CONDITION_INFIGHT:
 		case CONDITION_DRUNK:
@@ -1380,17 +1370,9 @@ uint32_t ConditionDamage::getIcons() const
 			icons |= ICON_ENERGY;
 			break;
 
-		case CONDITION_DROWN: break;
-
 		case CONDITION_POISON:
 			icons |= ICON_POISON;
 			break;
-
-		case CONDITION_FREEZING: break;
-
-		case CONDITION_DAZZLED: break;
-
-		case CONDITION_CURSED: break;
 
 		case CONDITION_BLEEDING: break;
 

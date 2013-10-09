@@ -126,10 +126,6 @@ class Spell : public BaseSpell
 		void postCastSpell(Player* player, bool finishedSpell = true, bool payCost = true) const;
 		void postCastSpell(Player* player, uint32_t manaCost, uint32_t soulCost) const;
 
-		uint8_t getSpellId() const {
-			return spellId;
-		}
-
 		int32_t getManaCost(const Player* player) const;
 		int32_t getSoulCost() const;
 		uint32_t getLevel() const {
@@ -143,6 +139,9 @@ class Spell : public BaseSpell
 		}
 		int32_t getManaPercent() const {
 			return manaPercent;
+		}
+		int32_t getLevelPercent() const {
+			return levelPercent;
 		}
 		bool isPremium() const {
 			return premium;
@@ -166,12 +165,6 @@ class Spell : public BaseSpell
 		bool playerInstantSpellCheck(Player* player, const Position& toPos);
 		bool playerRuneSpellCheck(Player* player, const Position& toPos);
 
-		uint8_t spellId;
-		SpellGroup_t group;
-		uint32_t groupCooldown;
-		SpellGroup_t secondaryGroup;
-		uint32_t secondaryGroupCooldown;
-
 		bool learnable;
 		bool enabled;
 		bool premium;
@@ -180,6 +173,7 @@ class Spell : public BaseSpell
 
 		int32_t mana;
 		int32_t manaPercent;
+		int32_t levelPercent;
 		int32_t soul;
 		int32_t range;
 		uint32_t cooldown;
