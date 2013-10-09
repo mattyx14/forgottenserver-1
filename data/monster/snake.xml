@@ -18,15 +18,12 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="10" attack="8" poison="20"/>
+		<attack name="melee" interval="2000" skill="11" attack="5" poison="20"/>
 	</attacks>
 	<defenses armor="0" defense="1"/>
-	<elements>
-		<element earthPercent="100"/>
-		<element energyPercent="22"/>
-		<element firePercent="-10"/>
-		<element icePercent="-10"/>
-	</elements>
+	<immunities>
+		<immunity poison="1"/>
+	</immunities>
 	<voices interval="5000" chance="10">
 		<voice sentence="Zzzzzzt"/>
 	</voices>

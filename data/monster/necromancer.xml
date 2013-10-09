@@ -2,7 +2,7 @@
 <monster name="Necromancer" nameDescription="a necromancer" race="blood" experience="580" speed="200" manacost="0">
 	<health now="580" max="580"/>
 	<look type="9" corpse="3058"/>
-	<targetchange interval="5000" chance="8"/>
+	<targetchange interval="5000" chance="50"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="0"/>
@@ -27,42 +27,33 @@
 			<attribute key="areaEffect" value="poison"/>
 		</attack>
 	</attacks>
-	<defenses armor="20" defense="20">
+	<defenses armor="50" defense="40">
 		<defense name="healing" interval="1000" chance="25" min="42" max="68">
 			<attribute key="areaEffect" value="blueshimmer"/>
 		</defense>
 	</defenses>
-	<elements>
-		<element earthPercent="100"/>
-		<element energyPercent="20"/>
-		<element icePercent="10"/>
-		<element deathPercent="10"/>
-		<element physicalPercent="-15"/>
-		<element firePercent="-5"/>
-		<element holyPercent="-5"/>
-	</elements>
-	<immunities>
-		<immunity invisible="1"/>
-	</immunities>
 	<summons maxSummons="4">
 		<summon name="Ghoul" interval="1000" chance="17" max="2"/>
 		<summon name="Ghost" interval="1000" chance="15" max="1"/>
 		<summon name="Mummy" interval="1000" chance="13" max="1"/>
 	</summons>
+	<immunities>
+		<immunity invisible="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+	</immunities>
 	<voices interval="5000" chance="10">
 		<voice sentence="Your corpse will be mine!"/>
 		<voice sentence="Taste the sweetness of death!"/>
 	</voices>
 	<loot>
-		<item id="2148" countmax="60" chance="8250"/><!-- gold coin -->
-		<item id="2148" countmax="30" chance="8250"/><!-- gold coin -->
-		<item id="2545" countmax="5" chance="4000"/><!-- poison arrow -->
-		<item id="2406" chance="14000"/><!-- short sword -->
-		<item id="2483" chance="10500"/><!-- scale armor -->
-		<item id="2796" chance="3000"/><!-- green mushroom -->
-		<item id="2423" chance="1700"/><!-- clerical mace -->
-		<item id="2663" chance="375"/><!-- mystic turban -->
-		<item id="2436" chance="125"/><!-- skull staff -->
-		<item id="2195" chance="275"/><!-- boots of haste -->
+		<item id="2195" chance="200"/>
+		<item id="2423" chance="2000"/>
+		<item id="2148" countmax="90" chance="60000"/>
+		<item id="2796" chance="3000"/>
+		<item id="2663" chance="1000"/>
+		<item id="2483" chance="20000"/>
+		<item id="2406" chance="30000"/>
+		<item id="2436" chance="100"/>
 	</loot>
 </monster>

@@ -131,7 +131,7 @@
 	<monster name="smuggler" file="smuggler.xml"/>
 	<monster name="snake" file="snake.xml"/>
 	<monster name="spider" file="spider.xml"/>
-	<monster name="spit nettle" file="spit nettle.xml"/>
+	<monster name="spit nettle" file="spitnettle.xml"/>
 	<monster name="stalker" file="stalker.xml"/>
 	<monster name="stone golem" file="stonegolem.xml"/>
 	<monster name="swamp troll" file="swamptroll.xml"/>
@@ -144,7 +144,7 @@
 	<monster name="warlock" file="warlock.xml"/>
 	<monster name="war wolf" file="warwolf.xml"/>
 	<monster name="wasp" file="wasp.xml"/>
-	<monster name="wild warrior" file="wild warrior.xml"/>
+	<monster name="wild warrior" file="wildwarrior.xml"/>
 	<monster name="winter wolf" file="winterwolf.xml"/>
 	<monster name="witch" file="witch.xml"/>
 	<monster name="wolf" file="wolf.xml"/>

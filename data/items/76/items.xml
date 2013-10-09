@@ -2117,10 +2117,7 @@
 		<attribute key="showcharges" value="1" />
 		<attribute key="absorbPercentPhysical" value="20" />
 		<attribute key="absorbPercentFire" value="20" />
-		<attribute key="absorbPercentDeath" value="20" />
-		<attribute key="absorbPercentIce" value="20" />
 		<attribute key="absorbPercentEnergy" value="20" />
-		<attribute key="absorbPercentHoly" value="20" />
 		<attribute key="absorbPercentEarth" value="20" />
 		<attribute key="showattributes" value="1" />
 	</item>
@@ -2308,7 +2305,6 @@
 		<attribute key="charges" value="5" />
 		<attribute key="showcharges" value="1" />
 		<attribute key="absorbPercentPhysical" value="80" />
-		<attribute key="absorbPercentDeath" value="80" />
 		<attribute key="showattributes" value="1" />
 	</item>
 	<item id="2198" article="an" name="elven amulet">
@@ -2318,10 +2314,7 @@
 		<attribute key="showcharges" value="1" />
 		<attribute key="absorbPercentPhysical" value="5" />
 		<attribute key="absorbPercentFire" value="5" />
-		<attribute key="absorbPercentDeath" value="5" />
-		<attribute key="absorbPercentIce" value="5" />
 		<attribute key="absorbPercentEnergy" value="5" />
-		<attribute key="absorbPercentHoly" value="5" />
 		<attribute key="absorbPercentEarth" value="5" />
 		<attribute key="showattributes" value="1" />
 	</item>
@@ -3209,10 +3202,9 @@
 	<item id="2396" article="an" name="ice rapier">
 		<attribute key="description" value="A deadly but fragile weapon." />
 		<attribute key="weight" value="1500" />
-		<attribute key="attack" value="42" />
+		<attribute key="attack" value="60" />
 		<attribute key="defense" value="1" />
 		<attribute key="weaponType" value="sword" />
-		<attribute key="elementIce" value="18" />
 		<attribute key="charges" value="1" />
 	</item>
 	<item id="2397" article="a" name="longsword">
@@ -7246,13 +7238,10 @@
 		<attribute key="slotType" value="two-handed" />
 	</item>
 	<item id="3965" article="a" name="hunting spear">
-		<attribute key="weight" value="2200" />
-		<attribute key="attack" value="32" />
-		<attribute key="weaponType" value="distance" />
-		<attribute key="shootType" value="huntingspear" />
-		<attribute key="range" value="3" />
-		<attribute key="breakChance" value="6" />
-		<attribute key="ammoAction" value="moveback" />
+		<attribute key="weight" value="8000" />
+		<attribute key="defense" value="18" />
+		<attribute key="attack" value="18" />
+		<attribute key="weaponType" value="axe" />
 	</item>
 	<item id="3966" article="a" name="banana staff">
 		<attribute key="weight" value="5000" />

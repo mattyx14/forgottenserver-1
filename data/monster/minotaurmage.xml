@@ -2,7 +2,7 @@
 <monster name="Minotaur Mage" nameDescription="a minotaur mage" race="blood" experience="150" speed="170" manacost="0">
 	<health now="155" max="155"/>
 	<look type="23" corpse="2866"/>
-	<targetchange interval="5000" chance="8"/>
+	<targetchange interval="5000" chance="50"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="0"/>
@@ -18,7 +18,7 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="10" attack="20"/>
+		<attack name="melee" interval="2000" skill="18" attack="15"/>
 		<attack name="energy" interval="1000" chance="17" range="7" min="-15" max="-45">
 			<attribute key="shootEffect" value="energy"/>
 			<attribute key="areaEffect" value="energy"/>
@@ -31,34 +31,26 @@
 			<attribute key="shootEffect" value="energy"/>
 		</attack>
 	</attacks>
-	<defenses armor="18" defense="20"/>
-	<elements>
-		<element energyPercent="20"/>
-		<element earthPercent="15"/>
-		<element holyPercent="10"/>
-		<element icePercent="-5"/>
-		<element deathPercent="-5"/>
-	</elements>
+	<defenses armor="18" defense="40"/>
 	<immunities>
 		<immunity invisible="1"/>
+		<immunity energy="1"/>
 	</immunities>
 	<voices interval="5000" chance="10">
-		<voice sentence="Learrn tha secrret uf deathhh!"/>
+		<voice sentence="#W Learrn tha secrret uf deathhh!"/>
 		<voice sentence="Kaplar!"/>
 	</voices>
 	<loot>
-		<item id="2148" countmax="40" chance="37000"/><!-- gold coin -->
-		<item id="2684" countmax="8" chance="7150"/><!-- carrot -->
-		<item id="2050" chance="20000"/><!-- torch -->
-		<item id="2817" chance="17500"/><!-- dead snake -->
-		<item id="2649" chance="13500"/><!-- leather legs -->
-		<item id="2403" chance="10000"/><!-- knife -->
-		<item id="2461" chance="8000"/><!-- leather helmet -->
-		<item id="2817" chance="17500"/><!-- dead snake -->
-		<item id="2050" chance="20000"/><!-- torch -->
-		<item id="2465" chance="3500"/><!-- brass armor -->
-		<item id="2404" chance="3000"/><!-- combat knife -->
-		<item id="2648" chance="2500"/><!-- chain legs -->
-		<item id="2189" chance="1000"/><!-- wand of cosmic energy -->
+		<item id="2465" chance="8000"/>
+		<item id="2684" countmax="7" chance="20000"/>
+		<item id="2648" chance="4000"/>
+		<item id="2404" chance="8000"/>
+		<item id="2817" chance="70000"/>
+		<item id="2148" countmax="10" chance="80000"/>
+		<item id="2403" chance="20000"/>
+		<item id="2461" chance="20000"/>
+		<item id="2649" chance="30000"/>
+		<item id="2050" countmax="2" chance="60000"/>
+		<item id="2189" chance="1000"/>
 	</loot>
 </monster>

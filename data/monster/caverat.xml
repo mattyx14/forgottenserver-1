@@ -18,20 +18,17 @@
 		<flag runonhealth="3"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="10" attack="10"/>
+		<attack name="melee" interval="2000" skill="18" attack="8"/>
 	</attacks>
-	<defenses armor="1" defense="3"/>
-	<elements>
-		<element firePercent="-13"/>
-	</elements>
+	<defenses armor="1" defense="4"/>
 	<voices interval="5000" chance="10">
 		<voice sentence="Meeeeep!"/>
 		<voice sentence="Meep!"/>
 	</voices>
 	<loot>
-		<item id="2148" countmax="3" chance="43000"/><!-- gold coin -->
-		<item id="3976" countmax="3" chance="35000"/><!-- worm -->
-		<item id="2696" chance="32000"/><!-- cheese -->
-		<item id="2687" chance="1000"/><!-- cookie -->
+		<item id="2696" chance="60000"/>
+		<item id="2687" chance="2000"/>
+		<item id="2148" countmax="2" chance="85000"/>
+		<item id="3976" countmax="3" chance="50000"/>
 	</loot>
 </monster>

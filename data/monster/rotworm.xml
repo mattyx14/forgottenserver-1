@@ -18,18 +18,19 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="30" attack="20"/>
+		<attack name="melee" interval="2000" skill="26" attack="18"/>
 	</attacks>
 	<defenses armor="8" defense="11"/>
 	<loot>
-		<item id="2148" countmax="18" chance="26750"/><!-- gold coin -->
-		<item id="3976" countmax="5" chance="50000"/><!-- worm -->
-		<item id="2666" countmax="2" chance="20000"/><!-- meat -->
-		<item id="2671" countmax="2" chance="18000"/><!-- ham -->
-		<item id="2376" chance="3000"/><!-- sword -->
-		<item id="2398" chance="8000"/><!-- mace -->
-		<item id="2480" chance="2000"/><!-- legion helmet -->
-		<item id="2530" chance="500"/><!-- copper shield -->
-		<item id="2412" chance="500"/><!-- katana -->
+		<item id="2530" chance="2000"/>
+		<item id="2148" countmax="8" chance="60000"/>
+		<item id="2148" countmax="12" chance="60000"/>
+		<item id="2671" chance="40000"/>
+		<item id="2412" chance="600"/>
+		<item id="2480" chance="3000"/>
+		<item id="2398" chance="9000"/>
+		<item id="2666" chance="40000"/>
+		<item id="2376" chance="6000"/>
+		<item id="3976" countmax="5" chance="50000"/>
 	</loot>
 </monster>

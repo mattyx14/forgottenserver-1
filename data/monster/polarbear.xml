@@ -18,21 +18,15 @@
 		<flag runonhealth="5"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="10" attack="30"/>
+		<attack name="melee" interval="2000" skill="19" attack="18"/>
 	</attacks>
 	<defenses armor="7" defense="10"/>
-	<elements>
-		<element icePercent="20"/>
-		<element firePercent="8"/>
-		<element deathPercent="-10"/>
-		<element energyPercent="-3"/>
-	</elements>
 	<voices interval="5000" chance="10">
 		<voice sentence="Grrrrrr"/>
 		<voice sentence="GROARRR!" yell="1"/>
 	</voices>
 	<loot>
-		<item id="2671" countmax="2" chance="24000"/><!-- ham -->
-		<item id="2666" countmax="4" chance="19750"/><!-- meat -->
+		<item id="2671" countmax="2" chance="50000"/>
+		<item id="2666" countmax="4" chance="70000"/>
 	</loot>
 </monster>

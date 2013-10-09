@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Wasp" nameDescription="a wasp" race="venom" experience="25" speed="460" manacost="280">
+<monster name="Wasp" nameDescription="a wasp" race="venom" experience="24" speed="460" manacost="280">
 	<health now="35" max="35"/>
 	<look type="44" corpse="2899"/>
-	<targetchange interval="5000" chance="8"/>
+	<targetchange interval="5000" chance="10"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="1"/>
@@ -18,14 +18,13 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="1500" skill="30" attack="10" poison="2"/>
+		<attack name="melee" interval="1500" skill="23" attack="12" poison="2"/>
 	</attacks>
 	<defenses armor="4" defense="8"/>
-	<elements>
-		<element earthPercent="100"/>
-		<element firePercent="-10"/>
-	</elements>
-	<voices interval="5000" chance="100">
-		<voice sentence="Bssssss"/>
+	<immunities>
+		<immunity poison="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Bsssssss"/>
 	</voices>
 </monster>

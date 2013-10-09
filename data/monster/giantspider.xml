@@ -2,7 +2,7 @@
 <monster name="Giant Spider" nameDescription="a giant spider" race="venom" experience="900" speed="280" manacost="0">
 	<health now="1300" max="1300"/>
 	<look type="38" corpse="2857"/>
-	<targetchange interval="5000" chance="8"/>
+	<targetchange interval="5000" chance="10"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="0"/>
@@ -18,41 +18,35 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="50" attack="100"/>
+		<attack name="melee" interval="2000" skill="80" attack="65"/>
 		<attack name="poisonfield" interval="1000" chance="17" range="7" radius="1" target="1">
 			<attribute key="shootEffect" value="poison"/>
 		</attack>
 	</attacks>
-	<defenses armor="20" defense="20">
+	<defenses armor="30" defense="40">
 		<defense name="speed" interval="1000" chance="6" speedchange="310" duration="20000">
 			<attribute key="areaEffect" value="redshimmer"/>
 		</defense>
 	</defenses>
-	<elements>
-		<element energyPercent="20"/>
-		<element icePercent="20"/>
-		<element firePercent="-10"/>
-	</elements>
-	<immunities>
-		<immunity earth="1"/>
-		<immunity outfit="1"/>
-		<immunity drunk="1"/>
-		<immunity invisible="1"/>
-	</immunities>
 	<summons maxSummons="2">
 		<summon name="Poison Spider" interval="1000" chance="30" max="2"/>
 	</summons>
+	<immunities>
+		<immunity invisible="1"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+	</immunities>
 	<loot>
-		<item id="2478" chance="9000"/><!-- brass legs -->
-		<item id="2148" countmax="57" chance="23000"/><!-- gold coin -->
-		<item id="2148" countmax="28" chance="23000"/><!-- gold coin -->
-		<item id="2148" countmax="30" chance="23000"/><!-- gold coin -->
-		<item id="2477" chance="600"/><!-- knight legs -->
-		<item id="2463" chance="8600"/><!-- plate armor -->
-		<item id="2545" countmax="12" chance="7500"/><!-- poison arrow -->
-		<item id="2457" chance="5300"/><!-- steel helmet -->
-		<item id="2169" chance="1375"/><!-- time ring -->
-		<item id="2476" chance="500"/><!-- knight armor -->
-		<item id="2171" chance="400"/><!-- platinum amulet -->
+		<item id="2478" chance="16000"/>
+		<item id="2148" countmax="55" chance="66600"/>
+		<item id="2148" countmax="33" chance="66600"/>
+		<item id="2148" countmax="11" chance="99900"/>
+		<item id="2476" chance="600"/>
+		<item id="2477" chance="600"/>
+		<item id="2463" chance="20000"/>
+		<item id="2171" chance="100"/>
+		<item id="2457" chance="10000"/>
+		<item id="2169" chance="1400"/>
 	</loot>
 </monster>

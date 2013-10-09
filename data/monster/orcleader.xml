@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Orc Leader" nameDescription="a orc leader" race="blood" experience="270" speed="230" manacost="640">
+<monster name="Orc Leader" nameDescription="an orc leader" race="blood" experience="270" speed="230" manacost="640">
 	<health now="450" max="450"/>
 	<look type="59" corpse="2938"/>
-	<targetchange interval="5000" chance="8"/>
+	<targetchange interval="5000" chance="5"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="1"/>
@@ -18,34 +18,34 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="40" attack="74"/>
+		<attack name="melee" interval="2000" skill="52" attack="48"/>
 		<attack name="physical" interval="1000" chance="17" range="7" min="-50" max="-70">
 			<attribute key="shootEffect" value="throwingknife"/>
 		</attack>
 	</attacks>
-	<defenses armor="20" defense="30"/>
-	<elements>
-		<element firePercent="100"/>
-		<element energyPercent="20"/>
-		<element holyPercent="10"/>
-		<element earthPercent="-10"/>
-		<element deathPercent="-5"/>
-	</elements>
+	<defenses armor="20" defense="45"/>
+	<immunities>
+		<immunity invisible="1"/>
+		<immunity fire="1"/>
+	</immunities>
 	<voices interval="5000" chance="10">
 		<voice sentence="Ulderek futgyr human!"/>
 	</voices>
 	<loot>
-		<item id="2148" countmax="35" chance="17000"/><!-- gold coin -->
-		<item id="2667" chance="29000"/><!-- fish -->
-		<item id="2379" chance="26500"/><!-- dagger -->
-		<item id="2410" countmax="4" chance="6250"/><!-- throwing knife -->
-		<item id="2666" countmax="2" chance="12500"/><!-- meat -->
-		<item id="2419" chance="6700"/><!-- scimitar -->
-		<item id="2478" chance="2500"/><!-- brass legs -->
-		<item id="2463" chance="1250"/><!-- plate armor -->
-		<item id="2207" chance="750"/><!-- sword ring -->
-		<item id="2647" chance="800"/><!-- plate legs -->
-		<item id="2413" chance="750"/><!-- broadsword -->
-		<item id="2475" chance="200"/><!-- warrior helmet -->
+		<item id="1988" chance="40000"/>
+		<item id="2478" chance="5000"/>
+		<item id="2413" chance="1600"/>
+		<item id="2379" chance="46000"/>
+		<item id="2667" chance="60000"/>
+		<item id="2148" countmax="35" chance="56000"/>
+		<item id="2397" chance="16000"/>
+		<item id="2666" countmax="2" chance="30000"/>
+		<item id="2463" chance="3000"/>
+		<item id="2647" chance="800"/>
+		<item id="2510" chance="20000"/>
+		<item id="2419" chance="24000"/>
+		<item id="2207" chance="8000"/>
+		<item id="2410" countmax="4" chance="20000"/>
+		<item id="2475" chance="100"/>
 	</loot>
 </monster>

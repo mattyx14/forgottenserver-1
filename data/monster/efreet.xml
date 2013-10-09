@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Efreet" nameDescription="an efreet" race="blood" experience="410" speed="270" manacost="0">
+<monster name="Efreet" nameDescription="an efreet" race="blood" experience="300" speed="270" manacost="0">
 	<health now="550" max="550"/>
 	<look type="103" corpse="3037"/>
-	<targetchange interval="5000" chance="8"/>
+	<targetchange interval="5000" chance="0"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="0"/>
@@ -18,7 +18,7 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="45" attack="40"/>
+		<attack name="melee" interval="2000" skill="55" attack="35"/>
 		<attack name="fire" interval="2000" chance="50" range="7" min="-40" max="-110">
 			<attribute key="shootEffect" value="fire"/>
 		</attack>
@@ -42,40 +42,39 @@
 			<attribute key="areaEffect" value="energy"/>
 		</attack>
 	</attacks>
-	<defenses armor="15" defense="20">
+	<defenses armor="24" defense="35">
 		<defense name="healing" interval="1000" chance="15" min="50" max="80">
 			<attribute key="areaEffect" value="blueshimmer"/>
 		</defense>
 	</defenses>
-	<elements>
-		<element firePercent="90"/>
-		<element energyPercent="60"/>
-		<element earthPercent="40"/>
-		<element deathPercent="30"/>
-		<element icePercent="-10"/>
-		<element holyPercent="-10"/>
-	</elements>
-	<immunities>
-		<immunity paralyze="1"/>
-		<immunity invisible="1"/>
-	</immunities>
 	<summons maxSummons="2">
 		<summon name="green djinn" interval="1000" chance="15" max="2"/>
 	</summons>
+	<immunities>
+		<immunity invisible="1"/>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
+		<immunity energy="1"/>
+		<immunity paralyze="1"/>
+		<immunity lifedrain="1"/>
+	</immunities>
 	<voices interval="5000" chance="10">
 		<voice sentence="I grant you a deathwish!"/>
+		<voice sentence="Muhahahaha!"/>
+		<voice sentence="I wish you a merry trip to hell!"/>
+		<voice sentence="Tell me your last wish!"/>
 		<voice sentence="Good wishes are for fairytales"/>
 	</voices>
 	<loot>
-		<item id="2148" countmax="75" chance="40000"/><!-- gold coin -->
-		<item id="2148" countmax="50" chance="40000"/><!-- gold coin -->
-		<item id="2673" countmax="12" chance="6000"/><!-- pear -->
-		<item id="2442" chance="5000"/><!-- heavy machete -->
-		<item id="2063" chance="20000"/><!-- small oil lamp -->
-		<item id="2149" countmax="4" chance="1000"/><!-- small emerald -->
-		<item id="1860" chance="1000"/><!-- green tapestry -->
-		<item id="2187" chance="900"/><!-- wand of inferno -->
-		<item id="2663" chance="750"/><!-- mystic turban -->
-		<item id="2155" chance="200"/><!-- green gem -->
+		<item id="2148" countmax="50" chance="70000"/>
+		<item id="2148" countmax="80" chance="50000"/>
+		<item id="2155" chance="100"/>
+		<item id="1860" chance="5000"/>
+		<item id="2442" chance="40000"/>
+		<item id="2663" chance="200"/>
+		<item id="2673" countmax="12" chance="50000"/>
+		<item id="2149" countmax="2" chance="14000"/>
+		<item id="2063" chance="40000"/>
+		<item id="2187" chance="1000"/>
 	</loot>
 </monster>

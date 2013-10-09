@@ -7,10 +7,7 @@
 	<wand id="2186" level="13" mana="3" min="13" max="25" type="energy" function="default"> <!-- Moonlight Rod -->
 		<vocation name="Druid"/>
 	</wand>
-	<wand id="2185" level="19" mana="5" min="27" max="33" type="death" function="default"> <!-- Necrotic Rod -->
-		<vocation name="Druid"/>
-	</wand>
-	<wand id="8911" level="22" mana="5" min="27" max="33" type="ice" function="default"> <!-- Northwind Rod -->
+	<wand id="2185" level="19" mana="5" min="27" max="33" type="fire" function="default"> <!-- Volcanic Rod -->
 		<vocation name="Druid"/>
 	</wand>
 	<wand id="2181" level="26" mana="8" min="42" max="48" type="earth" function="default"> <!-- Quagmire Rod -->
@@ -27,7 +24,7 @@
 	<wand id="2191" level="13" mana="3" min="13" max="25" type="fire" function="default"> <!-- Wand of Dragonbreath -->
 		<vocation name="Sorcerer"/>
 	</wand>
-	<wand id="2188" level="19" mana="5" min="27" max="33" type="death" function="default"> <!-- Wand of Decay -->
+	<wand id="2188" level="19" mana="5" min="27" max="33" type="earth" function="default"> <!-- Wand of Plague -->
 		<vocation name="Sorcerer"/>
 	</wand>
 	<wand id="2189" level="26" mana="8" min="42" max="48" type="energy" function="default"> <!-- Wand of Cosmic Energy -->

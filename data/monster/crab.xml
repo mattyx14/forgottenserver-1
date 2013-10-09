@@ -18,20 +18,14 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="10" attack="20"/>
+		<attack name="melee" interval="2000" skill="25" attack="15"/>
 	</attacks>
-	<defenses armor="5" defense="5"/>
-	<elements>
-		<element earthPercent="100"/>
-		<element icePercent="40"/>
-		<element firePercent="-10"/>
-		<element energyPercent="-5"/>
-	</elements>
-	<voices interval="5000" chance="10">
-		<voice sentence="crab crab!"/>
-	</voices>
+	<defenses armor="28" defense="30"/>
+	<immunities>
+		<immunity poison="1"/>
+	</immunities>
 	<loot>
-		<item id="2148" countmax="10" chance="47000"/><!-- gold coin -->
-		<item id="2667" chance="20000"/><!-- fish -->
+		<item id="2667" chance="40000"/>
+		<item id="2148" countmax="10" chance="80000"/>
 	</loot>
 </monster>

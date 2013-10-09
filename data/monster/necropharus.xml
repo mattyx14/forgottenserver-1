@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Necropharus" nameDescription="necropharus" race="blood" experience="700" speed="240" manacost="0">
+<monster name="Necropharus" nameDescription="Necropharus" race="blood" experience="700" speed="240" manacost="0">
 	<health now="750" max="750"/>
 	<look type="209" corpse="3058"/>
-	<targetchange interval="5000" chance="8"/>
+	<targetchange interval="5000" chance="50"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="0"/>
@@ -27,47 +27,39 @@
 			<attribute key="areaEffect" value="poison"/>
 		</attack>
 	</attacks>
-	<defenses armor="25" defense="25">
+	<defenses armor="55" defense="45">
 		<defense name="healing" interval="1000" chance="25" min="60" max="90">
 			<attribute key="areaEffect" value="blueshimmer"/>
 		</defense>
 	</defenses>
-	<immunities>
-		<immunity poison="1"/>
-		<immunity lifedrain="1"/>
-		<immunity outfit="1"/>
-		<immunity drunk="1"/>
-		<immunity invisible="1"/>
-	</immunities>
 	<summons maxSummons="4">
 		<summon name="ghoul" interval="1000" chance="20" max="2"/>
 		<summon name="ghost" interval="1000" chance="17" max="1"/>
 		<summon name="mummy" interval="1000" chance="15" max="1"/>
 	</summons>
+	<immunities>
+		<immunity invisible="1"/>
+		<immunity poison="1"/>
+		<immunity lifedrain="1"/>
+	</immunities>
 	<voices interval="5000" chance="10">
 		<voice sentence="You will rise as my servant!"/>
 		<voice sentence="Praise to my master Urgith!"/>
 	</voices>
 	<loot>
-		<item id="2148" countmax="40" chance="100000"/><!-- gold coin -->
-		<item id="2032" chance="10000"/><!-- bowl -->
-		<item id="3969" chance="150"/><!-- horseman helmet -->
-		<item id="2392" chance="220"/><!-- fire sword -->
-		<item id="2804" countmax="2" chance="20000"/><!-- shadow herb -->
-		<item id="3976" countmax="10" chance="50000"/><!-- worm -->
-		<item id="2186" chance="500"/><!-- moonlight rod -->
-		<item id="2483" countmax="1" chance="8500"/><!-- scale armor -->
-		<item id="2796" countmax="1" chance="22500"/><!-- green mushroom -->
-		<item id="2231" countmax="1" chance="6000"/><!-- big bone -->
-		<item id="2230" countmax="1" chance="30000"/><!-- bone -->
-		<item id="2449" countmax="1" chance="19900"/><!-- bone club -->
-		<item id="2541" chance="7500"/><!-- bone shield -->
-		<item id="2412" chance="10000"/><!-- katana -->
-		<item id="2229" countmax="3" chance="20000"/><!-- skull -->
-		<item id="2747" chance="20000"/><!-- grave flower -->
-		<item id="2436" chance="833"/><!-- skull staff -->
-		<item id="2663" chance="909"/><!-- mystic turban -->
-		<item id="2195" chance="666"/><!-- boots of haste -->
-		<item id="2423" chance="5000"/><!-- clerical mace -->
+		<item id="2231" chance="12000"/>
+		<item id="2230" chance="60000"/>
+		<item id="2449" chance="39800"/>
+		<item id="2541" chance="15000"/>
+		<item id="2195" chance="200"/>
+		<item id="2423" chance="11400"/>
+		<item id="2186" chance="1000"/>
+		<item id="2148" countmax="99" chance="67300"/>
+		<item id="2796" chance="45000"/>
+		<item id="2663" chance="3600"/>
+		<item id="2483" chance="17000"/>
+		<item id="2406" chance="17200"/>
+		<item id="2229" chance="32000"/>
+		<item id="2436" chance="800"/>
 	</loot>
 </monster>

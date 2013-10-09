@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Grorlam" nameDescription="Grorlam" race="blood" experience="2400" speed="240" manacost="0">
-	<health now="3000" max="3000"/>
+<monster name="Grorlam" nameDescription="Grorlam" race="undead" experience="1600" speed="240" manacost="590">
+	<health now="2700" max="2700"/>
 	<look type="205" corpse="2952"/>
-	<targetchange interval="5000" chance="3"/>
+	<targetchange interval="5000" chance="0"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="0"/>
@@ -23,7 +23,7 @@
 			<attribute key="shootEffect" value="largerock"/>
 		</attack>
 	</attacks>
-	<defenses armor="15" defense="25">
+	<defenses armor="55" defense="35">
 		<defense name="healing" interval="1000" chance="25" min="100" max="150">
 			<attribute key="areaEffect" value="blueshimmer"/>
 		</defense>
@@ -31,26 +31,21 @@
 			<attribute key="areaEffect" value="redshimmer"/>
 		</defense>
 	</defenses>
-	<elements>
-		<element earthPercent="100"/>
-		<element physicalPercent="30"/>
-		<element holyPercent="20"/>
-		<element energyPercent="20"/>
-		<element deathPercent="-5"/>
-		<element firePercent="-10"/>
-	</elements>
 	<immunities>
+		<immunity fire="1"/>
+		<immunity poison="1"/>
 		<immunity paralyze="1"/>
-		<immunity invisible="1"/>
 	</immunities>
 	<loot>
-		<item id="2148" countmax="20" chance="100000"/><!-- gold coin -->
-		<item id="2483" chance="10000"/><!-- scale armor -->
-		<item id="3976" countmax="10" chance="50000"/><!-- worm -->
-		<item id="1295" chance="10000"/><!-- stone -->
-		<item id="1294" countmax="5" chance="20000"/><!-- small stone -->
-		<item id="2395" chance="2500"/><!-- carlin sword -->
-		<item id="2050" chance="20000"/><!-- torch -->
-		<item id="2580" chance="5000"/><!-- fishing rod -->
+		<item id="2124" chance="200"/>
+		<item id="2148" countmax="15" chance="32000"/>
+		<item id="2553" chance="12000"/>
+		<item id="2166" chance="11000"/>
+		<item id="2156" chance="1000"/>
+		<item id="2483" chance="10000"/>
+		<item id="2150" countmax="2" chance="13000"/>
+		<item id="1294" countmax="4" chance="26000"/>
+		<item id="2645" chance="1000"/>
+		<item id="2509" chance="14000"/>
 	</loot>
 </monster>

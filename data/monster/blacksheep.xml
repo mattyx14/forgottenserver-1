@@ -2,7 +2,7 @@
 <monster name="Black Sheep" namedescription="a black sheep" race="blood" experience="0" speed="200" manacost="250">
 	<health now="20" max="20"/>
 	<look type="13" corpse="2914"/>
-	<targetchange interval="2000" chance="20"/>
+	<targetchange interval="2000" chance="0"/>
 	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="1"/>
@@ -25,6 +25,6 @@
 		<voice sentence="Maeh"/>
 	</voices>
 	<loot>
-		<item id="2666" countmax="4" chance="22500"/><!-- meat -->
+		<item id="2666" countmax="4" chance="70000"/>
 	</loot>
 </monster>

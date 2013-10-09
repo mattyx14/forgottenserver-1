@@ -18,17 +18,10 @@
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" skill="10" attack="20"/>
+		<attack name="melee" interval="2000" skill="21" attack="13"/>
 	</attacks>
 	<defenses armor="2" defense="6"/>
-	<elements>
-		<element icePercent="20"/>
-		<element firePercent="10"/>
-		<element holyPercent="10"/>
-		<element energyPercent="-5"/>
-		<element deathPercent="-5"/>
-	</elements>
 	<loot>
-		<item id="2666" countmax="2" chance="15000"/><!-- meat -->
+		<item id="2666" countmax="2" chance="60000"/>
 	</loot>
 </monster>

@@ -374,6 +374,7 @@ MagicEffectNames magicEffectNames[] = {
 	{"blackspark",		NM_ME_HIT_AREA},
 	{"teleport",		NM_ME_TELEPORT},
 	{"energy",			NM_ME_ENERGY_DAMAGE},
+	{"energyarea",		NM_ME_TELEPORT},
 	{"blueshimmer",		NM_ME_MAGIC_ENERGY},
 	{"redshimmer",		NM_ME_MAGIC_BLOOD},
 	{"greenshimmer",	NM_ME_MAGIC_POISON},
