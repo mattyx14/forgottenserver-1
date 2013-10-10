@@ -60,15 +60,17 @@
 		<voice sentence="Flesssh to dussst!"/>
 	</voices>
 	<loot>
-		<item id="2351" chance="100000"/>
-		<item id="2451" chance="3000"/>
-		<item id="2148" countmax="80" chance="70000"/>
-		<item id="2148" countmax="85" chance="50000"/>
-		<item id="2148" countmax="95" chance="70000"/>
-		<item id="2155" chance="2000"/>
-		<item id="2411" chance="40000"/>
-		<item id="2409" chance="4000"/>
-		<item id="2149" countmax="3" chance="20000"/>
-		<item id="2169" chance="10000"/>
+		<item id="2351" chance="100000"/><!-- cobrafang dagger -->
+		<item id="2148" countmax="80" chance="70000"/><!-- gold coin -->
+		<item id="2148" countmax="85" chance="50000"/><!-- gold coin -->
+		<item id="2148" countmax="95" chance="70000"/><!-- gold coin -->
+		<item id="2411" chance="40000"/><!-- poison dagger -->
+		<item id="2149" countmax="3" chance="20000"/><!-- small emerald -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2451" chance="3000"/><!-- djinn blade -->
+			<item id="2155" chance="2000"/><!-- green gem -->
+			<item id="2409" chance="4000"/><!-- serpent sword -->
+			<item id="2169" chance="10000"/><!-- time ring -->
+		</item>
 	</loot>
 </monster>

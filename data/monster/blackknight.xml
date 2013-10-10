@@ -42,25 +42,27 @@
 		<voice sentence="You're no match for me!"/>
 	</voices>
 	<loot>
-		<item id="2417" chance="14000"/>
-		<item id="2195" chance="1000"/>
-		<item id="2478" chance="26000"/>
-		<item id="2691" countmax="2" chance="40000"/>
-		<item id="2489" chance="4000"/>
-		<item id="2490" chance="4000"/>
-		<item id="2414" chance="600"/>
-		<item id="2148" countmax="60" chance="66600"/>
-		<item id="2148" countmax="90" chance="44400"/>
-		<item id="2381" chance="26000"/>
-		<item id="2476" chance="2000"/>
-		<item id="2430" chance="5000"/>
-		<item id="2477" chance="2000"/>
-		<item id="2463" chance="20000"/>
-		<item id="2120" chance="30000"/>
-		<item id="2133" chance="1600"/>
-		<item id="2389" countmax="3" chance="60000"/>
-		<item id="2457" chance="20000"/>
-		<item id="2377" chance="20000"/>
-		<item id="2475" chance="10000"/>
+		<item id="2478" chance="26000"/><!-- brass legs -->
+		<item id="2691" countmax="2" chance="40000"/><!-- brown bread -->
+		<item id="2148" countmax="60" chance="66600"/><!-- gold coin -->
+		<item id="2148" countmax="90" chance="44400"/><!-- gold coin -->
+		<item id="2381" chance="26000"/><!-- halberd -->
+		<item id="2463" chance="20000"/><!-- plate armor -->
+		<item id="2120" chance="30000"/><!-- rope -->
+		<item id="2389" countmax="3" chance="60000"/><!-- spear -->
+		<item id="2457" chance="20000"/><!-- steel helmet -->
+		<item id="2377" chance="20000"/><!-- two handed sword -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2417" chance="14000"/><!-- battle hammer -->
+			<item id="2195" chance="1000"/><!-- boots of haste -->
+			<item id="2489" chance="4000"/><!-- dark armor -->
+			<item id="2490" chance="4000"/><!-- dark helmet -->
+			<item id="2414" chance="600"/><!-- dragon lance -->
+			<item id="2476" chance="2000"/><!-- knight armor -->
+			<item id="2430" chance="5000"/><!-- knight axe -->
+			<item id="2477" chance="2000"/><!-- knight legs -->
+			<item id="2133" chance="1600"/><!-- ruby necklace -->
+			<item id="2475" chance="10000"/><!-- warrior helmet -->
+		</item>
 	</loot>
 </monster>

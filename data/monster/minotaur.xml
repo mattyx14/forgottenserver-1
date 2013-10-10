@@ -25,18 +25,20 @@
 		<voice sentence="Kaplar!"/>
 	</voices>
 	<loot>
-		<item id="2386" chance="8000"/>
-		<item id="2460" chance="16000"/>
-		<item id="2172" chance="100"/>
-		<item id="2464" chance="20000"/>
-		<item id="2458" chance="10000"/>
-		<item id="2148" countmax="10" chance="55000"/>
-		<item id="2148" countmax="15" chance="50000"/>
-		<item id="2649" chance="30000"/>
-		<item id="2398" chance="26000"/>
-		<item id="2666" chance="20000"/>
-		<item id="2510" chance="40000"/>
-		<item id="2554" chance="6000"/>
-		<item id="2376" chance="20000"/>
+		<item id="2460" chance="16000"/><!-- brass helmet -->
+		<item id="2464" chance="20000"/><!-- chain armor -->
+		<item id="2148" countmax="10" chance="55000"/><!-- gold coin -->
+		<item id="2148" countmax="15" chance="50000"/><!-- gold coin -->
+		<item id="2649" chance="30000"/><!-- leather legs -->
+		<item id="2398" chance="26000"/><!-- mace -->
+		<item id="2666" chance="20000"/><!-- meat -->
+		<item id="2510" chance="40000"/><!-- plate shield -->
+		<item id="2376" chance="20000"/><!-- sword -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2386" chance="8000"/><!-- axe -->
+			<item id="2172" chance="100"/><!-- bronze amulet -->
+			<item id="2458" chance="10000"/><!-- chain helmet -->
+			<item id="2554" chance="6000"/><!-- shovel -->
+		</item>
 	</loot>
 </monster>

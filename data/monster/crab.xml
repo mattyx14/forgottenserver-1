@@ -25,7 +25,7 @@
 		<immunity poison="1"/>
 	</immunities>
 	<loot>
-		<item id="2667" chance="40000"/>
-		<item id="2148" countmax="10" chance="80000"/>
+		<item id="2667" chance="40000"/><!-- fish -->
+		<item id="2148" countmax="10" chance="80000"/><!-- gold coin -->
 	</loot>
 </monster>

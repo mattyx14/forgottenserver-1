@@ -26,7 +26,7 @@
 		</defense>
 	</defenses>
 	<loot>
-		<item id="2671" countmax="2" chance="44000"/>
-		<item id="2666" countmax="3" chance="55000"/>
+		<item id="2671" countmax="2" chance="44000"/><!-- ham -->
+		<item id="2666" countmax="3" chance="55000"/><!-- meat -->
 	</loot>
 </monster>

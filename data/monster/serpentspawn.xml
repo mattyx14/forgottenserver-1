@@ -61,24 +61,26 @@
 		<voice sentence="I bring you deathhhh, mortalssss"/>
 	</voices>
 	<loot>
-		<item id="1976" chance="18000"/>
-		<item id="3971" chance="4000"/>
-		<item id="2492" chance="200"/>
-		<item id="2167" chance="6000"/>
-		<item id="2392" chance="600"/>
-		<item id="2148" countmax="100" chance="80000"/>
-		<item id="2148" countmax="100" chance="60000"/>
-		<item id="2148" countmax="50" chance="80000"/>
-		<item id="2033" chance="6000"/>
-		<item id="2182" chance="2000"/>
-		<item id="2796" chance="36000"/>
-		<item id="2177" chance="1600"/>
-		<item id="2168" chance="6000"/>
-		<item id="4842" chance="1000"/>
-		<item id="2547" chance="12000"/>
-		<item id="2498" chance="100"/>
-		<item id="2146" chance="12000"/>
-		<item id="2479" chance="1200"/>
-		<item id="2528" chance="800"/>
+		<item id="1976" chance="18000"/><!-- gemmed book -->
+		<item id="2148" countmax="100" chance="80000"/><!-- gold coin -->
+		<item id="2148" countmax="100" chance="60000"/><!-- gold coin -->
+		<item id="2148" countmax="50" chance="80000"/><!-- gold coin -->
+		<item id="2796" chance="36000"/><!-- green mushroom -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="3971" chance="4000"/><!-- charmer's tiara -->
+			<item id="2492" chance="200"/><!-- dragon scale mail -->
+			<item id="2167" chance="6000"/><!-- energy ring -->
+			<item id="2392" chance="600"/><!-- fire sword -->
+			<item id="2033" chance="6000"/><!-- golden mug -->
+			<item id="2182" chance="2000"/><!-- snakebite rod -->
+			<item id="2177" chance="1600"/><!-- life crystal -->
+			<item id="2168" chance="6000"/><!-- life ring -->
+			<item id="4842" chance="1000"/><!-- parchment -->
+			<item id="2547" chance="12000"/><!-- power bolt -->
+			<item id="2498" chance="100"/><!-- royal helmet -->
+			<item id="2146" chance="12000"/><!-- small sapphire -->
+			<item id="2479" chance="1200"/><!-- strange helmet -->
+			<item id="2528" chance="800"/><!-- tower shield -->
+		</item>
 	</loot>
 </monster>

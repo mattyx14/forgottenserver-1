@@ -41,16 +41,18 @@
 		<voice sentence="Kaplar!"/>
 	</voices>
 	<loot>
-		<item id="2465" chance="8000"/>
-		<item id="2684" countmax="7" chance="20000"/>
-		<item id="2648" chance="4000"/>
-		<item id="2404" chance="8000"/>
-		<item id="2817" chance="70000"/>
-		<item id="2148" countmax="10" chance="80000"/>
-		<item id="2403" chance="20000"/>
-		<item id="2461" chance="20000"/>
-		<item id="2649" chance="30000"/>
-		<item id="2050" countmax="2" chance="60000"/>
-		<item id="2189" chance="1000"/>
+		<item id="2684" countmax="7" chance="20000"/><!-- carrot -->
+		<item id="2817" chance="70000"/><!-- dead snake -->
+		<item id="2148" countmax="10" chance="80000"/><!-- gold coin -->
+		<item id="2403" chance="20000"/><!-- knife -->
+		<item id="2461" chance="20000"/><!-- leather helmet -->
+		<item id="2649" chance="30000"/><!-- leather legs -->
+		<item id="2050" countmax="2" chance="60000"/><!-- torch -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2465" chance="8000"/><!-- brass armor -->
+			<item id="2648" chance="4000"/><!-- chain legs -->
+			<item id="2404" chance="8000"/><!-- combat knife -->
+			<item id="2189" chance="1000"/><!-- wand of cosmic energy -->
+		</item>
 	</loot>
 </monster>

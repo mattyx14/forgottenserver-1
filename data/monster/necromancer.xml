@@ -47,13 +47,15 @@
 		<voice sentence="Taste the sweetness of death!"/>
 	</voices>
 	<loot>
-		<item id="2195" chance="200"/>
-		<item id="2423" chance="2000"/>
-		<item id="2148" countmax="90" chance="60000"/>
-		<item id="2796" chance="3000"/>
-		<item id="2663" chance="1000"/>
-		<item id="2483" chance="20000"/>
-		<item id="2406" chance="30000"/>
-		<item id="2436" chance="100"/>
+		<item id="2148" countmax="90" chance="60000"/><!-- gold coin -->
+		<item id="2483" chance="20000"/><!-- scale armor -->
+		<item id="2406" chance="30000"/><!-- short sword -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2195" chance="200"/><!-- boots of haste -->
+			<item id="2423" chance="2000"/><!-- clerical mace -->
+			<item id="2796" chance="3000"/><!-- green mushroom -->
+			<item id="2663" chance="1000"/><!-- mystic turban -->
+			<item id="2436" chance="100"/><!-- skull staff -->
+		</item>
 	</loot>
 </monster>

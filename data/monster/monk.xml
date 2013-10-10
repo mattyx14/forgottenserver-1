@@ -37,17 +37,19 @@
 		<voice sentence="Repent Heretic!" yell="1"/>
 	</voices>
 	<loot>
-		<item id="2193" chance="100"/>
-		<item id="1987" chance="26000"/>
-		<item id="2689" chance="40000"/>
-		<item id="2015" chance="18000"/>
-		<item id="2148" countmax="18" chance="30000"/>
-		<item id="2467" chance="11000"/>
-		<item id="2177" chance="2000"/>
-		<item id="2044" chance="20000"/>
-		<item id="2166" chance="100"/>
-		<item id="2642" chance="16000"/>
-		<item id="1949" chance="40000"/>
-		<item id="2401" chance="22000"/>
+		<item id="1987" chance="26000"/><!-- bag -->
+		<item id="2689" chance="40000"/><!-- bread -->
+		<item id="2015" chance="18000"/><!-- brown flask -->
+		<item id="2148" countmax="18" chance="30000"/><!-- gold coin -->
+		<item id="2044" chance="20000"/><!-- lamp -->
+		<item id="2642" chance="16000"/><!-- sandals -->
+		<item id="1949" chance="40000"/><!-- scroll -->
+		<item id="2401" chance="22000"/><!-- staff -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2193" chance="100"/><!-- ankh -->
+			<item id="2467" chance="11000"/><!-- leather armor -->
+			<item id="2177" chance="2000"/><!-- life crystal -->
+			<item id="2166" chance="100"/><!-- power ring -->
+		</item>
 	</loot>
 </monster>

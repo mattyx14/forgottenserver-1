@@ -28,18 +28,20 @@
 		<voice sentence="Guess who we are hunting, hahaha!"/>
 	</voices>
 	<loot>
-		<item id="2544" countmax="10" chance="70000"/>
-		<item id="2544" countmax="12" chance="80000"/>
-		<item id="2456" chance="60000"/>
-		<item id="2465" chance="10000"/>
-		<item id="2460" chance="10000"/>
-		<item id="2546" countmax="3" chance="10000"/>
-		<item id="2201" chance="6000"/>
-		<item id="2461" chance="20000"/>
-		<item id="2649" chance="28000"/>
-		<item id="2675" countmax="2" chance="40000"/>
-		<item id="2690" countmax="2" chance="22000"/>
-		<item id="2147" chance="200"/>
-		<item id="2050" chance="10000"/>
+		<item id="2544" countmax="10" chance="70000"/><!-- arrow -->
+		<item id="2544" countmax="12" chance="80000"/><!-- arrow -->
+		<item id="2456" chance="60000"/><!-- bow -->
+		<item id="2461" chance="20000"/><!-- leather helmet -->
+		<item id="2649" chance="28000"/><!-- leather legs -->
+		<item id="2675" countmax="2" chance="40000"/><!-- orange -->
+		<item id="2690" countmax="2" chance="22000"/><!-- roll -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2465" chance="10000"/><!-- brass armor -->
+			<item id="2460" chance="10000"/><!-- brass helmet -->
+			<item id="2546" countmax="3" chance="10000"/><!-- burst arrow -->
+			<item id="2201" chance="6000"/><!-- dragon necklace -->
+			<item id="2147" chance="200"/><!-- small ruby -->
+			<item id="2050" chance="10000"/><!-- torch -->
+		</item>
 	</loot>
 </monster>

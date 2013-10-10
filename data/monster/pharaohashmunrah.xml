@@ -66,14 +66,16 @@
 		<voice sentence="Come to me, my allys and underlings."/>
 	</voices>
 	<loot>
-		<item id="2487" chance="1000"/>
-		<item id="2148" countmax="90" chance="80000"/>
-		<item id="2148" countmax="80" chance="70000"/>
-		<item id="2148" countmax="85" chance="50000"/>
-		<item id="2148" countmax="95" chance="70000"/>
-		<item id="2444" chance="100"/>
-		<item id="2140" chance="100"/>
-		<item id="2164" chance="10000"/>
-		<item id="2134" chance="8000"/>
+		<item id="2148" countmax="90" chance="80000"/><!-- gold coin -->
+		<item id="2148" countmax="80" chance="70000"/><!-- gold coin -->
+		<item id="2148" countmax="85" chance="50000"/><!-- gold coin -->
+		<item id="2148" countmax="95" chance="70000"/><!-- gold coin -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2487" chance="1000"/><!-- crown armor -->
+			<item id="2444" chance="100"/><!-- hammer of wrath -->
+			<item id="2140" chance="100"/><!-- holy scarab -->
+			<item id="2164" chance="10000"/><!-- might ring -->
+			<item id="2134" chance="8000"/><!-- silver brooch -->
+		</item>
 	</loot>
 </monster>

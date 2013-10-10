@@ -38,15 +38,17 @@
 		<immunity lifedrain="1"/>
 	</immunities>
 	<loot>
-		<item id="2478" chance="16000"/>
-		<item id="2148" countmax="55" chance="66600"/>
-		<item id="2148" countmax="33" chance="66600"/>
-		<item id="2148" countmax="11" chance="99900"/>
-		<item id="2476" chance="600"/>
-		<item id="2477" chance="600"/>
-		<item id="2463" chance="20000"/>
-		<item id="2171" chance="100"/>
-		<item id="2457" chance="10000"/>
-		<item id="2169" chance="1400"/>
+		<item id="2478" chance="16000"/><!-- brass legs -->
+		<item id="2148" countmax="55" chance="66600"/><!-- gold coin -->
+		<item id="2148" countmax="33" chance="66600"/><!-- gold coin -->
+		<item id="2148" countmax="11" chance="99900"/><!-- gold coin -->
+		<item id="2463" chance="20000"/><!-- plate armor -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2476" chance="600"/><!-- knight armor -->
+			<item id="2477" chance="600"/><!-- knight legs -->
+			<item id="2171" chance="100"/><!-- platinum amulet -->
+			<item id="2457" chance="10000"/><!-- steel helmet -->
+			<item id="2169" chance="1400"/><!-- time ring -->
+		</item>
 	</loot>
 </monster>

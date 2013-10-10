@@ -42,25 +42,27 @@
 		<voice sentence="I will sing a tune at your grave."/>
 	</voices>
 	<loot>
-		<item id="2544" countmax="13" chance="54000"/>
-		<item id="2456" chance="26000"/>
-		<item id="2487" chance="1200"/>
-		<item id="2491" chance="1000"/>
-		<item id="2488" chance="1000"/>
-		<item id="2519" chance="800"/>
-		<item id="2392" chance="1000"/>
-		<item id="2148" countmax="100" chance="60000"/>
-		<item id="2681" chance="40000"/>
-		<item id="2652" chance="16000"/>
-		<item id="2071" chance="30000"/>
-		<item id="2666" countmax="2" chance="36000"/>
-		<item id="2164" chance="1000"/>
-		<item id="2744" chance="40000"/>
-		<item id="2120" chance="40000"/>
-		<item id="2661" chance="24000"/>
-		<item id="1949" chance="45000"/>
-		<item id="2377" chance="3000"/>
-		<item id="2391" chance="2000"/>
-		<item id="2121" chance="10000"/>
+		<item id="2544" countmax="13" chance="54000"/><!-- arrow -->
+		<item id="2456" chance="26000"/><!-- bow -->
+		<item id="2148" countmax="100" chance="60000"/><!-- gold coin -->
+		<item id="2681" chance="40000"/><!-- grapes -->
+		<item id="2652" chance="16000"/><!-- green tunic -->
+		<item id="2071" chance="30000"/><!-- lyre -->
+		<item id="2666" countmax="2" chance="36000"/><!-- meat -->
+		<item id="2744" chance="40000"/><!-- red rose -->
+		<item id="2120" chance="40000"/><!-- rope -->
+		<item id="2661" chance="24000"/><!-- scarf -->
+		<item id="1949" chance="45000"/><!-- scroll -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2487" chance="1200"/><!-- crown armor -->
+			<item id="2491" chance="1000"/><!-- crown helmet -->
+			<item id="2488" chance="1000"/><!-- crown legs -->
+			<item id="2519" chance="800"/><!-- crown shield -->
+			<item id="2392" chance="1000"/><!-- fire sword -->
+			<item id="2164" chance="1000"/><!-- might ring -->
+			<item id="2377" chance="3000"/><!-- two handed sword -->
+			<item id="2391" chance="2000"/><!-- war hammer -->
+			<item id="2121" chance="10000"/><!-- wedding ring -->
+		</item>
 	</loot>
 </monster>

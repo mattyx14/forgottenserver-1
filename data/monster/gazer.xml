@@ -42,9 +42,11 @@
 		<voice sentence="Me need mana!"/>
 	</voices>
 	<loot>
-		<item id="2148" countmax="6" chance="90000"/>
-		<item id="2148" countmax="8" chance="80000"/>
-		<item id="2148" countmax="10" chance="70000"/>
-		<item id="2512" chance="6000"/>
+		<item id="2148" countmax="6" chance="90000"/><!-- gold coin -->
+		<item id="2148" countmax="8" chance="80000"/><!-- gold coin -->
+		<item id="2148" countmax="10" chance="70000"/><!-- gold coin -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2512" chance="6000"/><!-- wooden shield -->
+		</item>
 	</loot>
 </monster>

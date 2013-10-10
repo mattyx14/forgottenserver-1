@@ -38,14 +38,16 @@
 		<immunity lifedrain="1"/>
 	</immunities>
 	<loot>
-		<item id="2792" chance="16000"/>
-		<item id="2148" countmax="30" chance="80000"/>
-		<item id="2148" countmax="10" chance="80000"/>
-		<item id="2747" chance="1000"/>
-		<item id="2671" chance="80000"/>
-		<item id="2666" countmax="2" chance="70000"/>
-		<item id="2804" chance="2000"/>
-		<item id="2802" chance="1000"/>
-		<item id="2802" chance="1000"/>
+		<item id="2792" chance="16000"/><!-- dark mushroom -->
+		<item id="2148" countmax="30" chance="80000"/><!-- gold coin -->
+		<item id="2148" countmax="10" chance="80000"/><!-- gold coin -->
+		<item id="2671" chance="80000"/><!-- ham -->
+		<item id="2666" countmax="2" chance="70000"/><!-- meat -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2747" chance="1000"/><!-- grave flower -->
+			<item id="2804" chance="2000"/><!-- shadow herb -->
+			<item id="2802" chance="1000"/><!-- sling herb -->
+			<item id="2802" chance="1000"/><!-- sling herb -->
+		</item>
 	</loot>
 </monster>

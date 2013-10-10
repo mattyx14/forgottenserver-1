@@ -29,15 +29,17 @@
 		<voice sentence="Hail Durin!"/>
 	</voices>
 	<loot>
-		<item id="2208" chance="200"/>
-		<item id="2417" chance="8000"/>
-		<item id="2513" chance="15000"/>
-		<item id="2387" chance="1200"/>
-		<item id="2148" countmax="30" chance="50000"/>
-		<item id="2643" chance="80000"/>
-		<item id="2483" chance="20000"/>
-		<item id="2150" chance="100"/>
-		<item id="2457" chance="4000"/>
-		<item id="2787" countmax="2" chance="55000"/>
+		<item id="2513" chance="15000"/><!-- battle shield -->
+		<item id="2148" countmax="30" chance="50000"/><!-- gold coin -->
+		<item id="2643" chance="80000"/><!-- leather boots -->
+		<item id="2483" chance="20000"/><!-- scale armor -->
+		<item id="2787" countmax="2" chance="55000"/><!-- white mushroom -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2208" chance="200"/><!-- axe ring -->
+			<item id="2417" chance="8000"/><!-- battle hammer -->
+			<item id="2387" chance="1200"/><!-- double axe -->
+			<item id="2150" chance="100"/><!-- small amethyst -->
+			<item id="2457" chance="4000"/><!-- steel helmet -->
+		</item>
 	</loot>
 </monster>

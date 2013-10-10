@@ -40,16 +40,18 @@
 		<voice sentence="Flesssh to dussst!"/>
 	</voices>
 	<loot>
-		<item id="2144" chance="2000"/>
-		<item id="2529" chance="200"/>
-		<item id="2124" chance="3000"/>
-		<item id="2148" countmax="80" chance="80000"/>
-		<item id="2162" chance="32000"/>
-		<item id="2411" chance="5000"/>
-		<item id="2406" chance="16000"/>
-		<item id="2170" chance="100"/>
-		<item id="2134" chance="8000"/>
-		<item id="2161" chance="10000"/>
-		<item id="3976" countmax="3" chance="70000"/>
+		<item id="2148" countmax="80" chance="80000"/><!-- gold coin -->
+		<item id="2162" chance="32000"/><!-- magic light wand -->
+		<item id="2406" chance="16000"/><!-- short sword -->
+		<item id="3976" countmax="3" chance="70000"/><!-- worm -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2144" chance="2000"/><!-- black pearl -->
+			<item id="2529" chance="200"/><!-- black shield -->
+			<item id="2124" chance="3000"/><!-- crystal ring -->
+			<item id="2411" chance="5000"/><!-- poison dagger -->
+			<item id="2170" chance="100"/><!-- silver amulet -->
+			<item id="2134" chance="8000"/><!-- silver brooch -->
+			<item id="2161" chance="10000"/><!-- strange talisman -->
+		</item>
 	</loot>
 </monster>

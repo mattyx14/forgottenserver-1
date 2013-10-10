@@ -43,24 +43,26 @@
 		<voice sentence="FCHHHHH" yell="1"/>
 	</voices>
 	<loot>
-		<item id="2413" chance="4000"/>
-		<item id="2546" countmax="10" chance="16000"/>
-		<item id="2455" chance="20000"/>
-		<item id="2387" chance="2000"/>
-		<item id="2672" countmax="3" chance="45000"/>
-		<item id="2434" chance="1000"/>
-		<item id="2516" chance="600"/>
-		<item id="2148" countmax="45" chance="80000"/>
-		<item id="2148" countmax="60" chance="50000"/>
-		<item id="2177" chance="100"/>
-		<item id="2397" chance="8000"/>
-		<item id="2398" chance="40000"/>
-		<item id="2647" chance="4000"/>
-		<item id="2409" chance="1000"/>
-		<item id="2406" chance="50000"/>
-		<item id="2145" chance="800"/>
-		<item id="2457" chance="6000"/>
-		<item id="2509" chance="30000"/>
-		<item id="2187" chance="2000"/>
+		<item id="2546" countmax="10" chance="16000"/><!-- burst arrow -->
+		<item id="2455" chance="20000"/><!-- crossbow -->
+		<item id="2672" countmax="3" chance="45000"/><!-- dragon ham -->
+		<item id="2148" countmax="45" chance="80000"/><!-- gold coin -->
+		<item id="2148" countmax="60" chance="50000"/><!-- gold coin -->
+		<item id="2398" chance="40000"/><!-- mace -->
+		<item id="2406" chance="50000"/><!-- short sword -->
+		<item id="2509" chance="30000"/><!-- steel shield -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2413" chance="4000"/><!-- broadsword -->
+			<item id="2387" chance="2000"/><!-- double axe -->
+			<item id="2434" chance="1000"/><!-- dragon hammer -->
+			<item id="2516" chance="600"/><!-- dragon shield -->
+			<item id="2177" chance="100"/><!-- life crystal -->
+			<item id="2397" chance="8000"/><!-- longsword -->
+			<item id="2647" chance="4000"/><!-- plate legs -->
+			<item id="2409" chance="1000"/><!-- serpent sword -->
+			<item id="2145" chance="800"/><!-- small diamond -->
+			<item id="2457" chance="6000"/><!-- steel helmet -->
+			<item id="2187" chance="2000"/><!-- wand of inferno -->
+		</item>
 	</loot>
 </monster>

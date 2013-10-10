@@ -25,7 +25,7 @@
 		<voice sentence="Groarrr!"/>
 	</voices>
 	<loot>
-		<item id="2671" countmax="2" chance="40000"/>
-		<item id="2666" countmax="3" chance="45000"/>
+		<item id="2671" countmax="2" chance="40000"/><!-- ham -->
+		<item id="2666" countmax="3" chance="45000"/><!-- meat -->
 	</loot>
 </monster>

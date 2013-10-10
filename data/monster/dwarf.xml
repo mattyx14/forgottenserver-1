@@ -28,15 +28,17 @@
 		<voice sentence="Hail Durin!"/>
 	</voices>
 	<loot>
-		<item id="2386" chance="30000"/>
-		<item id="2530" chance="20000"/>
-		<item id="2213" chance="100"/>
-		<item id="2148" countmax="8" chance="45000"/>
-		<item id="2388" chance="50000"/>
-		<item id="2649" chance="20000"/>
-		<item id="2597" chance="16000"/>
-		<item id="2553" chance="20000"/>
-		<item id="2484" chance="16000"/>
-		<item id="2787" chance="50000"/>
+		<item id="2386" chance="30000"/><!-- axe -->
+		<item id="2530" chance="20000"/><!-- copper shield -->
+		<item id="2148" countmax="8" chance="45000"/><!-- gold coin -->
+		<item id="2388" chance="50000"/><!-- hatchet -->
+		<item id="2649" chance="20000"/><!-- leather legs -->
+		<item id="2597" chance="16000"/><!-- letter -->
+		<item id="2553" chance="20000"/><!-- pick -->
+		<item id="2484" chance="16000"/><!-- studded armor -->
+		<item id="2787" chance="50000"/><!-- white mushroom -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2213" chance="100"/><!-- dwarven ring -->
+		</item>
 	</loot>
 </monster>

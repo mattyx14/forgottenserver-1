@@ -44,18 +44,20 @@
 		<voice sentence="Dust to dust."/>
 	</voices>
 	<loot>
-		<item id="1987" chance="50000"/>
-		<item id="2260" chance="20000"/>
-		<item id="2423" chance="2000"/>
-		<item id="2213" chance="600"/>
-		<item id="2148" countmax="30" chance="70000"/>
-		<item id="2643" chance="80000"/>
-		<item id="2162" chance="24000"/>
-		<item id="2673" countmax="2" chance="36000"/>
-		<item id="2146" chance="100"/>
-		<item id="2481" chance="16000"/>
-		<item id="2175" chance="800"/>
-		<item id="2468" chance="40000"/>
-		<item id="2787" countmax="2" chance="60000"/>
+		<item id="1987" chance="50000"/><!-- bag -->
+		<item id="2260" chance="20000"/><!-- blank rune -->
+		<item id="2148" countmax="30" chance="70000"/><!-- gold coin -->
+		<item id="2643" chance="80000"/><!-- leather boots -->
+		<item id="2162" chance="24000"/><!-- magic light wand -->
+		<item id="2673" countmax="2" chance="36000"/><!-- pear -->
+		<item id="2481" chance="16000"/><!-- soldier helmet -->
+		<item id="2468" chance="40000"/><!-- studded legs -->
+		<item id="2787" countmax="2" chance="60000"/><!-- white mushroom -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2423" chance="2000"/><!-- clerical mace -->
+			<item id="2213" chance="600"/><!-- dwarven ring -->
+			<item id="2146" chance="100"/><!-- small sapphire -->
+			<item id="2175" chance="800"/><!-- spellbook -->
+		</item>
 	</loot>
 </monster>

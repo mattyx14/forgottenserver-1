@@ -47,19 +47,21 @@
 		<voice sentence="Praise to my master Urgith!"/>
 	</voices>
 	<loot>
-		<item id="2231" chance="12000"/>
-		<item id="2230" chance="60000"/>
-		<item id="2449" chance="39800"/>
-		<item id="2541" chance="15000"/>
-		<item id="2195" chance="200"/>
-		<item id="2423" chance="11400"/>
-		<item id="2186" chance="1000"/>
-		<item id="2148" countmax="99" chance="67300"/>
-		<item id="2796" chance="45000"/>
-		<item id="2663" chance="3600"/>
-		<item id="2483" chance="17000"/>
-		<item id="2406" chance="17200"/>
-		<item id="2229" chance="32000"/>
-		<item id="2436" chance="800"/>
+		<item id="2230" chance="60000"/><!-- bone -->
+		<item id="2449" chance="39800"/><!-- bone club -->
+		<item id="2541" chance="15000"/><!-- bone shield -->
+		<item id="2148" countmax="99" chance="67300"/><!-- gold coin -->
+		<item id="2796" chance="45000"/><!-- green mushroom -->
+		<item id="2483" chance="17000"/><!-- scale armor -->
+		<item id="2406" chance="17200"/><!-- short sword -->
+		<item id="2229" chance="32000"/><!-- skull -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2231" chance="12000"/><!-- big bone -->
+			<item id="2195" chance="200"/><!-- boots of haste -->
+			<item id="2423" chance="11400"/><!-- clerical mace -->
+			<item id="2186" chance="1000"/><!-- moonlight rod -->
+			<item id="2663" chance="3600"/><!-- mystic turban -->
+			<item id="2436" chance="800"/><!-- skull staff -->
+		</item>
 	</loot>
 </monster>

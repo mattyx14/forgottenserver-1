@@ -27,12 +27,14 @@
 		<voice sentence="Prek tars, dekklep zurk."/>
 	</voices>
 	<loot>
-		<item id="2386" chance="16000"/>
-		<item id="2148" countmax="8" chance="85000"/>
-		<item id="2666" chance="40000"/>
-		<item id="2385" chance="12000"/>
-		<item id="2484" chance="24000"/>
-		<item id="2482" chance="18000"/>
-		<item id="2526" chance="20000"/>
+		<item id="2386" chance="16000"/><!-- axe -->
+		<item id="2148" countmax="8" chance="85000"/><!-- gold coin -->
+		<item id="2666" chance="40000"/><!-- meat -->
+		<item id="2484" chance="24000"/><!-- studded armor -->
+		<item id="2482" chance="18000"/><!-- studded helmet -->
+		<item id="2526" chance="20000"/><!-- studded shield -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2385" chance="12000"/><!-- sabre -->
+		</item>
 	</loot>
 </monster>

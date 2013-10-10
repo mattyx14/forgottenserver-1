@@ -46,13 +46,15 @@
 		<voice sentence="Knooorrrrr!"/>
 	</voices>
 	<loot>
-		<item id="2231" chance="20000"/>
-		<item id="2230" chance="50000"/>
-		<item id="2449" chance="10000"/>
-		<item id="2541" chance="4000"/>
-		<item id="2148" countmax="90" chance="60000"/>
-		<item id="2796" chance="3000"/>
-		<item id="2463" chance="16000"/>
-		<item id="2229" chance="40000"/>
+		<item id="2231" chance="20000"/><!-- big bone -->
+		<item id="2230" chance="50000"/><!-- bone -->
+		<item id="2148" countmax="90" chance="60000"/><!-- gold coin -->
+		<item id="2463" chance="16000"/><!-- plate armor -->
+		<item id="2229" chance="40000"/><!-- skull -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2449" chance="10000"/><!-- bone club -->
+			<item id="2541" chance="4000"/><!-- bone shield -->
+			<item id="2796" chance="3000"/><!-- green mushroom -->
+		</item>
 	</loot>
 </monster>

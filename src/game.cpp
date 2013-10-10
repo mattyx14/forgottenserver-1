@@ -4091,12 +4091,11 @@ bool Game::combatChangeHealth(CombatType_t combatType, Creature* attacker, Creat
 			int32_t manaDamage = std::min<int32_t>(target->getMana(), damage);
 			if (manaDamage != 0) {
 				target->drainMana(attacker, manaDamage);
-				char buffer[20];
-				std::ostringstream ss;
-				sprintf(buffer, "%d", manaDamage);
-				addMagicEffect(list, targetPos, NM_ME_LOSE_ENERGY);
-
 				damage = std::max<int32_t>(0, damage - manaDamage);
+				char buffer[20];
+				sprintf(buffer, "%d", damage);
+				addMagicEffect(list, targetPos, NM_ME_LOSE_ENERGY);
+				addAnimatedText(list, targetPos, TEXTCOLOR_BLUE, buffer);
 			}
 		}
 
@@ -4192,6 +4191,7 @@ bool Game::combatChangeHealth(CombatType_t combatType, Creature* attacker, Creat
 				char buffer[20];
 				sprintf(buffer, "%d", damage);
 				addMagicEffect(list, targetPos, hitEffect);
+				addAnimatedText(list, targetPos, textColor, buffer);
 			}
 		}
 	}
@@ -4377,8 +4377,7 @@ void Game::internalDecayItem(Item* item)
 
 void Game::checkDecay()
 {
-	checkDecayEvent = g_scheduler.addEvent(createSchedulerTask(EVENT_DECAYINTERVAL,
-	                                       boost::bind(&Game::checkDecay, this)));
+	checkDecayEvent = g_scheduler.addEvent(createSchedulerTask(EVENT_DECAYINTERVAL, boost::bind(&Game::checkDecay, this)));
 
 	size_t bucket = (lastBucket + 1) % EVENT_DECAY_BUCKETS;
 
@@ -4425,8 +4424,7 @@ void Game::checkDecay()
 
 void Game::checkLight()
 {
-	checkLightEvent = g_scheduler.addEvent(createSchedulerTask(EVENT_LIGHTINTERVAL,
-	                                       boost::bind(&Game::checkLight, this)));
+	checkLightEvent = g_scheduler.addEvent(createSchedulerTask(EVENT_LIGHTINTERVAL, boost::bind(&Game::checkLight, this)));
 
 	lightHour += lightHourDelta;
 

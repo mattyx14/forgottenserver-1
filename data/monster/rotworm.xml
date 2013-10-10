@@ -22,15 +22,17 @@
 	</attacks>
 	<defenses armor="8" defense="11"/>
 	<loot>
-		<item id="2530" chance="2000"/>
-		<item id="2148" countmax="8" chance="60000"/>
-		<item id="2148" countmax="12" chance="60000"/>
-		<item id="2671" chance="40000"/>
-		<item id="2412" chance="600"/>
-		<item id="2480" chance="3000"/>
-		<item id="2398" chance="9000"/>
-		<item id="2666" chance="40000"/>
-		<item id="2376" chance="6000"/>
-		<item id="3976" countmax="5" chance="50000"/>
+		<item id="2148" countmax="8" chance="60000"/><!-- gold coin -->
+		<item id="2148" countmax="12" chance="60000"/><!-- gold coin -->
+		<item id="2671" chance="40000"/><!-- ham -->
+		<item id="2666" chance="40000"/><!-- meat -->
+		<item id="3976" countmax="5" chance="50000"/><!-- worm -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2530" chance="2000"/><!-- copper shield -->
+			<item id="2412" chance="600"/><!-- katana -->
+			<item id="2480" chance="3000"/><!-- legion helmet -->
+			<item id="2398" chance="9000"/><!-- mace -->
+			<item id="2376" chance="6000"/><!-- sword -->
+		</item>
 	</loot>
 </monster>

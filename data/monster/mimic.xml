@@ -19,7 +19,9 @@
 	</flags>
 	<defenses armor="2" defense="3"/>
 	<loot>
-		<item id="2679" countmax="3" chance="6000"/>
-		<item id="2148" countmax="6" chance="70000"/>
+		<item id="2148" countmax="6" chance="70000"/><!-- gold coin -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2679" countmax="3" chance="6000"/><!-- cherry -->
+		</item>
 	</loot>
 </monster>

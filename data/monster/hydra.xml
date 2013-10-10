@@ -46,20 +46,22 @@
 		<voice sentence="HISSSS" yell="1"/>
 	</voices>
 	<loot>
-		<item id="2195" chance="100"/>
-		<item id="2148" countmax="100" chance="80000"/>
-		<item id="2148" countmax="100" chance="60000"/>
-		<item id="2148" countmax="50" chance="80000"/>
-		<item id="2671" countmax="3" chance="60000"/>
-		<item id="4850" chance="1800"/>
-		<item id="2476" chance="2000"/>
-		<item id="2177" chance="1200"/>
-		<item id="2666" countmax="4" chance="90000"/>
-		<item id="2536" chance="100"/>
-		<item id="2214" chance="2400"/>
-		<item id="2498" chance="200"/>
-		<item id="2146" chance="10000"/>
-		<item id="2197" chance="1600"/>
-		<item id="2475" chance="2000"/>
+		<item id="2148" countmax="100" chance="80000"/><!-- gold coin -->
+		<item id="2148" countmax="100" chance="60000"/><!-- gold coin -->
+		<item id="2148" countmax="50" chance="80000"/><!-- gold coin -->
+		<item id="2671" countmax="3" chance="60000"/><!-- ham -->
+		<item id="2666" countmax="4" chance="90000"/><!-- meat -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2195" chance="100"/><!-- boots of haste -->
+			<item id="4850" chance="1800"/><!-- hydra egg -->
+			<item id="2476" chance="2000"/><!-- knight armor -->
+			<item id="2177" chance="1200"/><!-- life crystal -->
+			<item id="2536" chance="100"/><!-- medusa shield -->
+			<item id="2214" chance="2400"/><!-- ring of healing -->
+			<item id="2498" chance="200"/><!-- royal helmet -->
+			<item id="2146" chance="10000"/><!-- small sapphire -->
+			<item id="2197" chance="1600"/><!-- stone skin amulet -->
+			<item id="2475" chance="2000"/><!-- warrior helmet -->
+		</item>
 	</loot>
 </monster>

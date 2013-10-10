@@ -32,16 +32,18 @@
 		<voice sentence="Me green, me mean!"/>
 	</voices>
 	<loot>
-		<item id="2230" chance="24000"/>
-		<item id="2449" chance="10000"/>
-		<item id="2379" chance="36000"/>
-		<item id="2667" chance="26000"/>
-		<item id="2148" countmax="9" chance="50000"/>
-		<item id="2467" chance="15000"/>
-		<item id="2461" chance="20000"/>
-		<item id="2235" chance="14000"/>
-		<item id="2406" chance="18000"/>
-		<item id="2559" chance="20000"/>
-		<item id="1294" countmax="3" chance="60000"/>
+		<item id="2230" chance="24000"/><!-- bone -->
+		<item id="2379" chance="36000"/><!-- dagger -->
+		<item id="2667" chance="26000"/><!-- fish -->
+		<item id="2148" countmax="9" chance="50000"/><!-- gold coin -->
+		<item id="2467" chance="15000"/><!-- leather armor -->
+		<item id="2461" chance="20000"/><!-- leather helmet -->
+		<item id="2406" chance="18000"/><!-- short sword -->
+		<item id="2559" chance="20000"/><!-- small axe -->
+		<item id="1294" countmax="3" chance="60000"/><!-- small stone -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2449" chance="10000"/><!-- bone club -->
+			<item id="2235" chance="14000"/><!-- mouldy cheese -->
+		</item>
 	</loot>
 </monster>

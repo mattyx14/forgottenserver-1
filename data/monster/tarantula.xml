@@ -33,11 +33,13 @@
 		<immunity poison="1"/>
 	</immunities>
 	<loot>
-		<item id="2478" chance="6000"/>
-		<item id="2148" countmax="10" chance="70000"/>
-		<item id="2148" countmax="30" chance="60000"/>
-		<item id="2510" chance="4000"/>
-		<item id="2457" chance="2000"/>
-		<item id="2169" chance="100"/>
+		<item id="2148" countmax="10" chance="70000"/><!-- gold coin -->
+		<item id="2148" countmax="30" chance="60000"/><!-- gold coin -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2478" chance="6000"/><!-- brass legs -->
+			<item id="2510" chance="4000"/><!-- plate shield -->
+			<item id="2457" chance="2000"/><!-- steel helmet -->
+			<item id="2169" chance="100"/><!-- time ring -->
+		</item>
 	</loot>
 </monster>

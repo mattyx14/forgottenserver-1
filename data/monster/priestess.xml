@@ -46,20 +46,22 @@
 		<voice sentence="Throw the soul on the altar!"/>
 	</voices>
 	<loot>
-		<item id="2529" chance="200"/>
-		<item id="1977" chance="14000"/>
-		<item id="2032" chance="40000"/>
-		<item id="2423" chance="3000"/>
-		<item id="2192" chance="2400"/>
-		<item id="2125" chance="1200"/>
-		<item id="2379" chance="46000"/>
-		<item id="2760" chance="24000"/>
-		<item id="2803" chance="12000"/>
-		<item id="2674" countmax="2" chance="15000"/>
-		<item id="2802" chance="28000"/>
-		<item id="2151" chance="1400"/>
-		<item id="2183" chance="2000"/>
-		<item id="2791" chance="7000"/>
-		<item id="2070" chance="2800"/>
+		<item id="2032" chance="40000"/><!-- bowl -->
+		<item id="2379" chance="46000"/><!-- dagger -->
+		<item id="2760" chance="24000"/><!-- goat grass -->
+		<item id="2674" countmax="2" chance="15000"/><!-- red apple -->
+		<item id="2802" chance="28000"/><!-- sling herb -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2529" chance="200"/><!-- black shield -->
+			<item id="1977" chance="14000"/><!-- book -->
+			<item id="2423" chance="3000"/><!-- clerical mace -->
+			<item id="2192" chance="2400"/><!-- crystal ball -->
+			<item id="2125" chance="1200"/><!-- crystal necklace -->
+			<item id="2803" chance="12000"/><!-- powder herb -->
+			<item id="2151" chance="1400"/><!-- talon -->
+			<item id="2183" chance="2000"/><!-- hailstorm rod -->
+			<item id="2791" chance="7000"/><!-- wood mushroom -->
+			<item id="2070" chance="2800"/><!-- wooden flute -->
+		</item>
 	</loot>
 </monster>

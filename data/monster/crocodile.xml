@@ -22,11 +22,13 @@
 	</attacks>
 	<defenses armor="13" defense="5"/>
 	<loot>
-		<item id="3982" chance="100"/>
-		<item id="2148" countmax="10" chance="50000"/>
-		<item id="2671" countmax="2" chance="80000"/>
-		<item id="2461" chance="16000"/>
-		<item id="2649" chance="16000"/>
-		<item id="2666" countmax="4" chance="70000"/>
+		<item id="2148" countmax="10" chance="50000"/><!-- gold coin -->
+		<item id="2671" countmax="2" chance="80000"/><!-- ham -->
+		<item id="2461" chance="16000"/><!-- leather helmet -->
+		<item id="2649" chance="16000"/><!-- leather legs -->
+		<item id="2666" countmax="4" chance="70000"/><!-- meat -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="3982" chance="100"/><!-- crocodile boots -->
+		</item>
 	</loot>
 </monster>

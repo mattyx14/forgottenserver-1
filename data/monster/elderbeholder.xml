@@ -62,15 +62,17 @@
 		<voice sentence="659978 54764!"/>
 	</voices>
 	<loot>
-		<item id="3972" chance="100"/>
-		<item id="2518" chance="100"/>
-		<item id="2148" countmax="24" chance="90000"/>
-		<item id="2148" countmax="32" chance="80000"/>
-		<item id="2148" countmax="35" chance="70000"/>
-		<item id="2397" chance="24000"/>
-		<item id="2394" chance="20000"/>
-		<item id="2175" chance="2000"/>
-		<item id="2509" chance="12000"/>
-		<item id="2377" chance="12000"/>
+		<item id="2148" countmax="24" chance="90000"/><!-- gold coin -->
+		<item id="2148" countmax="32" chance="80000"/><!-- gold coin -->
+		<item id="2148" countmax="35" chance="70000"/><!-- gold coin -->
+		<item id="2397" chance="24000"/><!-- longsword -->
+		<item id="2394" chance="20000"/><!-- morning star -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="3972" chance="100"/><!-- bonelord helmet -->
+			<item id="2518" chance="100"/><!-- bonelord shield -->
+			<item id="2175" chance="2000"/><!-- spellbook -->
+			<item id="2509" chance="12000"/><!-- steel shield -->
+			<item id="2377" chance="12000"/><!-- two handed sword -->
+		</item>
 	</loot>
 </monster>

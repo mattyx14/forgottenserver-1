@@ -23,8 +23,10 @@
 		<voice sentence="Cluck Cluck"/>
 	</voices>
 	<loot>
-		<item id="2695" chance="2000"/>
-		<item id="2666" countmax="2" chance="4000"/>
-		<item id="3976" countmax="3" chance="60000"/>
+		<item id="3976" countmax="3" chance="60000"/><!-- worm -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2695" chance="2000"/><!-- egg -->
+			<item id="2666" countmax="2" chance="4000"/><!-- meat -->
+		</item>
 	</loot>
 </monster>

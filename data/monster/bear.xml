@@ -26,8 +26,10 @@
 		<voice sentence="Groar"/>
 	</voices>
 	<loot>
-		<item id="2671" countmax="2" chance="80000"/>
-		<item id="2666" countmax="4" chance="70000"/>
-		<item id="3976" chance="10000"/>
+		<item id="2671" countmax="2" chance="80000"/><!-- ham -->
+		<item id="2666" countmax="4" chance="70000"/><!-- meat -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="3976" chance="10000"/><!-- worm -->
+		</item>
 	</loot>
 </monster>

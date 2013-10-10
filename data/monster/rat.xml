@@ -22,8 +22,8 @@
 	</attacks>
 	<defenses armor="1" defense="3"/>
 	<loot>
-		<item id="2696" chance="80000"/>
-		<item id="2148" countmax="4" chance="70000"/>
-		<item id="3976" countmax="3" chance="50000"/>
+		<item id="2696" chance="80000"/><!-- cheese -->
+		<item id="2148" countmax="4" chance="70000"/><!-- gold coin -->
+		<item id="3976" countmax="3" chance="50000"/><!-- worm -->
 	</loot>
 </monster>

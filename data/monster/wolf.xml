@@ -22,7 +22,7 @@
 	</attacks>
 	<defenses armor="1" defense="4"/>
 	<loot>
-		<item id="2666" countmax="2" chance="50000"/>
-		<item id="3976" chance="20000"/>
+		<item id="2666" countmax="2" chance="50000"/><!-- meat -->
+		<item id="3976" chance="20000"/><!-- worm -->
 	</loot>
 </monster>

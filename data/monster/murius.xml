@@ -46,12 +46,14 @@
 		<voice sentence="Guards!"/>
 	</voices>
 	<loot>
-		<item id="2513" chance="36000"/>
-		<item id="2465" chance="56000"/>
-		<item id="2648" chance="70000"/>
-		<item id="2387" chance="15000"/>
-		<item id="2580" chance="10000"/>
-		<item id="2148" countmax="50" chance="60000"/>
-		<item id="2666" chance="20000"/>
+		<item id="2513" chance="36000"/><!-- battle shield -->
+		<item id="2465" chance="56000"/><!-- brass armor -->
+		<item id="2648" chance="70000"/><!-- chain legs -->
+		<item id="2387" chance="15000"/><!-- double axe -->
+		<item id="2148" countmax="50" chance="60000"/><!-- gold coin -->
+		<item id="2666" chance="20000"/><!-- meat -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2580" chance="10000"/><!-- fishing rod -->
+		</item>
 	</loot>
 </monster>

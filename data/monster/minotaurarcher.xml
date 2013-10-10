@@ -29,16 +29,18 @@
 		<voice sentence="Kaplar!"/>
 	</voices>
 	<loot>
-		<item id="2543" countmax="15" chance="50000"/>
-		<item id="2543" countmax="5" chance="80000"/>
-		<item id="2465" chance="4000"/>
-		<item id="2455" chance="20000"/>
-		<item id="2148" countmax="10" chance="70000"/>
-		<item id="2148" countmax="20" chance="30000"/>
-		<item id="2461" chance="10000"/>
-		<item id="2649" chance="10000"/>
-		<item id="2666" chance="20000"/>
-		<item id="2483" chance="2000"/>
-		<item id="2481" chance="4000"/>
+		<item id="2543" countmax="15" chance="50000"/><!-- bolt -->
+		<item id="2543" countmax="5" chance="80000"/><!-- bolt -->
+		<item id="2455" chance="20000"/><!-- crossbow -->
+		<item id="2148" countmax="10" chance="70000"/><!-- gold coin -->
+		<item id="2148" countmax="20" chance="30000"/><!-- gold coin -->
+		<item id="2666" chance="20000"/><!-- meat -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2465" chance="4000"/><!-- brass armor -->
+			<item id="2461" chance="10000"/><!-- leather helmet -->
+			<item id="2649" chance="10000"/><!-- leather legs -->
+			<item id="2483" chance="2000"/><!-- scale armor -->
+			<item id="2481" chance="4000"/><!-- soldier helmet -->
+		</item>
 	</loot>
 </monster>

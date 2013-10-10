@@ -55,16 +55,18 @@
 		<voice sentence="You've got the look!"/>
 	</voices>
 	<loot>
-		<item id="2518" chance="100"/>
-		<item id="2148" countmax="12" chance="90000"/>
-		<item id="2148" countmax="16" chance="80000"/>
-		<item id="2148" countmax="20" chance="70000"/>
-		<item id="2397" chance="18000"/>
-		<item id="2394" chance="14000"/>
-		<item id="2181" chance="1000"/>
-		<item id="2175" chance="10000"/>
-		<item id="2509" chance="8000"/>
-		<item id="2377" chance="8000"/>
-		<item id="2512" chance="6000"/>
+		<item id="2148" countmax="12" chance="90000"/><!-- gold coin -->
+		<item id="2148" countmax="16" chance="80000"/><!-- gold coin -->
+		<item id="2148" countmax="20" chance="70000"/><!-- gold coin -->
+		<item id="2397" chance="18000"/><!-- longsword -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2518" chance="100"/><!-- bonelord shield -->
+			<item id="2394" chance="14000"/><!-- morning star -->
+			<item id="2181" chance="1000"/><!-- terra rod -->
+			<item id="2175" chance="10000"/><!-- spellbook -->
+			<item id="2509" chance="8000"/><!-- steel shield -->
+			<item id="2377" chance="8000"/><!-- two handed sword -->
+			<item id="2512" chance="6000"/><!-- wooden shield -->
+		</item>
 	</loot>
 </monster>

@@ -48,24 +48,26 @@
 		<voice sentence="Feel my gentle kiss of death."/>
 	</voices>
 	<loot>
-		<item id="2144" chance="4000"/>
-		<item id="2656" chance="1200"/>
-		<item id="2047" chance="70000"/>
-		<item id="2124" chance="100"/>
-		<item id="2237" chance="39800"/>
-		<item id="2148" countmax="80" chance="60000"/>
-		<item id="2177" chance="100"/>
-		<item id="2071" chance="2000"/>
-		<item id="2560" chance="14000"/>
-		<item id="2411" chance="3000"/>
-		<item id="2655" chance="100"/>
-		<item id="2214" chance="1600"/>
-		<item id="2170" chance="18000"/>
-		<item id="2134" chance="3000"/>
-		<item id="2657" chance="60000"/>
-		<item id="2175" chance="1000"/>
-		<item id="2197" chance="1600"/>
-		<item id="2121" chance="1000"/>
-		<item id="2143" chance="2000"/>
+		<item id="2047" chance="70000"/><!-- candlestick -->
+		<item id="2237" chance="39800"/><!-- dirty cape -->
+		<item id="2148" countmax="80" chance="60000"/><!-- gold coin -->
+		<item id="2170" chance="18000"/><!-- silver amulet -->
+		<item id="2657" chance="60000"/><!-- simple dress -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<item id="2144" chance="4000"/><!-- black pearl -->
+			<item id="2656" chance="1200"/><!-- blue robe -->
+			<item id="2124" chance="100"/><!-- crystal ring -->
+			<item id="2177" chance="100"/><!-- life crystal -->
+			<item id="2071" chance="2000"/><!-- lyre -->
+			<item id="2560" chance="14000"/><!-- mirror -->
+			<item id="2411" chance="3000"/><!-- poison dagger -->
+			<item id="2655" chance="100"/><!-- red robe -->
+			<item id="2214" chance="1600"/><!-- ring of healing -->
+			<item id="2134" chance="3000"/><!-- silver brooch -->
+			<item id="2175" chance="1000"/><!-- spellbook -->
+			<item id="2197" chance="1600"/><!-- stone skin amulet -->
+			<item id="2121" chance="1000"/><!-- wedding ring -->
+			<item id="2143" chance="2000"/><!-- white pearl -->
+		</item>
 	</loot>
 </monster>
