@@ -3,7 +3,7 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		doTransformItem(itemEx.uid, 392)
 		doDecayItem(itemEx.uid)
 		doSendMagicEffect(toPosition, CONST_ME_POFF)
-		return TRUE
+		return true
 	end
-	return FALSE
+	return false
 end

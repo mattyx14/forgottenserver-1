@@ -7,21 +7,19 @@ local constructionKits = {
 [3926] = 2117, [3927] = 1728, [3928] = 1442, [3929] = 1446, [3930] = 1447,
 [3931] = 2034, [3932] = 2604, [3933] = 2080, [3934] = 2084, [3935] = 3821,
 [3936] = 3811, [3937] = 2101, [3938] = 3812, [5086] = 5046, [5087] = 5055,
-[5088] = 5056, [6114] = 6111, [6115] = 6109, [6372] = 6356, [6373] = 6371,
-[8692] = 8688, [9974] = 9975, [11126] = 11127, [11133] = 11129, [11124] = 11125,
-[11205] = 11203, [14328] = 1616, [14329] = 1615, [16075] = 16020, [16099] = 16098,
-[20254] = 20295, [20255] = 20297, [20257] = 20299
+[5088] = 5056
 }
+
 function onUse(cid, item, fromPosition, itemEx, toPosition)
 	if fromPosition.x == CONTAINER_POSITION then
 		doPlayerSendCancel(cid, "Put the construction kit on the floor first.")
-	elseif getTileHouseInfo(fromPosition) == FALSE then
+	elseif getTileHouseInfo(fromPosition) == false then
 		doPlayerSendCancel(cid,"You may only construct this inside a house.")
 	elseif constructionKits[item.itemid] ~= nil then
 		doTransformItem(item.uid, constructionKits[item.itemid])
 		doSendMagicEffect(fromPosition, CONST_ME_POFF)
 	else
-		return FALSE
+		return false
 	end
-	return TRUE
+	return true
 end

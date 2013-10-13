@@ -3,7 +3,7 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 	if itemIdArray[item.itemid] ~= nil then
 		doTransformItem(item.uid, itemIdArray[item.itemid])
 		doDecayItem(item.uid)
-		return TRUE
+		return true
 	end
-	return FALSE
+	return false
 end
