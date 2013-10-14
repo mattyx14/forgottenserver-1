@@ -60,6 +60,9 @@ class ConfigManager
 			OPTIMIZE_DATABASE = 21,
 			STAMINA_SYSTEM = 22,
 			SHOW_HEALTH_CHANGE = 23,
+			AUTO_STACK = 24,
+			TILE_HEIGHT_BLOCK = 25,
+			RUNES_HIT_TOP = 26,
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
 
@@ -122,6 +125,8 @@ class ConfigManager
 			STAIRHOP_DELAY = 31,
 			EXP_FROM_PLAYERS_LEVEL_RANGE = 32,
 			MAX_PACKETS_PER_SECOND = 33,
+			OFFLINE_RATE_SKILL = 34,
+			OFFLINE_RATE_MAGIC = 35,
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};
 
