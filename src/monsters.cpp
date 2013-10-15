@@ -146,7 +146,7 @@ void MonsterType::createLoot(Container* corpse)
 			}
 		}
 
-		if (owner) {
+		if (owner && g_config.getBoolean(ConfigManager::LOOT_MESSAGE)) {
 			std::ostringstream ss;
 			ss << "Loot of " << nameDescription << ": " << corpse->getContentDescription();
 
@@ -156,7 +156,7 @@ void MonsterType::createLoot(Container* corpse)
 				owner->sendTextMessage(MSG_INFO_DESCR, ss.str());
 			}
 		}
-	} else {
+	} else if(owner && g_config.getBoolean(ConfigManager::LOOT_MESSAGE)) {
 		std::ostringstream ss;
 		ss << "Loot of " << nameDescription << ": nothing (due to low stamina)";
 

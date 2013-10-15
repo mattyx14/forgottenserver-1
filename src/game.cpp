@@ -1079,7 +1079,13 @@ ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, 
 	ReturnValue ret = RET_NOTPOSSIBLE;
 
 	if (toTile != nullptr) {
-		ret = internalMoveCreature(creature, fromTile, toTile, flags);
+		if(g_config.getBoolean(ConfigManager::TILE_HEIGHT_BLOCK)) {
+			if(currentPos.z > destPos.z && toTile->getTile()->getHeight() > 1);
+			else if((((int32_t)(toTile->getTile()->getHeight() - fromTile->getTile()->getHeight()) < 2)) || (fromTile->getTile()->hasHeight(3) && (currentPos.z == destPos.z)) || ((currentPos.z < destPos.z) && (toTile->getTile()->hasHeight(3) && (fromTile->getTile()->getHeight() < 2))))
+				ret = internalMoveCreature(creature, fromTile, toTile, flags);
+		} else {
+			ret = internalMoveCreature(creature, fromTile, toTile, flags);
+		}
 	}
 
 	return ret;

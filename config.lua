@@ -10,6 +10,7 @@ killsToBlackSkull = 6
 pzLocked = 60000
 criticalHitChance = 0
 removeAmmoWhenUsingDistanceWeapon = "yes"
+runesHitTopCreature = "yes"
 removeChargesFromRunes = "yes"
 removeChargesFromWeapons = "yes"
 timeToDecreaseFrags = 24 * 60 * 60 * 1000
@@ -78,6 +79,11 @@ freePremium = "no"
 kickIdlePlayerAfterMinutes = 15
 maxMessageBuffer = 4
 noDamageToSameLookfeet = "no"
+tileHeightBlock = "yes"
+autoStack = "no"
+summonsDropCorpse = "yes"
+blessingsReduceItemDrop = "no"
+displayLootMessage = "no"
 
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages in data/XML/stages.xml
@@ -86,6 +92,8 @@ rateSkill = 3
 rateLoot = 2
 rateMagic = 3
 rateSpawn = 1
+offlineRateSkill = 2
+offlineRateMagic = 2
 
 -- Server save
 -- NOTE: serverSaveHour is the hour of the day when the server save will occur,

@@ -748,7 +748,7 @@ void Combat::CombatFunc(Creature* caster, const Position& pos, const AreaCombat*
 			bool bContinue = true;
 			for (CreatureVector::iterator cit = creatures->begin(), cend = creatures->end(); bContinue && cit != cend; ++cit) {
 				if (params.targetCasterOrTopMost) {
-					if (caster && caster->getTile() == tile) {
+					if (!g_config.getBoolean(ConfigManager::RUNES_HIT_TOP) && caster && caster->getTile() == tile) {
 						if (*cit == caster) {
 							bContinue = false;
 						}

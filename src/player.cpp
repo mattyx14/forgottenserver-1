@@ -835,6 +835,10 @@ uint16_t Player::getLookCorpse() const
 
 uint16_t Player::getDropPercent() const
 {
+	if(!g_config.getBoolean(ConfigManager::BLESS_REDUCE_ITEM_DROP)) {
+		return 100;
+	}
+
 	uint16_t dropPercent;
 
 	std::bitset<5> bitset(blessings);
@@ -892,17 +896,13 @@ void Player::dropLoot(Container* corpse)
 			for (int32_t i = SLOT_FIRST; i < SLOT_LAST; ++i) {
 				Item* item = inventory[i];
 				if (item) {
-					if (playerSkull == SKULL_RED || uniform_random(1, (item->getContainer() ? 100 : 1000)) <= getDropPercent()) {
+					if (playerSkull == SKULL_RED || item->getContainer() || !item->getContainer() && (uniform_random(1, 1000) <= getDropPercent())) {
 						g_game.internalMoveItem(this, corpse, INDEX_WHEREEVER, item, item->getItemCount(), 0);
 						sendInventoryItem((slots_t)i, nullptr);
 					}
 				}
 			}
 		}
-	}
-
-	if (!inventory[SLOT_BACKPACK]) {
-		__internalAddThing(SLOT_BACKPACK, Item::CreateItem(1988));
 	}
 }
 
@@ -2911,8 +2911,7 @@ ReturnValue Player::__queryRemove(const Thing* thing, uint32_t count, uint32_t f
 	return RET_NOERROR;
 }
 
-Cylinder* Player::__queryDestination(int32_t& index, const Thing* thing, Item** destItem,
-                                     uint32_t& flags)
+Cylinder* Player::__queryDestination(int32_t& index, const Thing* thing, Item** destItem, uint32_t& flags)
 {
 	if (index == 0 /*drop to capacity window*/ || index == INDEX_WHEREEVER) {
 		*destItem = nullptr;
@@ -2922,7 +2921,7 @@ Cylinder* Player::__queryDestination(int32_t& index, const Thing* thing, Item** 
 			return this;
 		}
 
-		bool autoStack = !((flags & FLAG_IGNOREAUTOSTACK) == FLAG_IGNOREAUTOSTACK);
+		bool autoStack = (g_config.getBoolean(ConfigManager::AUTO_STACK) && !((flags & FLAG_IGNOREAUTOSTACK) == FLAG_IGNOREAUTOSTACK));
 		bool isStackable = item->isStackable();
 
 		std::list<Container*> containerList;
@@ -4263,7 +4262,7 @@ bool Player::addOfflineTrainingTries(skills_t skill, int32_t tries)
 		oldSkillValue = magLevel;
 		oldPercentToNextLevel = (long double)(manaSpent * 100) / nextReqMana;
 
-		tries *= g_config.getNumber(ConfigManager::RATE_MAGIC);
+		tries *= g_config.getNumber(ConfigManager::OFFLINE_RATE_MAGIC);
 		uint32_t currMagLevel = magLevel;
 
 		while ((manaSpent + tries) >= nextReqMana) {
@@ -4319,7 +4318,7 @@ bool Player::addOfflineTrainingTries(skills_t skill, int32_t tries)
 		oldSkillValue = skills[skill][SKILL_LEVEL];
 		oldPercentToNextLevel = (long double)(skills[skill][SKILL_TRIES] * 100) / nextReqTries;
 
-		tries *= g_config.getNumber(ConfigManager::RATE_SKILL);
+		tries *= g_config.getNumber(ConfigManager::OFFLINE_RATE_SKILL);
 		uint32_t currSkillLevel = skills[skill][SKILL_LEVEL];
 
 		while ((skills[skill][SKILL_TRIES] + tries) >= nextReqTries) {
@@ -4419,8 +4418,6 @@ void Player::useStamina()
 			--staminaMinutes;
 			nextUseStaminaTime = currentTime + 60;
 		}
-
-		sendStats();
 	}
 }
 

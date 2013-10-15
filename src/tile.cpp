@@ -1281,6 +1281,25 @@ int32_t Tile::__getIndexOfThing(const Thing* thing) const
 	return -1;
 }
 
+uint32_t Tile::getHeight() const
+{
+	uint32_t height = 0;
+	if(ground)
+		if(ground->hasProperty(HASHEIGHT))
+			++height;
+
+	if(const TileItemVector* items = getItemList())
+	{
+		for(ItemVector::const_iterator it = items->begin(); it != items->end(); ++it)
+		{
+			if((*it)->hasProperty(HASHEIGHT))
+				++height;
+		}
+	}
+
+	return height;
+}
+
 int32_t Tile::getClientIndexOfThing(const Player* player, const Thing* thing) const
 {
 	return __getIndexOfThing(thing);

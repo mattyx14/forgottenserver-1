@@ -63,6 +63,9 @@ class ConfigManager
 			AUTO_STACK = 24,
 			TILE_HEIGHT_BLOCK = 25,
 			RUNES_HIT_TOP = 26,
+			SUMMONS_DROP_CORPSE = 27,
+			BLESS_REDUCE_ITEM_DROP = 28,
+			LOOT_MESSAGE = 29,
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
 

@@ -724,7 +724,7 @@ void Creature::onDeath()
 
 bool Creature::dropCorpse()
 {
-	if (!lootDrop && getMonster() && !(master && master->getPlayer())) {
+	if (!lootDrop && getMonster() && !(!g_config.getBoolean(ConfigManager::SUMMONS_DROP_CORPSE) && master && master->getPlayer())) {
 		if (master) {
 			//scripting event - onDeath
 			const CreatureEventList& deathEvents = getCreatureEvents(CREATURE_EVENT_DEATH);

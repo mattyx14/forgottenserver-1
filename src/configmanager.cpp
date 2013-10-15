@@ -100,6 +100,12 @@ bool ConfigManager::load()
 	m_confBoolean[ALLOW_CLONES] = booleanString(getGlobalString(L, "allowClones", "no"));
 	m_confBoolean[STAMINA_SYSTEM] = booleanString(getGlobalString(L, "staminaSystem", "yes"));
 	m_confBoolean[SHOW_HEALTH_CHANGE] = booleanString(getGlobalString(L, "showHealthChange", "no"));
+	m_confBoolean[AUTO_STACK] = booleanString(getGlobalString(L, "autoStack", "no"));
+	m_confBoolean[TILE_HEIGHT_BLOCK] = booleanString(getGlobalString(L, "tileHeightBlock", "yes"));
+	m_confBoolean[RUNES_HIT_TOP] = booleanString(getGlobalString(L, "runesHitTopCreature", "yes"));
+	m_confBoolean[SUMMONS_DROP_CORPSE] = booleanString(getGlobalString(L, "summonsDropCorpse", "yes"));
+	m_confBoolean[BLESS_REDUCE_ITEM_DROP] = booleanString(getGlobalString(L, "blessingsReduceItemDrop", "no"));
+	m_confBoolean[LOOT_MESSAGE] = booleanString(getGlobalString(L, "displayLootMessage", "no"));
 
 	m_confString[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	m_confString[LOGIN_MSG] = getGlobalString(L, "loginMessage", "Welcome to the Forgotten Server!");
@@ -137,6 +143,8 @@ bool ConfigManager::load()
 	m_confInteger[STAIRHOP_DELAY] = getGlobalNumber(L, "stairJumpExhaustion", 2000);
 	m_confInteger[EXP_FROM_PLAYERS_LEVEL_RANGE] = getGlobalNumber(L, "expFromPlayersLevelRange", 75);
 	m_confInteger[MAX_PACKETS_PER_SECOND] = getGlobalNumber(L, "maxPacketsPerSecond", 40);
+	m_confInteger[OFFLINE_RATE_SKILL] = getGlobalNumber(L, "offlineRateSkill", 1);
+	m_confInteger[OFFLINE_RATE_MAGIC] = getGlobalNumber(L, "offlineRateMagic", 1);
 
 	m_isLoaded = true;
 	lua_close(L);
