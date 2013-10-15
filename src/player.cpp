@@ -896,7 +896,7 @@ void Player::dropLoot(Container* corpse)
 			for (int32_t i = SLOT_FIRST; i < SLOT_LAST; ++i) {
 				Item* item = inventory[i];
 				if (item) {
-					if (playerSkull == SKULL_RED || item->getContainer() || !item->getContainer() && (uniform_random(1, 1000) <= getDropPercent())) {
+					if (playerSkull == SKULL_RED || item->getContainer() || (!item->getContainer() && (uniform_random(1, 1000) <= getDropPercent()))) {
 						g_game.internalMoveItem(this, corpse, INDEX_WHEREEVER, item, item->getItemCount(), 0);
 						sendInventoryItem((slots_t)i, nullptr);
 					}
